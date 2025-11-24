@@ -16,8 +16,16 @@
           @for (fila of pageActual(); track $index) {
             <tr class="table-row" style="cursor: pointer" (click)="onFilaClick(fila)">
               @for (col of columnas; track $index) {
-                <td class="text-center">{{ fila[col.key] }}</td>
-              }
+                <td class="text-center"> @if(col.key === 'action') {
+            <button class="btn btn-danger btn-sm" (click)= "onEliminarClick()" >
+              Eliminar
+            </button>
+          } @else {
+            {{ fila[col.key] }}
+          } 
+        </td>
+             }
+             
             </tr>
           }
         </tbody>

@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+
 @Component({
   selector: 'app-reusable-table',
+  standalone:true,
   imports: [],
   templateUrl: './reusable-table.html',
   styleUrl: './reusable-table.css',
@@ -12,11 +14,14 @@ export class ReusableTable {
   //Las columnas pertenecientes a las tablas
   @Input() columnas:{ key:string; label:string}[] = [];
   @Output() filaClick = new EventEmitter<any>();
-  //ngOnInit(){}
+  @Output() emilinarClick = new EventEmitter<any>();
+  
 
   //variables para la paginacion
   page = 1;
   pageSize = 5;
+
+  
     
   ngOnChanges(){
     if(!this.columnas && this.datos.length > 0){
@@ -26,9 +31,16 @@ export class ReusableTable {
       }));
     }
   }
+  
 
   onFilaClick(fila:any){
     this.filaClick.emit(fila);
+  }
+
+
+
+  onEliminarClick(){
+  this.emilinarClick.emit();
   }
 
   private capitalizar(text:string){

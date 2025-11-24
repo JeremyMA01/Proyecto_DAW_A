@@ -1,5 +1,18 @@
 <h2>Listado de Libros</h2>
+<!-- <button class="btn btn-danger mb-3" (click)="dialogVisible = true">
+  Eliminar
+
+</button> -->
 <app-reusable-table
   [datos]="books"
-  [columnas]="columnas">
+  [columnas]="columnas"
+  (emilinarClick)="abrirDialogo()">
+
 </app-reusable-table>
+
+@if (dialogVisible) {
+  <app-dialog-confirm
+    (aceptar)="cerrarDialogo()"
+    (cancelar)="cerrarDialogo()">
+  </app-dialog-confirm>
+}

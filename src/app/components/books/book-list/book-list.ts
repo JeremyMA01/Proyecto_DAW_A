@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { Book } from '../../../models/Book';
 import { ServBookJson } from '../../../services/serv-book-json';
 import { ReusableTable } from "../../reusable_component/reusable-table/reusable-table";
+import { DialogConfirm } from '../../dialog/dialog-confirm/dialog-confirm';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-book-list',
-  imports: [ReusableTable],
+  standalone :true,
+  imports: [ReusableTable, DialogConfirm],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })
@@ -17,11 +20,19 @@ export class BookList {
     {key: 'author', label: 'Autor'},
     {key: 'year', label: 'Año'},
     {key: 'genre', label: 'Genero'},
-    {key: 'active', label: 'Estado'}
+    {key: 'active', label: 'Estado'},
+    {key: 'action', label: 'Acciones'},
+    
 
+    
   ];
 
-  constructor(private servBook:ServBookJson){}
+  seleccioandorEliminar:Book | null = null;
+
+
+  dialogVisible: boolean = false;
+
+   constructor(private servBook:ServBookJson){}
 
   ngOnInit(){
     this.loadBook();
@@ -35,5 +46,16 @@ export class BookList {
       }
     )
   }
+
+  cerrarDialogo(){
+    this.dialogVisible= false;
+  }
+
+  abrirDialogo(){
+    this.dialogVisible = true; 
+  }
+
+
+
 
 }
