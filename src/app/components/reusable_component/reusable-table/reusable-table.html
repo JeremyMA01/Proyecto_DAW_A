@@ -1,1 +1,56 @@
-<p>reusable-table works!</p>
+<div class="container mt-4">
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+
+      <table class="table table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            @for (col of columnas; track $index) {
+              <th class="text-center">{{ col.label }}</th>
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (fila of pageActual(); track $index) {
+            <tr class="table-row" style="cursor: pointer" (click)="onFilaClick(fila)">
+              @for (col of columnas; track $index) {
+                <td class="text-center">{{ fila[col.key] }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <nav class="d-flex justify-content-center mt-3">
+        <ul class="pagination">
+
+          <li class="page-item" [class.disabled]="page === 1">
+            <button class="page-link" (click)="setPage(page - 1)" [disabled]="page === 1">
+              Anterior
+            </button>
+          </li>
+
+          @for (p of [].constructor(totalPaginas()); track $index) {
+            <li class="page-item" [class.active]="page === ($index + 1)">
+              <button
+                class="page-link"
+                (click)="setPage($index + 1)">
+                {{ $index + 1 }}
+              </button>
+            </li>
+          }
+
+          <li class="page-item" [class.disabled]="page === totalPaginas()">
+            <button class="page-link" (click)="setPage(page + 1)" [disabled]="page === totalPaginas()">
+              Siguiente
+            </button>
+          </li>
+
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+</div>

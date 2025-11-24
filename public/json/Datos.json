@@ -1,4 +1,5 @@
 {
+
   "Libros": [
     { "id": 1, "title": "Cien Años de Soledad", "author": "Gabriel García Márquez", "year": 1967, "genre": "Romance", "active": true },
     { "id": 2, "title": "Don Quijote de la Mancha", "author": "Miguel de Cervantes", "year": 1605, "genre": "Clásica", "active": true },
@@ -6,7 +7,7 @@
     { "id": 4, "title": "El Principito", "author": "Antoine de Saint-Exupéry", "year": 1943, "genre": "Infantil", "active": true },
     { "id": 5, "title": "Orgullo y Prejuicio", "author": "Jane Austen", "year": 1813, "genre": "Romance", "active": true },
     { "id": 6, "title": "Hamlet", "author": "William Shakespeare", "year": 1603, "genre": "Clásica", "active": true },
-    { "id": 7, "title": "La Odisea", "author": "Homero", "year": -800, "genre": "Historia", "active": true },
+    { "id": 7, "title": "La Odisea", "author": "Homero", "year": 800, "genre": "Historia", "active": true },
     { "id": 8, "title": "El Hobbit", "author": "J.R.R. Tolkien", "year": 1937, "genre": "Clásica", "active": true },
     { "id": 9, "title": "Fahrenheit 451", "author": "Ray Bradbury", "year": 1953, "genre": "Ciencia Ficción", "active": true },
     { "id": 10, "title": "Matar a un ruiseñor", "author": "Harper Lee", "year": 1960, "genre": "Historia", "active": true },
@@ -29,6 +30,7 @@
     {"id": 4, "name": "Clásica", "active": true },
     {"id": 5, "name": "Infantil", "active": true },
     {"id": 6, "name": "Historia", "active": true }
-
   ]
+
+
 }
