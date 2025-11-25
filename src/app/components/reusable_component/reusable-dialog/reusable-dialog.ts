@@ -2,13 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-reusable-dialog', // <--- 1. CAMBIO DE NOMBRE (antes app-dialog-confirm)
-  standalone: true,
+  selector: 'app-reusable-dialog', 
   imports: [CommonModule],
-  templateUrl: './reusable-dialog.html', // Coincide con tu archivo físico
-  styleUrl: './reusable-dialog.css',     // Coincide con tu archivo físico
+  templateUrl: './reusable-dialog.html', 
+  styleUrl: './reusable-dialog.css',     
 })
-export class ReusableDialog { // <--- 2. CAMBIO DE NOMBRE DE CLASE (antes DialogConfirm)
+export class ReusableDialog { 
 
   @Input() titulo: string = 'Confirmación';
   @Input() mensaje: string = '¿Estás seguro de realizar esta acción?';
