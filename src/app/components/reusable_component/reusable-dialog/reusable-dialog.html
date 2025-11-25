@@ -1,0 +1,25 @@
+<div class="modal-overlay" (click)="onCancelar()">
+  
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <h3 class="modal-title">{{ titulo }}</h3>
+
+    <p class="modal-body">
+      {{ mensaje }}
+    </p>
+
+    <div class="modal-buttons">
+      <button class="btn btn-cancel" (click)="onCancelar()">
+        {{ textoCancelar }}
+      </button>
+
+      <button 
+        class="btn"
+        [ngClass]="tipo === 'danger' ? 'btn-danger' : 'btn-primary'" 
+        (click)="onAceptar()">
+        {{ textoAceptar }}
+      </button>
+    </div>
+
+  </div>
+</div>
