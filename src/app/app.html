@@ -1,2 +1,26 @@
-<h3>Componente principal</h3>
-<app-book-list></app-book-list>
+<nav class="main-content">
+  <!-- LOGO SUPERIOR -->
+  <div class="header-top-logo">
+    <h3 class="site-logo">LibroStore</h3>
+  </div>
+
+  <!-- NAVEGACIÓN INFERIOR + ACCIONES -->
+  <div class="header-bottom-nav">
+    <ul class="main-nav-links">
+      <li><a routerLink="home-components" routerLinkActive="active">Inicio</a></li>
+      <li><a routerLink="book-list" routerLinkActive="active">Inventario</a></li> <!-- Cambié href="#" por routerLink="/book-list" -->
+      <li><a routerLink="/categorias" routerLinkActive="active">Categorías</a></li>
+      <li><a routerLink="/novedades" routerLinkActive="active">Novedades</a></li>
+      <li><a routerLink="/literatura" routerLinkActive="active">Literatura</a></li>
+    </ul>
+
+    <div class="user-actions">
+      <span class="cart-icon">🛒</span>
+      <span>Hola, Usuario</span>
+      <a routerLink="/mi-cuenta">Mi cuenta</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Aquí se mostrará el contenido del componente correspondiente a cada ruta -->
+<router-outlet></router-outlet> <!-- Este es el contenedor para el contenido dinámico -->

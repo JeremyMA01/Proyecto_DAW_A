@@ -1,5 +1,13 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
+/* --- BASE Y TIPOGRAFÍA (Mantengo lo que ya tenías) --- */
+body {
+    font-family: 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f9fafb; /* Color de fondo claro */
+    color: #1e3a8a; /* Color de texto principal */
+    margin: 0;
+    padding: 0;
+}
 
+/* --- CONTENIDO PRINCIPAL --- */
 .main-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -74,11 +82,11 @@
 }
 
 /* --- SECCIÓN DE PRODUCTOS (Novedades) --- */
-.movies-section {
+.book-section {
     max-width: 1360px;
     margin: 0 auto 40px;
 }
-.movies-section h3 {
+.book-section h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -101,7 +109,7 @@
 }
 
 /* CONTENEDOR DE TARJETAS (MUY IMPORTANTE) */
-.movie-container {
+.book-container {
     display: flex;
     flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea */
     justify-content: flex-start; 
@@ -206,5 +214,40 @@
 .btn-comprar:hover {
     background-color: #1e3a8a;
     transform: translateY(-1px);
-    box-shadow: 0 
+    box-shadow: 0 4px #1e3a8a;
+}
+.btn-comprar:disabled {
+    background-color: #9ca3af; /* Gris para botón agotado */
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 0 20px;
+    }
+}
+@media (max-width: 768px) {
+    .movies-section h3 {
+        font-size: 1.6rem;
+        margin-top: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .view-all {
+        margin-top: 5px;
+    }
+    .header-bottom-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+@media (max-width: 600px) {
+    .book-container {
+        justify-content: center;
+    }
 }

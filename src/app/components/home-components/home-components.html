@@ -1,0 +1,52 @@
+<div class="book-section">
+    <h3>
+        Novedades en Libros
+        <a href="#" class="view-all">Ver todos</a>
+    </h3>
+    
+    @if(books.length === 0){
+        <div class="empty-state">
+            <p>No hay libros disponibles en este momento.</p>
+        </div>
+    } @else {
+        <div class="book-container">
+            @for (book of books.slice(0, 5); track $index) { 
+                <div class="pelicula-card">
+                    
+                    <div class="img-wrapper">
+                        <img [src]="book.poster" [alt]="book.title">
+                    </div>
+
+                    <div class="product-details">
+                        <div class="card-header">
+                            <h4>{{book.title}}</h4>
+                        </div>
+                        
+                        <div class="rating-price">
+                            <div>
+                                <span class="rating">★★★★★</span>
+                                
+                                @if(book.active) {
+                                    <p class="stock">En stock</p>
+                                } @else {
+                                    <p class="out-of-stock">Agotado</p>
+                                }
+                            </div>
+                            
+                            <strong class="price">{{book.budget | currency:"USD":"symbol":"1.2-2"}}</strong>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <button 
+                            class="btn-comprar" 
+                            (click)="comprar(book)"
+                            [disabled]="!book.active">
+                            Comprar Libro
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
