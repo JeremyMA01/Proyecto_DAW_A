@@ -1,0 +1,13 @@
+/* src/app/components/crud-usuarios/crud-usuarios.component.css */
+
+.crud-usuarios-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .crud-usuarios-container {
+    padding: 4px;
+  }
+}

@@ -1,64 +1,58 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reusable-table',
-  standalone:true,
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './reusable-table.html',
   styleUrl: './reusable-table.css',
 })
-export class ReusableTable {
-  //Datos que se mostraran en las filas
-  @Input() datos:any[] = [];
-  //Las columnas pertenecientes a las tablas
-  @Input() columnas:{ key:string; label:string}[] = [];
-  @Output() filaClick = new EventEmitter<any>();
-  @Output() emilinarClick = new EventEmitter<any>();
-  
+export class ReusableTable implements OnChanges {
+  // Datos que se mostrarán en las filas
+  @Input() datos: any[] = [];
+  // Columnas de la tabla
+  @Input() columnas: { key: string; label: string }[] = [];
 
-  //variables para la paginacion
+  @Output() filaClick = new EventEmitter<any>();
+  @Output() eliminarClick = new EventEmitter<any>();   // 👈 nombre corregido
+
+  // variables para la paginación
   page = 1;
   pageSize = 5;
 
-  
-    
-  ngOnChanges(){
-    if(!this.columnas && this.datos.length > 0){
+  ngOnChanges() {
+    if ((!this.columnas || this.columnas.length === 0) && this.datos.length > 0) {
       this.columnas = Object.keys(this.datos[0]).map(key => ({
         key,
-        label: this.capitalizar(key)
+        label: this.capitalizar(key),
       }));
     }
   }
-  
 
-  onFilaClick(fila:any){
+  onFilaClick(fila: any) {
     this.filaClick.emit(fila);
   }
 
-
-
-  onEliminarClick(){
-  this.emilinarClick.emit();
+  onEliminarClick(fila: any) {
+    this.eliminarClick.emit(fila);
   }
 
-  private capitalizar(text:string){
+  private capitalizar(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
-  pageActual(){
+  pageActual() {
     const inicio = (this.page - 1) * this.pageSize;
     const fin = inicio + this.pageSize;
-    return this.datos.slice(inicio,fin);
+    return this.datos.slice(inicio, fin);
   }
 
-  totalPaginas(){
+  totalPaginas() {
     return Math.ceil(this.datos.length / this.pageSize);
   }
 
   setPage(p: number) {
-  this.page = p;
+    this.page = p;
   }
-
 }

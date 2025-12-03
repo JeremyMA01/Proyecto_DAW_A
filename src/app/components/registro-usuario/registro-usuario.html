@@ -1,0 +1,108 @@
+<div class="registro-wrapper min-h-screen d-flex justify-content-center align-items-center bg-slate-900">
+
+  <div
+    class="registro-card card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100 px-4 py-3 md:px-5 md:py-4">
+
+    <div class="card-body">
+
+      <div class="text-center mb-3">
+        <h1 class="registro-title text-2xl md:text-3xl fw-bold mb-1 tracking-tight">
+          ¡Únete a la librería comunitaria!
+        </h1>
+        <p class="subtitle text-sm md:text-base text-slate-300 mb-0">
+          Crea tu cuenta para intercambiar y descubrir nuevos libros 📚
+        </p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-3">
+
+        <div class="row">
+          <div class="col-12 mb-3">
+            <label class="form-label text-slate-200 text-sm">Nombre completo</label>
+            <input type="text" class="form-control modern-input" formControlName="nombre"
+                   placeholder="Ej: Ana Torres">
+            <div *ngIf="campoInvalido('nombre')" class="form-text text-danger text-xs">
+              Ingresa tu nombre (mínimo 3 caracteres).
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <label class="form-label text-slate-200 text-sm">Correo electrónico</label>
+            <input type="email" class="form-control modern-input" formControlName="email"
+                   placeholder="tucorreo@ejemplo.com">
+            <div *ngIf="campoInvalido('email')" class="form-text text-danger text-xs">
+              Ingresa un correo válido.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-slate-200 text-sm">Teléfono (opcional)</label>
+            <input type="text" class="form-control modern-input" formControlName="telefono"
+                   placeholder="+593 99 999 9999">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-slate-200 text-sm">Ciudad</label>
+            <input type="text" class="form-control modern-input" formControlName="ciudad"
+                   placeholder="Guayaquil, Quito, Cuenca...">
+            <div *ngIf="campoInvalido('ciudad')" class="form-text text-danger text-xs">
+              La ciudad es obligatoria.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-slate-200 text-sm">Rol</label>
+            <select class="form-select modern-input" formControlName="rol">
+              <option value="lector">Lector</option>
+              <option value="donante">Donante</option>
+            </select>
+            <div *ngIf="campoInvalido('rol')" class="form-text text-danger text-xs">
+              Selecciona un rol.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label text-slate-200 text-sm">Contraseña</label>
+            <div class="password-wrapper d-flex align-items-center gap-2">
+              <input type="password" class="form-control modern-input" formControlName="password"
+                     placeholder="Mínimo 6 caracteres">
+            </div>
+            <div *ngIf="campoInvalido('password')" class="form-text text-danger text-xs">
+              La contraseña debe tener al menos 6 caracteres.
+            </div>
+          </div>
+        </div>
+
+        <button type="submit"
+                class="btn btn-success btn-modern w-100 mt-2 py-2 text-sm md:text-base fw-semibold tracking-wide">
+          Registrarme ahora
+        </button>
+      </form>
+
+      <div class="divider my-3">
+        <span class="divider-line"></span>
+        <span class="divider-text text-xs text-slate-400">o si ya tienes cuenta</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <p class="text-center mb-1 text-sm md:text-base">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login" class="link-login fw-semibold">
+          Inicia sesión
+        </a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal reutilizable de éxito -->
+<app-reusable-dialog
+  [visible]="registroExitosoVisible"
+  titulo="Registro exitoso"
+  mensaje="Tu cuenta se ha creado correctamente. Ahora puedes iniciar sesión."
+  textoAceptar="Iniciar sesión"
+  textoCancelar="Cerrar"
+  (aceptar)="irAlLogin()"
+  (cancelar)="irAlLogin()">
+</app-reusable-dialog>

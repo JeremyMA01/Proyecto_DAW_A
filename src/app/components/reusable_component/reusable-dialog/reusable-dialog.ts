@@ -2,12 +2,15 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-reusable-dialog', 
+  selector: 'app-reusable-dialog',
+  standalone: true,              // 👈 IMPORTANTE
   imports: [CommonModule],
-  templateUrl: './reusable-dialog.html', 
-  styleUrl: './reusable-dialog.css',     
+  templateUrl: './reusable-dialog.html',
+  styleUrl: './reusable-dialog.css',
 })
-export class ReusableDialog { 
+export class ReusableDialog {
+
+  @Input() visible: boolean = false;
 
   @Input() titulo: string = 'Confirmación';
   @Input() mensaje: string = '¿Estás seguro de realizar esta acción?';

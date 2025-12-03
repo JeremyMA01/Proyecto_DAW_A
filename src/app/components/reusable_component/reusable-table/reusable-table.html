@@ -1,5 +1,4 @@
 <div class="container mt-4">
-
   <div class="card shadow-sm border-0">
     <div class="card-body">
 
@@ -14,18 +13,24 @@
 
         <tbody>
           @for (fila of pageActual(); track $index) {
-            <tr class="table-row" style="cursor: pointer" (click)="onFilaClick(fila)">
+            <tr
+              class="table-row"
+              style="cursor: pointer"
+              (click)="onFilaClick(fila)">
+              
               @for (col of columnas; track $index) {
-                <td class="text-center"> @if(col.key === 'action') {
-            <button class="btn btn-danger btn-sm" (click)= "onEliminarClick()" >
-              Eliminar
-            </button>
-          } @else {
-            {{ fila[col.key] }}
-          } 
-        </td>
-             }
-             
+                <td class="text-center">
+                  @if (col.key === 'action') {
+                    <button
+                      class="btn btn-danger btn-sm"
+                      (click)="onEliminarClick(fila); $event.stopPropagation()">
+                      Eliminar
+                    </button>
+                  } @else {
+                    {{ fila[col.key] }}
+                  }
+                </td>
+              }
             </tr>
           }
         </tbody>
@@ -35,7 +40,10 @@
         <ul class="pagination">
 
           <li class="page-item" [class.disabled]="page === 1">
-            <button class="page-link" (click)="setPage(page - 1)" [disabled]="page === 1">
+            <button
+              class="page-link"
+              (click)="setPage(page - 1)"
+              [disabled]="page === 1">
               Anterior
             </button>
           </li>
@@ -51,7 +59,10 @@
           }
 
           <li class="page-item" [class.disabled]="page === totalPaginas()">
-            <button class="page-link" (click)="setPage(page + 1)" [disabled]="page === totalPaginas()">
+            <button
+              class="page-link"
+              (click)="setPage(page + 1)"
+              [disabled]="page === totalPaginas()">
               Siguiente
             </button>
           </li>
