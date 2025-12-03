@@ -50,16 +50,18 @@
             </div>
           </div>
 
-          <div class="col-md-6 mb-3">
-            <label class="form-label text-slate-200 text-sm">Rol</label>
-            <select class="form-select modern-input" formControlName="rol">
-              <option value="lector">Lector</option>
-              <option value="donante">Donante</option>
-            </select>
-            <div *ngIf="campoInvalido('rol')" class="form-text text-danger text-xs">
-              Selecciona un rol.
-            </div>
-          </div>
+  <div class="col-md-6 mb-3">
+  <label class="form-label text-slate-200 text-sm">Rol</label>
+  <select class="form-select modern-input" formControlName="rol">
+    <option value="lector">Lector</option>
+    <option value="donante">Donante</option>
+  </select>
+  <div *ngIf="campoInvalido('rol')" class="form-text text-danger text-xs">
+    Selecciona un rol.
+  </div>
+</div>
+
+
 
           <div class="col-md-6 mb-3">
             <label class="form-label text-slate-200 text-sm">Contraseña</label>

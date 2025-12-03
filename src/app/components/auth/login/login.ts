@@ -32,27 +32,29 @@ export class LoginComponent {
     return !!control && control.invalid && control.touched;
   }
 
-  onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+ onSubmit(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
+  }
+
+  const { email, password } = this.form.value;
+
+  this.usuarioService.login(email, password).subscribe(usuario => {
+    if (!usuario) {
+      this.errorMsg = 'Correo o contraseña incorrectos o usuario inactivo.';
       return;
     }
 
-    const { email, password } = this.form.value;
+    this.errorMsg = '';
 
-    this.usuarioService.getUsuarios().subscribe((usuarios: Usuario[]) => {
-      const encontrado = usuarios.find(
-        u => u.email === email && u.password === password && u.estadoActivo
-      );
-
-      if (encontrado) {
-        this.errorMsg = '';
-        // Aquí podrías guardar sesión si quieres
-        // localStorage.setItem('usuarioActual', JSON.stringify(encontrado));
-        this.router.navigate(['/home-components']);   // Home después de login
-      } else {
-        this.errorMsg = 'Correo o contraseña incorrectos, o usuario inactivo.';
-      }
-    });
-  }
+    if (usuario.rol === 'administrador') {
+      // Admin: puede ir directo al CRUD de usuarios o a un dashboard de admin
+      this.router.navigate(['/usuarios']);
+    } else {
+      // Usuario normal
+      this.router.navigate(['/home-components']);
+    }
+  });
+}
 }

@@ -1,122 +1,157 @@
-<div class="crud-usuarios-container">
-  <header class="mb-3">
-    <h1 class="h4">👤 Gestión de usuarios</h1>
-    <p class="text-muted mb-0">
-      
-    </p>
-  </header>
+<div class="crud-wrapper bg-slate-900 min-h-screen py-4">
 
-  <div class="row">
-    <!-- FORMULARIO -->
-    <div class="col-lg-4 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="h6 mb-3">
-            {{ editando ? 'Editar usuario' : 'Registrar usuario' }}
-          </h2>
+  <div class="crud-usuarios-container">
 
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="mb-2">
-              <label class="form-label">Nombre completo</label>
-              <input type="text" class="form-control" formControlName="nombre">
-              <div *ngIf="campoInvalido('nombre')" class="form-text text-danger">
-                Ingresa un nombre válido (mínimo 3 caracteres).
+    <!-- HEADER -->
+    <header class="crud-header mb-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+      <div>
+        <h1 class="crud-title mb-1">
+          👤 Gestión de usuarios
+        </h1>
+        <p class="crud-subtitle mb-0">
+          Administra los miembros de la librería comunitaria: crea, edita, activa o desactiva usuarios.
+        </p>
+      </div>
+      <div class="badge-admin mt-2 mt-md-0">
+        Panel administrador
+      </div>
+    </header>
+
+    <div class="row g-3">
+      <!-- FORMULARIO -->
+      <div class="col-lg-4">
+        <div class="card form-card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100">
+          <div class="card-body">
+
+            <h2 class="form-title h6 mb-3">
+              {{ editando ? 'Editar usuario' : 'Registrar usuario' }}
+            </h2>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-2">
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Nombre completo</label>
+                <input type="text" class="form-control modern-input" formControlName="nombre"
+                       placeholder="Ej: Ana Torres">
+                <div *ngIf="campoInvalido('nombre')" class="form-text text-danger text-xs">
+                  Ingresa un nombre válido (mínimo 3 caracteres).
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Correo electrónico</label>
+                <input type="email" class="form-control modern-input" formControlName="email"
+                       placeholder="tucorreo@ejemplo.com">
+                <div *ngIf="campoInvalido('email')" class="form-text text-danger text-xs">
+                  Ingresa un correo válido.
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Teléfono</label>
+                <input type="text" class="form-control modern-input" formControlName="telefono"
+                       placeholder="+593 99 999 9999">
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Ciudad</label>
+                <input type="text" class="form-control modern-input" formControlName="ciudad"
+                       placeholder="Guayaquil, Quito, Cuenca...">
+                <div *ngIf="campoInvalido('ciudad')" class="form-text text-danger text-xs">
+                  La ciudad es obligatoria.
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Rol</label>
+                <select class="form-select modern-input" formControlName="rol">
+                  <option value="lector">Lector</option>
+                  <option value="donante">Donante</option>
+          
+                </select>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-slate-200 text-sm">Contraseña</label>
+                <input type="password" class="form-control modern-input" formControlName="password"
+                       placeholder="Mínimo 4 caracteres">
+                <div *ngIf="campoInvalido('password')" class="form-text text-danger text-xs">
+                  La contraseña es obligatoria (mínimo 4 caracteres).
+                </div>
+              </div>
+
+              <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" formControlName="estadoActivo" id="estadoActivo">
+                <label class="form-check-label text-sm text-slate-200" for="estadoActivo">
+                  Usuario activo
+                </label>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-modern flex-grow-1 py-1">
+                  {{ editando ? 'Actualizar' : 'Guardar' }}
+                </button>
+                <button type="button" class="btn btn-outline-light btn-sm btn-ghost" (click)="resetFormulario()">
+                  Limpiar
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- LISTADO -->
+      <div class="col-lg-8">
+        <div class="card table-card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100 h-100">
+          <div class="card-body d-flex flex-column">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+              <div>
+                <h2 class="h6 mb-1">Listado de usuarios</h2>
+                <p class="mb-0 text-xs text-slate-400">
+                  Haz clic en una fila para editar, o en el ícono de papelera para eliminar.
+                </p>
+              </div>
+
+              <div class="input-group input-group-sm search-group">
+                <span class="input-group-text search-prefix">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control modern-input search-input"
+                  [(ngModel)]="terminoBusqueda"
+                  (ngModelChange)="onBuscarCambio()"
+                  placeholder="Buscar por nombre o correo...">
               </div>
             </div>
 
-            <div class="mb-2">
-              <label class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control" formControlName="email">
-              <div *ngIf="campoInvalido('email')" class="form-text text-danger">
-                Ingresa un correo válido.
-              </div>
+            <!-- TABLA REUTILIZABLE -->
+            <div class="table-wrapper flex-grow-1">
+              <app-reusable-table
+                [datos]="usuariosFiltrados"
+                [columnas]="columnasTabla"
+                (filaClick)="onFilaClick($event)"
+                (eliminarClick)="onEliminarClick($event)">
+              </app-reusable-table>
             </div>
-
-            <div class="mb-2">
-              <label class="form-label">Teléfono</label>
-              <input type="text" class="form-control" formControlName="telefono">
-            </div>
-
-            <div class="mb-2">
-              <label class="form-label">Ciudad</label>
-              <input type="text" class="form-control" formControlName="ciudad">
-              <div *ngIf="campoInvalido('ciudad')" class="form-text text-danger">
-                La ciudad es obligatoria.
-              </div>
-            </div>
-
-            <div class="mb-2">
-              <label class="form-label">Rol</label>
-              <select class="form-select" formControlName="rol">
-                <option value="lector">Lector</option>
-                <option value="donante">Donante</option>
-                <option value="admin">Administrador</option>
-              </select>
-            </div>
-
-            <div class="mb-2">
-              <label class="form-label">Contraseña</label>
-              <input type="password" class="form-control" formControlName="password">
-              <div *ngIf="campoInvalido('password')" class="form-text text-danger">
-                La contraseña es obligatoria (mínimo 4 caracteres).
-              </div>
-            </div>
-
-            <div class="form-check mb-3">
-              <input type="checkbox" class="form-check-input" formControlName="estadoActivo" id="estadoActivo">
-              <label class="form-check-label" for="estadoActivo">
-                Usuario activo
-              </label>
-            </div>
-
-            <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-primary btn-sm">
-                {{ editando ? 'Actualizar' : 'Guardar' }}
-              </button>
-              <button type="button" class="btn btn-secondary btn-sm" (click)="resetFormulario()">
-                Limpiar
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- LISTADO -->
-    <div class="col-lg-8">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h2 class="h6 mb-0">Listado de usuarios</h2>
+    <!-- DIÁLOGO REUTILIZABLE PARA ELIMINAR -->
+    <app-reusable-dialog
+      [visible]="dialogVisible"
+      titulo="Eliminar usuario"
+      [mensaje]="usuarioParaEliminar ? '¿Eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
+      textoAceptar="Eliminar"
+      textoCancelar="Cancelar"
+      tipo="danger"
+      (aceptar)="confirmarEliminar()"
+      (cancelar)="cancelarEliminar()">
+    </app-reusable-dialog>
 
-        <div class="input-group input-group-sm" style="max-width: 270px;">
-          <span class="input-group-text">Buscar</span>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="terminoBusqueda"
-            (ngModelChange)="onBuscarCambio()"
-            placeholder="Por nombre o correo...">
-        </div>
-      </div>
-
-      <!-- TABLA REUTILIZABLE -->
-      <app-reusable-table
-        [datos]="usuariosFiltrados"
-        [columnas]="columnasTabla"
-        (filaClick)="onFilaClick($event)"
-        (eliminarClick)="onEliminarClick($event)">
-      </app-reusable-table>
-    </div>
   </div>
-
-  <!-- DIÁLOGO REUTILIZABLE PARA ELIMINAR -->
-  <app-reusable-dialog
-    [visible]="dialogVisible"
-    titulo="Eliminar usuario"
-    [mensaje]="usuarioParaEliminar ? '¿Eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
-    textoAceptar="Eliminar"
-    textoCancelar="Cancelar"
-    tipo="danger"
-    (aceptar)="confirmarEliminar()"
-    (cancelar)="cancelarEliminar()">
-  </app-reusable-dialog>
 </div>

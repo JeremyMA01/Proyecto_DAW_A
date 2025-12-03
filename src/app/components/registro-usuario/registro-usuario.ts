@@ -29,14 +29,15 @@ export class RegistroUsuarioComponent {
     private usuarioService: UsuarioService,
     private router: Router
   ) {
-    this.form = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      telefono: [''],
-      ciudad: ['', Validators.required],
-      rol: ['lector', Validators.required],   // por defecto lector
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+   this.form = this.fb.group({
+  nombre: ['', [Validators.required, Validators.minLength(3)]],
+  email: ['', [Validators.required, Validators.email]],
+  telefono: [''],
+  ciudad: ['', Validators.required],
+  rol: ['lector', Validators.required],   // por defecto lector
+  password: ['', [Validators.required, Validators.minLength(6)]],
+});
+
   }
 
   campoInvalido(campo: string): boolean {
