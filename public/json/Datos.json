@@ -6,7 +6,7 @@
     "title": "Cien Años de Soledad",
     "author": "Gabriel García Márquez",
     "year": 1967,
-    "genre": "Romance",
+    "genre": 1,
     "active": true,
     "releaseDate": "2024-06-14",
     "budget": 20,

@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, ViewChild  } from '@angular/core';
 import { Book } from '../../../models/Book';
+import { Genre } from '../../../models/Genre';
 import { ServBookJson } from '../../../services/serv-book-json';
 import { ReusableTable } from "../../reusable_component/reusable-table/reusable-table";
 import { DialogConfirm } from '../../dialog/dialog-confirm/dialog-confirm';
@@ -27,6 +28,7 @@ export class BookList {
   private router = inject(Router);
   @Input() datos:any[] = [];
   books:Book[] = [];
+  generos:Genre [] =[];
   columnas = [
     {key: 'id', label: 'ID'},
     {key: 'title', label: 'Titulo'},
@@ -55,7 +57,8 @@ export class BookList {
   bookToDelete: Book  | null= null;
 
    constructor(private servBook:ServBookJson, private fb:FormBuilder){
-   // this.loadBook();
+    this.loadBook();
+    this.loadGenero();
     this.formBook = this.fb.group({
       title:['', [Validators.required, Validators.minLength(3), Validators.maxLength(50),Validators.pattern(/^[a-zA-Z0-9 ]+$/)]],
       author:['',[Validators.required, Validators.minLength(3)]],
@@ -74,9 +77,7 @@ export class BookList {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
    }
 
-  ngOnInit(){
-    this.loadBook();
-  }
+
 
   loadBook():void{
     this.servBook.getBook().subscribe(
@@ -85,6 +86,20 @@ export class BookList {
         this.books = data;
       }
     )
+  }
+
+  loadGenero():void{
+    this.servBook.getGenre().subscribe((data:Genre[])=>{
+      this.generos=data;
+      console.log(this.generos[0].name);
+
+    })
+
+  }
+
+  getGeneroName(generoId:number){
+    
+
   }
   
 
