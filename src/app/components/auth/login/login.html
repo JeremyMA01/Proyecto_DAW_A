@@ -1,0 +1,74 @@
+<div class="auth-wrapper min-h-screen d-flex justify-content-center align-items-center bg-slate-900">
+
+  <div
+    class="auth-card card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100 px-4 py-3 md:px-5 md:py-4">
+
+    <div class="card-body">
+
+      <div class="text-center mb-3">
+        <h1 class="auth-title text-2xl md:text-3xl fw-bold mb-1 tracking-tight">
+          Bienvenido a la librería comunitaria
+        </h1>
+        <p class="subtitle text-sm md:text-base text-slate-300 mb-0">
+          Inicia sesión para seguir compartiendo y descubriendo libros 📚
+        </p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-3">
+
+        <div class="mb-3">
+          <label class="form-label text-slate-200 text-sm">Correo electrónico</label>
+          <input type="email"
+                 class="form-control modern-input"
+                 formControlName="email"
+                 placeholder="tucorreo@ejemplo.com">
+          <div *ngIf="campoInvalido('email')" class="form-text text-danger text-xs">
+            Ingresa un correo válido.
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <label class="form-label text-slate-200 text-sm">Contraseña</label>
+          <div class="password-wrapper d-flex align-items-center gap-2">
+            <input type="password"
+                   class="form-control modern-input"
+                   formControlName="password"
+                   placeholder="Ingresa tu contraseña">
+          </div>
+          <div *ngIf="campoInvalido('password')" class="form-text text-danger text-xs">
+            La contraseña es obligatoria.
+          </div>
+        </div>
+
+        <div class="text-end mb-2">
+          <button type="button" class="btn btn-link btn-forgot text-xs p-0">
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+
+        <div *ngIf="errorMsg" class="alert alert-danger py-2 px-3 mt-1 auth-alert" role="alert">
+          {{ errorMsg }}
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary btn-modern w-100 mt-2 py-2 text-sm md:text-base fw-semibold tracking-wide">
+          Entrar
+        </button>
+      </form>
+
+      <div class="divider my-3">
+        <span class="divider-line"></span>
+        <span class="divider-text text-xs text-slate-400">o si aún no tienes cuenta</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <p class="text-center mb-1 text-sm md:text-base">
+        ¿No tienes cuenta?
+        <a routerLink="/registro" class="link-login fw-semibold">
+          Regístrate aquí
+        </a>
+      </p>
+
+    </div>
+  </div>
+</div>
