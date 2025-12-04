@@ -4,11 +4,19 @@ import { RouterOutlet ,RouterLinkActive, RouterLink, RouterModule} from '@angula
 import { BookList } from "./components/books/book-list/book-list";
 import { ReusableTable } from "./components/reusable_component/reusable-table/reusable-table";
 import { HomeComponents } from "./components/home-components/home-components";
+import { ReviewCrud } from './components/review/review-crud/review-crud';
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, BookList, ReusableTable, HomeComponents,RouterLinkActive, RouterLink, RouterModule],
+  imports: [RouterOutlet,
+            BookList, 
+            ReusableTable, 
+            HomeComponents, 
+            RouterLinkActive, 
+            RouterLink, 
+            RouterModule,
+            ReviewCrud],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

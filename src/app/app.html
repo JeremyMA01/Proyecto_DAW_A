@@ -7,12 +7,15 @@
   <!-- NAVEGACIÓN INFERIOR + ACCIONES -->
   <div class="header-bottom-nav">
     <ul class="main-nav-links">
-      <li><a routerLink="home-components" routerLinkActive="active">Inicio</a></li>
-      <li><a routerLink="book-list" routerLinkActive="active">Inventario</a></li> <!-- Cambié href="#" por routerLink="/book-list" -->
-      <li><a routerLink="/categorias" routerLinkActive="active">Categorías</a></li>
-      <li><a routerLink="/novedades" routerLinkActive="active">Novedades</a></li>
-      <li><a routerLink="/literatura" routerLinkActive="active">Literatura</a></li>
-    </ul>
+  <li><a routerLink="home-components" routerLinkActive="active">Inicio</a></li>
+  <li><a routerLink="book-list" routerLinkActive="active">Inventario</a></li>
+  
+  <li><a routerLink="resenas" routerLinkActive="active">Reseñas</a></li>
+
+  <li><a routerLink="/categorias" routerLinkActive="active">Categorías</a></li>
+  <li><a routerLink="/novedades" routerLinkActive="active">Novedades</a></li>
+</ul>
+    
 
     <div class="user-actions">
       <span class="cart-icon">🛒</span>
@@ -21,6 +24,5 @@
     </div>
   </div>
 </nav>
-
 <!-- Aquí se mostrará el contenido del componente correspondiente a cada ruta -->
 <router-outlet></router-outlet> <!-- Este es el contenedor para el contenido dinámico -->

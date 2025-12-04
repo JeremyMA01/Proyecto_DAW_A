@@ -122,5 +122,25 @@
     {"id": 4, "name": "Clásica", "active": true },
     {"id": 5, "name": "Infantil", "active": true },
     {"id": 6, "name": "Historia", "active": true }
-  ]
+  ],
+
+  "Review":[
+        {
+            "id": 1,
+            "user": "Jeremy",
+            "score": 5,
+            "comment": "Muy buen libro, lo recomiendo!",
+            "isRecommend": true,
+            "publishedDate": "2025-11-30T00:00:00Z"
+        },
+        {
+            "id": 2,
+            "user": "Alejandro",
+            "score": 4,
+            "comment": "Libro regular, aun recomiendo su compra.",
+            "isRecommend": false,
+            "publishedDate": "2025-11-30T15:15:34Z"
+        }
+
+    ]
 }
