@@ -1,0 +1,310 @@
+/* Fondo general oscuro con degradados suaves */
+.auth-wrapper {
+  background: radial-gradient(circle at top left, #22c55e22 0, transparent 55%),
+              radial-gradient(circle at bottom right, #0ea5e922 0, transparent 55%),
+              #020617;
+  padding: 1.5rem;
+}
+
+/* Card tipo glass con brillo y sombra profunda */
+.auth-card {
+  max-width: 460px;
+  width: 100%;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.92));
+  box-shadow:
+    0 25px 50px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(148, 163, 184, 0.2);
+  position: relative;
+  overflow: hidden;
+  animation: cardFloat 8s ease-in-out infinite;
+}
+
+/* Capa de brillo giratorio */
+.auth-card::before {
+  content: "";
+  position: absolute;
+  inset: -180px;
+  background:
+    conic-gradient(from 180deg at 50% 50%,
+                   rgba(56, 189, 248, 0.0),
+                   rgba(56, 189, 248, 0.25),
+                   rgba(16, 185, 129, 0.3),
+                   rgba(56, 189, 248, 0.25),
+                   rgba(56, 189, 248, 0.0));
+  opacity: 0.28;
+  animation: rotateGlow 18s linear infinite;
+  pointer-events: none;
+}
+
+.auth-card::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 1.4rem;
+  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.12) 0, transparent 55%),
+              radial-gradient(circle at bottom right, rgba(15, 23, 42, 1) 0, rgba(15, 23, 42, 1) 55%);
+  z-index: 0;
+}
+
+.auth-card .card-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* Título animado con gradiente */
+.auth-title {
+  background: linear-gradient(120deg, #4ade80, #22c55e, #2dd4bf, #38bdf8);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradientText 7s ease infinite, titleFloat 5s ease-in-out infinite;
+}
+
+/* Subtítulo con fade-in */
+.subtitle {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Input moderno, consistente con el de registro */
+.modern-input {
+  background-color: rgba(15, 23, 42, 0.92);
+  border-radius: 0.8rem;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.8rem;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.modern-input::placeholder {
+  color: rgba(148, 163, 184, 0.75);
+}
+
+.modern-input:focus {
+  background-color: rgba(15, 23, 42, 1);
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.8),
+              0 12px 25px rgba(22, 163, 74, 0.3);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+/* Botón principal con microinteracciones */
+.btn-modern {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: none;
+  border-radius: 999px;
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.45),
+    0 0 0 1px rgba(30, 64, 175, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out,
+    filter 0.18s ease-out;
+}
+
+.btn-modern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%,
+              rgba(250, 250, 250, 0.18),
+              transparent 60%);
+  opacity: 0;
+  transform: translateX(-40%);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.btn-modern:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow:
+    0 18px 35px rgba(37, 99, 235, 0.55),
+    0 0 0 1px rgba(37, 99, 235, 0.95);
+  filter: brightness(1.06);
+}
+
+.btn-modern:hover::before {
+  opacity: 1;
+  transform: translateX(15%);
+}
+
+.btn-modern:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.45),
+    0 0 0 1px rgba(37, 99, 235, 1);
+}
+
+/* Botón "¿Olvidaste tu contraseña?" */
+.btn-forgot {
+  color: #38bdf8;
+  font-weight: 500;
+  text-decoration: none;
+  position: relative;
+}
+
+.btn-forgot::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.1rem;
+  width: 0;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #22c55e);
+  transition: width 0.22s ease-out;
+}
+
+.btn-forgot:hover {
+  color: #a5f3fc;
+}
+
+.btn-forgot:hover::after {
+  width: 100%;
+}
+
+/* Alert de error con pequeña animación de entrada */
+.auth-alert {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  background: rgba(127, 29, 29, 0.88);
+  color: #fee2e2;
+  font-size: 0.8rem;
+  animation: shakeIn 0.35s ease-out;
+}
+
+/* Divider moderno */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+              transparent,
+              rgba(148, 163, 184, 0.55),
+              transparent);
+}
+
+.divider-text {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Link de registro con underline animado (igual que en registro) */
+.link-login {
+  position: relative;
+  color: #38bdf8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link-login::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.18rem;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #38bdf8);
+  transition: width 0.22s ease-out;
+}
+
+.link-login:hover {
+  color: #a5f3fc;
+}
+
+.link-login:hover::after {
+  width: 100%;
+}
+
+/* Utilidades tipo Tailwind */
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.text-slate-100 { color: #f1f5f9; }
+.text-slate-200 { color: #e2e8f0; }
+.text-slate-300 { color: #cbd5f5; }
+.text-slate-400 { color: #94a3b8; }
+
+.bg-slate-800 { background-color: #1f2937; }
+.bg-slate-900 { background-color: #020617; }
+
+@media (min-width: 768px) {
+  .md\:text-base { font-size: 1rem; }
+  .md\:text-3xl { font-size: 1.875rem; }
+}
+
+/* ===== ANIMACIONES ===== */
+
+/* Card flotando */
+@keyframes cardFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* Brillo girando */
+@keyframes rotateGlow {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Gradiente animado en el título */
+@keyframes gradientText {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Título flotando */
+@keyframes titleFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+
+/* Subtítulo entrando desde abajo */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de alerta tipo “shake” suave */
+@keyframes shakeIn {
+  0% {
+    transform: translateX(-4px);
+    opacity: 0;
+  }
+  40% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
