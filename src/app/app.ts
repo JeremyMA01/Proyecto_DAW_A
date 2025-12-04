@@ -1,11 +1,26 @@
 import 'zone.js';
 import { Component, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { RouterOutlet, RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
+
+import { BookList } from "./components/books/book-list/book-list";
+import { ReusableTable } from "./components/reusable_component/reusable-table/reusable-table";
+import { HomeComponents } from "./components/home-components/home-components";
+import { ReviewCrud } from './components/review/review-crud/review-crud';
 
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    RouterModule,
+    BookList,
+    ReusableTable,
+    HomeComponents,
+    ReviewCrud
+  ],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
