@@ -3,16 +3,106 @@
   Eliminar
 
 </button> -->
+<button class="btn btn-success" (click)="openNew()">Nuevo Libro</button>
+<input type="text" class="form-control mb-3" placeholder="buscar pelicula... " #busq (keyup)="search(busq)">
 <app-reusable-table
   [datos]="books"
   [columnas]="columnas"
-  (emilinarClick)="abrirDialogo()">
+  (emilinarClick)="delete($event)"
+  (verclick)="view($event)"
+  (editClick)="openEdit($event)">
 
 </app-reusable-table>
 
 @if (dialogVisible) {
   <app-dialog-confirm
-    (aceptar)="cerrarDialogo()"
-    (cancelar)="cerrarDialogo()">
+    (aceptar)="onAceptar()"
+    (cancelar)="onCancelar()">
   </app-dialog-confirm>
 }
+
+<!-- MODAL PARA CREAR / EDITAR LIBRO -->
+<div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ editingId ? 'Editar Libro' : 'Nuevo Libro' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Formulario reactivo -->
+      <form [formGroup]="formBook">
+        <div class="modal-body">
+
+          <!-- TÍTULO -->
+          <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" class="form-control" formControlName="title" />
+          </div>
+
+          <!-- AUTOR -->
+          <div class="mb-3">
+            <label class="form-label">Autor</label>
+            <input type="text" class="form-control" formControlName="author" />
+          </div>
+
+          <!-- GÉNERO -->
+           <div class="mb-3">
+            <label class="form-label">Género</label>
+            <input type="text" class="form-control" formControlName="genre">
+          </div>
+
+          <!-- AÑO DE Publicaion -->
+            <div class="mb-3">
+            <label class="form-label">Fecha de Publicacion</label>
+            <input
+              type="date"
+              formControlName="releaseDate"
+              [min]="minDate"
+              [max]="maxDate"
+              class="form-control"
+            />
+          </div>
+
+          <div class="mb-3">
+  <label class="form-label">Año</label>
+  <input type="number" class="form-control" formControlName="year">
+</div>
+
+
+          <!-- POSTER -->
+          <div class="mb-3">
+            <label class="form-label">Poster (URL)</label>
+            <input type="text" class="form-control" formControlName="poster" />
+          </div>
+
+        
+
+        <div class="form-check mb-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              formControlName="active"
+              id="checkActive"
+            />
+            <label class="form-check-label" for="checkActive">Activa</label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+            Cancelar
+          </button>
+
+          <button class="btn btn-primary" type="button" (click)="save()">
+            Guardar
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

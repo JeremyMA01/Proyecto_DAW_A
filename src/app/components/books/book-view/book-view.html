@@ -1,0 +1,37 @@
+<div class="container mt-4 d-flex justify-content-center">
+
+  <div class="card shadow-lg border-0 book-card">
+    <div class="row g-0">
+
+      <!-- Imagen -->
+      <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+        <img 
+          [src]="book.poster" 
+          alt="Portada del libro" 
+          class="img-fluid rounded book-cover"
+        />
+      </div>
+
+      <!-- Info -->
+      <div class="col-md-8">
+        <div class="card-body">
+
+          <h2 class="card-title mb-3 text-primary fw-bold">
+            {{ book.title }}
+          </h2>
+
+          <p><strong>Autor:</strong> {{ book.author }}</p>
+          <p><strong>Género:</strong> {{ book.genre }}</p>
+          <p><strong>Año de publicación:</strong> {{ book.year }}</p>
+
+          <button class="btn btn-outline-primary mt-3" (click)="volver()" >
+            Volver
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

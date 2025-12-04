@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ServBookJson } from '../../../services/serv-book-json';
+import { Book } from '../../../models/Book';
 
 
 @Component({
@@ -9,13 +11,23 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './reusable-table.css',
 })
 export class ReusableTable {
+  books:Book[]=[];
+
   //Datos que se mostraran en las filas
   @Input() datos:any[] = [];
   //Las columnas pertenecientes a las tablas
   @Input() columnas:{ key:string; label:string}[] = [];
   @Output() filaClick = new EventEmitter<any>();
   @Output() emilinarClick = new EventEmitter<any>();
+  @Output() verclick = new EventEmitter<any>();
+  @Output() editClick = new EventEmitter<any>();
+
   
+  
+  constructor (private miServicio : ServBookJson){
+    
+
+  }
 
   //variables para la paginacion
   page = 1;
@@ -37,10 +49,15 @@ export class ReusableTable {
     this.filaClick.emit(fila);
   }
 
+  Onview(fila:any){
+  this.verclick.emit(fila);
+
+  }
 
 
-  onEliminarClick(){
-  this.emilinarClick.emit();
+
+  onEliminarClick(fila:any){
+  this.emilinarClick.emit(fila);
   }
 
   private capitalizar(text:string){
@@ -60,5 +77,12 @@ export class ReusableTable {
   setPage(p: number) {
   this.page = p;
   }
+
+  OnEditClick(fila:any){
+    this.editClick.emit(fila);
+
+  }
+
+  
 
 }
