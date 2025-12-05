@@ -1,0 +1,85 @@
+
+.container {
+    max-width: 1000px; 
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+
+h2, h3 {
+    margin-bottom: 1.5rem;
+    color: var(--bs-primary); 
+}
+
+.card {
+    border: none; 
+    border-radius: 0.5rem; 
+    overflow: hidden; 
+}
+
+.card-header {
+    background-color: var(--bs-secondary);
+    color: white;
+    padding: 1rem 1.5rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); 
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.table thead th {
+    background-color: var(--bs-dark);
+    color: white;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.table tfoot td {
+    font-style: italic;
+    color: var(--bs-gray-600);
+    padding: 1rem;
+}
+
+.alert {
+    position: sticky;
+    top: 10px; 
+    z-index: 1050; 
+    margin-bottom: 1.5rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--bs-gray-100);
+    transition: background-color 0.2s ease;
+}
+
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.message-content-modal {
+    white-space: pre-wrap; 
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e9ecef;
+}
+
+tr:has(.bg-danger) {
+    background-color: #fdeaea !important; 
+}
