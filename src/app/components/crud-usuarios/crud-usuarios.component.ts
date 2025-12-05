@@ -43,7 +43,8 @@ export class CrudUsuariosComponent implements OnInit {
     { key: 'email',        label: 'Correo' },
     { key: 'rol',          label: 'Rol' },
     { key: 'ciudad',       label: 'Ciudad' },
-    { key: 'estadoActivo', label: 'Activo' }
+    { key: 'estadoActivo', label: 'Activo' },
+    { key: 'action', label: 'Acciones' }
   ];
 
   terminoBusqueda = '';
