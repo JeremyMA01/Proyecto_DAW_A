@@ -15,31 +15,44 @@
                  
           @for (fila of pageActual(); track $index) {
             <tr
-              class="table-row"
-              style="cursor: pointer"
-              (click)="onFilaClick(fila)">
-              
-              @for (col of columnas; track $index) {
+  class="table-row"
+  style="cursor: pointer"
+  (click)="onFilaClick(fila)">
 
-                <td class="text-center"> @if(col.key === 'action') {
-             <button class="btn btn-info btn-sm me-2"
-              (click)="Onview(fila); $event.stopPropagation()">
-              Ver
-            </button> 
-            <button class="btn btn-primary btn-sm me-2" (click)="OnEditClick(fila); $event.stopPropagation()"> Editar</button>   
-            <button class="btn btn-danger btn-sm" (click)= "onEliminarClick(fila)" >
-              Eliminar
-            </button>
-          } @else {
-            {{ fila[col.key] }}
-          } 
-        </td>
-             }
-             
-               
-              
+  @for (col of columnas; track $index) {
 
-            </tr>
+    <td class="text-center">
+
+      <ng-container [ngSwitch]="col.key">
+
+        <!-- 🟢 Columna especial para estadoActivo con badge -->
+        <span *ngSwitchCase="'estadoActivo'">
+          <span class="badge-estado"
+                [ngClass]="fila.estadoActivo ? 'badge-activo' : 'badge-inactivo'">
+            {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
+          </span>
+        </span>
+
+        <!-- 🔴 Columna de acciones -->
+        <span *ngSwitchCase="'action'">
+          <button
+            type="button"
+            class="btn btn-sm btn-ghost-danger"
+            (click)="onEliminarClick(fila); $event.stopPropagation()">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </span>
+
+        <!-- Otros campos normales -->
+        <span *ngSwitchDefault>{{ fila[col.key] }}</span>
+
+      </ng-container>
+
+    </td>
+
+  }
+</tr>
+
           }
         </tbody>
       </table>
