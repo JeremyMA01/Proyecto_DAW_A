@@ -1,0 +1,23 @@
+
+[
+  {
+    "id": 1,
+    "senderName": "Ana Garcia",
+    "recipientName": "Pedro Lopez",
+    "subject": "Consulta sobre el libro Cien años de soledad",
+    "priority": "Normal",
+    "isUrgent": false,
+    "messageContent": "Dick DIck Dick DIck",
+    "timestamp": "2024-10-25T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "senderName": "Maria Perez",
+    "recipientName": "Ana Garcia",
+    "subject": "Coordinación de entrega de El Aleph",
+    "priority": "Urgente",
+    "isUrgent": true,
+    "messageContent": "Pussy pussy pussy pussy",
+    "timestamp": "2024-10-25T11:30:00Z"
+  }
+]

@@ -13,6 +13,9 @@ import { LoginComponent } from './components/auth/login/login';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario';
 import { CrudUsuariosComponent } from './components/crud-usuarios/crud-usuarios.component';
 
+import { ContactMessageComponent } from './components/contact-messages/contact-message.component';
+
+
 export const routes: Routes = [
 
   { path: 'home-components', component: HomeComponents }, 
@@ -50,6 +53,9 @@ export const routes: Routes = [
 
   // CRUD Usuarios
   { path: 'usuarios', component: CrudUsuariosComponent },
+
+  //Crud Mensajes, Sin dependencia de Usuario
+  { path: 'mensajes', component: ContactMessageComponent },
 
   // Cualquier ruta rara → login
   { path: '**', redirectTo: 'login' }
