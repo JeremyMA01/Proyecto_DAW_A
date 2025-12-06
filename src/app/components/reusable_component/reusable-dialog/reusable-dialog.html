@@ -1,26 +1,40 @@
 <!-- Solo se muestra cuando visible = true -->
-<div *ngIf="visible" class="dialog-backdrop">
-  <div class="dialog-card">
-    <h2 class="dialog-title">{{ titulo }}</h2>
+<div *ngIf="visible" class="rd-overlay">
 
-    <p class="dialog-message">
-      {{ mensaje }}
-    </p>
+  <!-- Fondo oscuro que bloquea la pantalla -->
+  <div class="rd-backdrop"></div>
 
-    <div class="dialog-actions">
+  <!-- Modal centrado -->
+  <div class="rd-modal" role="dialog" aria-modal="true">
+    <div class="rd-header">
+      <h5 class="rd-title">
+        <!-- Icono / chip según tipo -->
+        <span *ngIf="tipo === 'danger'" class="rd-pill rd-pill-danger">!</span>
+        <span *ngIf="tipo === 'primary'" class="rd-pill rd-pill-primary">i</span>
+        {{ titulo }}
+      </h5>
+    </div>
+
+    <div class="rd-body">
+      <p class="mb-0">
+        {{ mensaje }}
+      </p>
+    </div>
+
+    <div class="rd-footer">
       <button
         type="button"
-        class="btn btn-light"
-        (click)="onCancelar()">
-        {{ textoCancelar }}
+        class="btn btn-light rd-btn"
+        (click)="cancelar.emit()">
+        {{ textoCancelar || 'Cancelar' }}
       </button>
 
       <button
         type="button"
-        class="btn"
+        class="btn rd-btn"
         [ngClass]="tipo === 'danger' ? 'btn-danger' : 'btn-primary'"
-        (click)="onAceptar()">
-        {{ textoAceptar }}
+        (click)="aceptar.emit()">
+        {{ textoAceptar || 'Aceptar' }}
       </button>
     </div>
   </div>

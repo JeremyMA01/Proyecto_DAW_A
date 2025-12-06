@@ -1,0 +1,42 @@
+<div class="forgot-container">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-center mb-3">Nueva contraseña</h2>
+    <p class="text-muted text-center mb-4">
+      Ingresa tu nueva contraseña y confírmala para completar el proceso.
+    </p>
+
+    <form (ngSubmit)="guardarNuevaPassword()">
+      <div class="mb-3">
+        <label class="form-label">Nueva contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          [(ngModel)]="password"
+          name="password"
+          required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Confirmar contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          [(ngModel)]="confirmarPassword"
+          name="confirmarPassword"
+          required />
+      </div>
+
+      <div *ngIf="errorMsg" class="alert alert-danger py-2 text-center">
+        {{ errorMsg }}
+      </div>
+
+      <div *ngIf="okMsg" class="alert alert-success py-2 text-center">
+        {{ okMsg }}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Guardar nueva contraseña
+      </button>
+    </form>
+  </div>
+</div>

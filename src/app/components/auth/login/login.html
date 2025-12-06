@@ -41,9 +41,10 @@
         </div>
 
         <div class="text-end mb-2">
-          <button type="button" class="btn btn-link btn-forgot text-xs p-0">
-            ¿Olvidaste tu contraseña?
-          </button>
+          <a routerLink="/forgot-password" class="btn btn-link btn-forgot text-xs p-0">
+  ¿Olvidaste tu contraseña?
+</a>
+
         </div>
 
         <div *ngIf="errorMsg" class="alert alert-danger py-2 px-3 mt-1 auth-alert" role="alert">
