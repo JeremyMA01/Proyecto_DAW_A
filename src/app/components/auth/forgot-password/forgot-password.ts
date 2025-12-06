@@ -48,7 +48,7 @@ export class ForgotPasswordComponent {
     localStorage.setItem('resetEmail', this.email);
     localStorage.setItem('resetCode', codigo);
 
-    // 👉 SOLO ABRIMOS EL MODAL, NO NAVEGAMOS
+    
     this.dialogVisible = true;
   }
 

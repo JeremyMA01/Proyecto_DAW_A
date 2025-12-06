@@ -10,25 +10,23 @@ import { CommonModule } from '@angular/common';
 })
 export class ReusableTable implements OnChanges {
 
-  // Datos que se mostrarán en las filas
   @Input() datos: any[] = [];
-
-  // Columnas de la tabla
   @Input() columnas: { key: string; label: string }[] = [];
 
-  // Eventos hacia el padre
   @Output() filaClick = new EventEmitter<any>();
 
-  // 👉 Este lo usa BookList (para libros)
+  // para compatibilidad con BookList
   @Output() emilinarClick = new EventEmitter<any>();
 
-  // 👉 Este lo usa CrudUsuariosComponent (para usuarios)
+  // para CrudUsuarios
   @Output() eliminarClick = new EventEmitter<any>();
 
-  @Output() verclick = new EventEmitter<any>();
+  @Output() verClick = new EventEmitter<any>();
   @Output() editClick = new EventEmitter<any>();
 
-  // Paginación
+  // 👇 IMPORTANTE: emitimos la FILA, no un Event
+  @Output() toggleActivo = new EventEmitter<any>();
+
   page = 1;
   pageSize = 5;
 
@@ -45,19 +43,27 @@ export class ReusableTable implements OnChanges {
     this.filaClick.emit(fila);
   }
 
-  Onview(fila: any) {
-    this.verclick.emit(fila);
+  Onview(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    this.verClick.emit(fila);
   }
 
-  // 👇 Click en el tachito
-  onEliminarClick(fila: any, event: MouseEvent) {
-    event.stopPropagation();        // No disparamos el click de la fila
-    this.eliminarClick.emit(fila);  // Para CrudUsuariosComponent
-    this.emilinarClick.emit(fila);  // Para BookList (mantiene compatibilidad)
-  }
-
-  OnEditClick(fila: any) {
+  OnEditClick(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
     this.editClick.emit(fila);
+  }
+
+  // 🗑 eliminar
+  onEliminarClick(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    this.eliminarClick.emit(fila);   // CrudUsuarios
+    this.emilinarClick.emit(fila);   // BookList
+  }
+
+  // 🟢 activar / desactivar
+  OnToggleActivo(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    this.toggleActivo.emit(fila);    // aquí sale un Usuario hacia el padre
   }
 
   private capitalizar(text: string) {

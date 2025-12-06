@@ -29,14 +29,14 @@ import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-d
 })
 export class CrudUsuariosComponent implements OnInit {
 
-  // formulario reactivo
+  
   form!: FormGroup;
 
-  // datos
+  
   usuarios: Usuario[] = [];
   usuariosFiltrados: Usuario[] = [];
 
-  // columnas para la tabla reutilizable
+  
   columnasTabla = [
     { key: 'id',           label: 'ID' },
     { key: 'nombre',       label: 'Nombre' },
@@ -44,16 +44,16 @@ export class CrudUsuariosComponent implements OnInit {
     { key: 'rol',          label: 'Rol' },
     { key: 'ciudad',       label: 'Ciudad' },
     { key: 'estadoActivo', label: 'Activo' },
-    { key: 'action', label: 'Acciones' }
+    { key: 'action',       label: 'Acciones' }
   ];
 
   terminoBusqueda = '';
 
-  // edición
+  
   editando = false;
   usuarioSeleccionado: Usuario | null = null;
 
-  // diálogo de confirmación
+  
   dialogVisible = false;
   usuarioParaEliminar: Usuario | null = null;
 
@@ -148,7 +148,7 @@ export class CrudUsuariosComponent implements OnInit {
     }
   }
 
-  // viene del componente app-reusable-table (click en una fila)
+  
   onFilaClick(usuario: Usuario): void {
     this.editando = true;
     this.usuarioSeleccionado = usuario;
@@ -164,13 +164,13 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
-  // viene del componente app-reusable-table (click en botón eliminar)
+  
   onEliminarClick(usuario: Usuario): void {
     this.usuarioParaEliminar = usuario;
     this.dialogVisible = true;
   }
 
-  // aceptar en app-reusable-dialog
+  
   confirmarEliminar(): void {
     if (!this.usuarioParaEliminar) return;
 
@@ -181,7 +181,7 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
-  // cancelar en app-reusable-dialog
+  
   cancelarEliminar(): void {
     this.dialogVisible = false;
     this.usuarioParaEliminar = null;
@@ -204,5 +204,36 @@ export class CrudUsuariosComponent implements OnInit {
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!control && control.invalid && control.touched;
+  }
+
+  
+  onEditarClick(usuario: Usuario): void {
+    
+    this.onFilaClick(usuario);
+  }
+  onToggleActivo(usuario: Usuario): void {
+    const actualizado: Usuario = {
+      ...usuario,
+      estadoActivo: !usuario.estadoActivo
+    };
+
+    this.usuarioService.actualizar(actualizado).subscribe(() => {
+      // si el usuario que está cargado en el formulario es éste, actualizamos el form
+      if (this.usuarioSeleccionado && this.usuarioSeleccionado.id === actualizado.id) {
+        this.usuarioSeleccionado = actualizado;
+        this.form.patchValue({ estadoActivo: actualizado.estadoActivo });
+      }
+
+      this.cargarUsuarios(); // recarga la tabla de arriba
+    });
+  }
+
+
+  
+  onVerClick(usuario: Usuario): void {
+  
+    console.log('Ver usuario:', usuario);
+
+    
   }
 }

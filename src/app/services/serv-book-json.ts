@@ -8,61 +8,65 @@ import { Genre } from '../models/Genre';
   providedIn: 'root',
 })
 export class ServBookJson {
-  private bookUrl = "http://localhost:3000/Libros";
-  private GenreUrl = "http://localhost:3000/Generos";
+  private bookUrl  = 'http://localhost:3000/Libros';
+  private genreUrl = 'http://localhost:3000/Generos';
 
-  constructor(private http:HttpClient){}
+  constructor(private http: HttpClient) {}
 
-  getBook():Observable<Book[]>{
+  getBook(): Observable<Book[]> {
     return this.http.get<Book[]>(this.bookUrl);
   }
-  
-  getGenre():Observable<Genre[]>{
-    return this.http.get<Genre[]>(this.GenreUrl);
+
+  getGenre(): Observable<Genre[]> {
+    return this.http.get<Genre[]>(this.genreUrl);
   }
 
-  getBooksActives():Observable<Book[]>{
-    return this.http.get<Book[]>(this.bookUrl)
-    .pipe(map(
-    (books)=>books.filter(b=>b.active === true)
-    ));
+  getBooksActives(): Observable<Book[]> {
+    return this.http.get<Book[]>(this.bookUrl).pipe(
+      map((books) => books.filter((b) => b.active === true))
+    );
   }
 
-  getMovieById(id:number):Observable<Book>{
-  
-    const url= `${this.bookUrl}/${id}`;
+  // 🔹 Ya lo tenías, lo dejo igual
+  getMovieById(id: number): Observable<Book> {
+    const url = `${this.bookUrl}/${id}`;
     return this.http.get<Book>(url);
   }
 
-  getid(id:number):Observable<Book>{
-    const url= `${this.bookUrl}/${id}`;
+  getid(id: number): Observable<Book> {
+    const url = `${this.bookUrl}/${id}`;
     return this.http.get<Book>(url);
-    
   }
 
-  serchBook(title:string):Observable<Book[]>{
-  return this.http.get<Book[]>(this.bookUrl)
-  .pipe(map((books)=>books.filter(b=>b.title.toLowerCase().includes(title.toLowerCase()))
-));
+  // 🔹 NUEVO: alias con el nombre que usa BookList
+  getBookId(id: number): Observable<Book> {
+    const url = `${this.bookUrl}/${id}`;
+    return this.http.get<Book>(url);
+    // o simplemente:
+    // return this.getid(id);
   }
 
-  removeBook(id:number):Observable<void>{
+  serchBook(title: string): Observable<Book[]> {
+    return this.http.get<Book[]>(this.bookUrl).pipe(
+      map((books) =>
+        books.filter((b) =>
+          b.title.toLowerCase().includes(title.toLowerCase())
+        )
+      )
+    );
+  }
+
+  removeBook(id: number): Observable<void> {
     const urlBookEliminar = `${this.bookUrl}/${id}`;
     return this.http.delete<void>(urlBookEliminar);
-
   }
 
-  updateBook(book:Book):Observable<Book>{
-    const urlBookEditar = `${this.bookUrl}/${book.id}`; 
+  updateBook(book: Book): Observable<Book> {
+    const urlBookEditar = `${this.bookUrl}/${book.id}`;
     return this.http.put<Book>(urlBookEditar, book);
-
   }
 
-  addBook(book:Book):Observable<Book>{
+  addBook(book: Book): Observable<Book> {
     return this.http.post<Book>(this.bookUrl, book);
-
   }
-
-
 }
-
