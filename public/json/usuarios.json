@@ -6,6 +6,7 @@
     "telefono": "",
     "ciudad": "Guayaquil",
     "rol": "administrador",
+
     "password": "1234",
     "estadoActivo": true
   }
