@@ -28,7 +28,8 @@ export class BookList {
   private router = inject(Router);
   @Input() datos:any[] = [];
   books:Book[] = [];
-  generos:Genre [] =[];
+  book:Book | null = null;
+
   columnas = [
     {key: 'id', label: 'ID'},
     {key: 'title', label: 'Titulo'},
@@ -37,9 +38,6 @@ export class BookList {
     {key: 'genre', label: 'Genero'},
     {key: 'active', label: 'Estado'},
     {key: 'action', label: 'Acciones'},
-    
-
-    
   ];
 
   //creamos la referencia al form
@@ -88,6 +86,18 @@ export class BookList {
     )
   }
 
+<<<<<<< HEAD
+  loadBookId(id:number):void{
+    this.servBook.getBookId(id).subscribe(
+      (data:Book) =>
+      {
+        this.book = data;
+      }
+    )
+  } 
+  cerrarDialogo(){
+    this.dialogVisible= false;
+=======
   loadGenero():void{
     this.servBook.getGenre().subscribe((data:Genre[])=>{
       this.generos=data;
@@ -95,6 +105,7 @@ export class BookList {
 
     })
 
+>>>>>>> 8b500f16967fef2cf4dcb1d7ab56fb62f09f4626
   }
 
   getGeneroName(generoId:number){

@@ -14,7 +14,8 @@
                 <div class="pelicula-card">
                     
                     <div class="img-wrapper">
-                        <img [src]="book.poster" [alt]="book.title">
+                        <img [src]="book.poster" [alt]="book.title"
+                        (click)="view(book.id)">
                     </div>
 
                     <div class="product-details">

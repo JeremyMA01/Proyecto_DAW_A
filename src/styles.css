@@ -21,20 +21,70 @@
 }
 
 /* Contenedor para la Navegación y Acciones (LÍNEA INFERIOR) */
+/* En tu archivo CSS correspondiente */
 .header-bottom-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0 25px 0;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between; /* Separa menú y usuario */
+  align-items: center;
+  padding: 10px 20px; /* Un poco de aire */
+  border-bottom: 1px solid #eee; /* Opcional: una línea sutil */
 }
 
 /* --- NAVEGACIÓN (LINKS) --- */
 .main-nav-links {
     display: flex;
     gap: 30px;
-    list-style: none;
+    list-style: none;/* --- ESTILO DE ESTRELLAS INTERACTIVAS --- */
+.rating {
+    display: flex;
+    flex-direction: row-reverse; /* TRUCO CLAVE: Invierte el orden visual */
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Ocultamos los círculos de radio originales */
+.rating input {
+    display: none; 
+}
+
+/* Diseñamos la estrella vacía */
+.rating label {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    color: #e4e5e9; /* Color gris (desactivado) */
+    transition: color 0.2s ease-in-out;
+    line-height: 1;
+    position: relative;
+}
+
+/* Dibujamos la estrella usando carácter Unicode */
+.rating label:before {
+    content: "★";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* --- LA MAGIA DEL COLOR --- */
+/* Cuando pasas el mouse (Hover) */
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ffc107; /* Dorado al pasar el mouse */
+}
+
+/* Cuando seleccionas una estrella (Checked) */
+/* El operador ~ selecciona todos los hermanos SIGUIENTES en el HTML */
+/* Como usamos row-reverse, visualmente selecciona los ANTERIORES */
+.rating input:checked ~ label {
+    color: #ffc107; /* Dorado fijo al seleccionar */
+}
+
+/* Animación extra al hacer click */
+.rating input:checked + label:active {
+    transform: scale(0.9);
+}
     margin: 0;
     padding: 0;
 }
@@ -208,3 +258,4 @@
     transform: translateY(-1px);
     box-shadow: 0 
 }
+
