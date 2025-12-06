@@ -14,6 +14,8 @@ import { NgIf } from '@angular/common';
 })
 export class BookList {
   books:Book[] = [];
+  book:Book | null = null;
+
   columnas = [
     {key: 'id', label: 'ID'},
     {key: 'title', label: 'Titulo'},
@@ -22,9 +24,6 @@ export class BookList {
     {key: 'genre', label: 'Genero'},
     {key: 'active', label: 'Estado'},
     {key: 'action', label: 'Acciones'},
-    
-
-    
   ];
 
   seleccioandorEliminar:Book | null = null;
@@ -47,6 +46,14 @@ export class BookList {
     )
   }
 
+  loadBookId(id:number):void{
+    this.servBook.getBookId(id).subscribe(
+      (data:Book) =>
+      {
+        this.book = data;
+      }
+    )
+  } 
   cerrarDialogo(){
     this.dialogVisible= false;
   }

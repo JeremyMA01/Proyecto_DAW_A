@@ -3,10 +3,11 @@ import { Book } from '../../models/Book';
 import { Genre } from '../../models/Genre';
 import { ServBookJson } from '../../services/serv-book-json';
 import { CurrencyPipe,UpperCasePipe,DatePipe } from '@angular/common';
-
+import { Router, RouterLink } from '@angular/router';
+import { ServHomeJson } from '../../services/home/serv-home-json';
 @Component({
   selector: 'app-home-components',
-  imports: [UpperCasePipe,DatePipe,CurrencyPipe],
+  imports: [UpperCasePipe,DatePipe,CurrencyPipe, RouterLink],
   templateUrl: './home-components.html',
   styleUrl: './home-components.css',
 })
@@ -15,7 +16,7 @@ export class HomeComponents {
   genre :Genre[] = [];
 
 
-  constructor(private servBook:ServBookJson){}
+  constructor(private servBook:ServBookJson, private servHome:ServHomeJson, private router:Router){}
   ngOnInit():void{
 
     this.loadBook();
@@ -55,10 +56,11 @@ export class HomeComponents {
 
      }
 
-       comprar(Books:Book){
-      alert("Comprando pelicula: "+ Books);
+    comprar(book:Book){
+      this.servHome.comprar(book);
+    }
 
+     view(id:number|null){
+      this.router.navigate(['/resenas-view/',id]);
      }
-
-     
 }

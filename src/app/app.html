@@ -1,28 +1,28 @@
-<nav class="main-content">
-  <!-- LOGO SUPERIOR -->
-  <div class="header-top-logo">
-    <h3 class="site-logo">LibroStore</h3>
+<div class="header-top-logo bg-white pb-2">
+  <div class="container">
+     <h3 class="site-logo mt-3" style="color: #0d3b66; font-weight: bold;">LibroStore</h3>
   </div>
+</div>
 
-  <!-- NAVEGACIÓN INFERIOR + ACCIONES -->
-  <div class="header-bottom-nav">
-    <ul class="main-nav-links">
-  <li><a routerLink="home-components" routerLinkActive="active">Inicio</a></li>
-  <li><a routerLink="book-list" routerLinkActive="active">Inventario</a></li>
-  
-  <li><a routerLink="resenas" routerLinkActive="active">Reseñas</a></li>
+<div class="header-bottom-nav sticky-top bg-white shadow-sm border-top" style="top: 0; z-index: 1020;">
+  <div class="container"> <div class="d-flex justify-content-between align-items-center py-2">
+        <ul class="main-nav-links d-flex list-unstyled gap-4 mb-0 m-0">
+          <li><a routerLink="home-components" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Inicio</a></li>
+          <li><a routerLink="book-list" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Inventario</a></li>
+          <li><a routerLink="resenas" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Reseñas</a></li>
+          <li><a routerLink="/categorias" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Categorías</a></li>
+          <li><a routerLink="/novedades" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Novedades</a></li>
+        </ul>
 
-  <li><a routerLink="/categorias" routerLinkActive="active">Categorías</a></li>
-  <li><a routerLink="/novedades" routerLinkActive="active">Novedades</a></li>
-</ul>
-    
-
-    <div class="user-actions">
-      <span class="cart-icon">🛒</span>
-      <span>Hola, Usuario</span>
-      <a routerLink="/mi-cuenta">Mi cuenta</a>
+        <div class="user-actions d-flex align-items-center gap-3">
+          <span class="cart-icon fs-5" style="cursor: pointer;">🛒</span>
+          <span class="text-muted small">|</span>
+          <span class="fw-semibold text-primary">Hola, Usuario</span>
+          <a routerLink="/mi-cuenta" class="btn btn-sm btn-outline-primary rounded-pill px-3">Mi cuenta</a>
+        </div>
     </div>
+
   </div>
-</nav>
-<!-- Aquí se mostrará el contenido del componente correspondiente a cada ruta -->
-<router-outlet></router-outlet> <!-- Este es el contenedor para el contenido dinámico -->
+</div>
+
+<router-outlet></router-outlet>

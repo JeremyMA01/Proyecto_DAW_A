@@ -7,6 +7,7 @@ import { ReviewCrud } from './components/review/review-crud/review-crud';
 import { LoginComponent } from './components/auth/login/login';
 import { RegistroUsuarioComponent } from './components/registro-usuario/registro-usuario';
 import { CrudUsuariosComponent } from './components/crud-usuarios/crud-usuarios.component';
+import { ReviewView } from './components/review/review-view/review-view';
 
 export const routes: Routes = [
   // Página inicial
@@ -23,10 +24,9 @@ export const routes: Routes = [
 
   // Libros
   { path: 'book-list', component: BookList },
-
+  /*{ path: 'resenas-view/:id', component: ReviewView},*/
   // Reseñas
-  { path: 'resenas', component: ReviewCrud },
-
+  { path: 'resenas-view/:id', component: ReviewView },
   // CRUD Usuarios
   { path: 'usuarios', component: CrudUsuariosComponent },
 

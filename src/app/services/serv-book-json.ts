@@ -28,5 +28,8 @@ export class ServBookJson {
     ));
   }
 
+  getBookId(id:number):Observable<Book>{
+    return this.http.get<Book>(`${this.bookUrl}/${id}`);
+  }
 }
 

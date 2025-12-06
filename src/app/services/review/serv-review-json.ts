@@ -31,16 +31,22 @@ export class ServReviewJson {
         includes(user.toLowerCase())))
       
     );
-
     }
-
+    
     getReview():Observable<Review[]>{
       return this.http.get<Review[]>(this.reviewUrl);
     }
 
+    getReviewIdBook(id:number):Observable<Review[]>{
+      return this.http.get<Review[]>(this.reviewUrl).
+      pipe(map((review)=>review.filter(r=>r.id_book === (id))));
+    }
+    /*
     getBookId(id:number):Observable<Book>{
       return this.http.get<book>(`${this.bookUrl}/${id}`)
     }
+      */
+
 }
 
 
