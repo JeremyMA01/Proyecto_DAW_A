@@ -1,0 +1,16 @@
+<div class="verify-container">
+  <div class="card shadow-sm p-4">
+    <h2 class="text-center mb-3">Verificar código</h2>
+
+    <form (ngSubmit)="verificar()">
+      <div class="mb-3">
+        <label class="form-label">Código de verificación</label>
+        <input type="text" class="form-control" [(ngModel)]="codigoIngresado" name="codigo" required />
+      </div>
+
+      <div *ngIf="errorMsg" class="alert alert-danger py-2">{{ errorMsg }}</div>
+
+      <button class="btn btn-primary w-100">Verificar</button>
+    </form>
+  </div>
+</div>

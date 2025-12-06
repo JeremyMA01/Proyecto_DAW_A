@@ -1,9 +1,5 @@
-
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { ServBookJson } from '../../../services/serv-book-json';
-import { Book } from '../../../models/Book';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-reusable-table',
@@ -12,41 +8,29 @@ import { CommonModule } from '@angular/common';
   templateUrl: './reusable-table.html',
   styleUrl: './reusable-table.css',
 })
-
-
-
-  
-  
- 
 export class ReusableTable implements OnChanges {
-   books:Book[]=[];
 
-  //Datos que se mostraran en las filas
-  @Input() datos:any[] = [];
-  //Las columnas pertenecientes a las tablas
-  @Input() columnas:{ key:string; label:string}[] = [];
+  // Datos que se mostrarán en las filas
+  @Input() datos: any[] = [];
+
+  // Columnas de la tabla
+  @Input() columnas: { key: string; label: string }[] = [];
+
+  // Eventos hacia el padre
   @Output() filaClick = new EventEmitter<any>();
+
+  // 👉 Este lo usa BookList (para libros)
   @Output() emilinarClick = new EventEmitter<any>();
+
+  // 👉 Este lo usa CrudUsuariosComponent (para usuarios)
+  @Output() eliminarClick = new EventEmitter<any>();
+
   @Output() verclick = new EventEmitter<any>();
   @Output() editClick = new EventEmitter<any>();
-  // Datos que se mostrarán en las filas
- 
-  // Columnas de la tabla
- 
 
-
- 
-  @Output() eliminarClick = new EventEmitter<any>();   // 👈 nombre corregido
-
-  // variables para la paginación
+  // Paginación
   page = 1;
   pageSize = 5;
-
-   constructor (private miServicio : ServBookJson){
-    
-
-  }
-
 
   ngOnChanges() {
     if ((!this.columnas || this.columnas.length === 0) && this.datos.length > 0) {
@@ -61,17 +45,19 @@ export class ReusableTable implements OnChanges {
     this.filaClick.emit(fila);
   }
 
-
-  Onview(fila:any){
-  this.verclick.emit(fila);
-
+  Onview(fila: any) {
+    this.verclick.emit(fila);
   }
 
+  // 👇 Click en el tachito
+  onEliminarClick(fila: any, event: MouseEvent) {
+    event.stopPropagation();        // No disparamos el click de la fila
+    this.eliminarClick.emit(fila);  // Para CrudUsuariosComponent
+    this.emilinarClick.emit(fila);  // Para BookList (mantiene compatibilidad)
+  }
 
-
-  onEliminarClick(fila:any){
-  this.emilinarClick.emit(fila);
-
+  OnEditClick(fila: any) {
+    this.editClick.emit(fila);
   }
 
   private capitalizar(text: string) {
@@ -85,19 +71,11 @@ export class ReusableTable implements OnChanges {
   }
 
   totalPaginas() {
-    return Math.ceil(this.datos.length / this.pageSize);
+    const total = Math.ceil(this.datos.length / this.pageSize);
+    return total || 1;
   }
 
   setPage(p: number) {
     this.page = p;
   }
-
-  OnEditClick(fila:any){
-    this.editClick.emit(fila);
-
-  }
-
-  
-
-
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-reusable-dialog',
-  standalone: true,              // 👈 IMPORTANTE
+  standalone: true,              
   imports: [CommonModule],
   templateUrl: './reusable-dialog.html',
   styleUrl: './reusable-dialog.css',
