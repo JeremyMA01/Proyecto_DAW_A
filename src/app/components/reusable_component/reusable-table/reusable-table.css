@@ -1,13 +1,136 @@
-.table-row:hover {
-  background-color: #f0f4ff !important;
-  transition: 0.2s ease-in-out;
+/*******************************
+ * CONTENEDOR GENERAL
+ *******************************/
+.rt-container {
+  width: 100%;
+  margin: 0 auto;
 }
 
-.card {
-  border-radius: 12px;
+.rt-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.6s ease;
 }
 
-table {
-  border-radius: 10px;
-  overflow: hidden;
+/*******************************
+ * TABLA
+ *******************************/
+.rt-table {
+  width: 100%;
+  color: #e2e8f0;
+  border-collapse: separate;
+  border-spacing: 0 0.4rem;
+}
+
+.rt-table thead th.rt-th {
+  background: rgba(56, 189, 248, 0.16);
+  color: #7dd3fc;
+  font-weight: 600;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}
+
+.rt-row {
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 0.5rem;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.rt-row:hover {
+  background: rgba(51, 65, 85, 0.9);
+  transform: scale(1.008);
+  cursor: pointer;
+}
+
+/*******************************
+ * BADGES (Activo / Inactivo)
+ *******************************/
+.rt-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.rt-badge-activo {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.6);
+}
+
+.rt-badge-inactivo {
+  background: rgba(248, 113, 113, 0.18);
+  color: #fca5a5;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+}
+
+/*******************************
+ * BOTÓN ELIMINAR (ghost danger)
+ *******************************/
+.rt-btn-ghost-danger {
+  background: transparent;
+  border: 1px solid rgba(248, 113, 113, 0.6);
+  color: #fecaca;
+  padding: 0.35rem 0.6rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.rt-btn-ghost-danger:hover {
+  background: rgba(248, 113, 113, 0.25);
+  color: #fff;
+  transform: scale(1.1);
+  border-color: #ef4444;
+}
+
+.rt-btn-ghost-danger:active {
+  transform: scale(0.9);
+}
+
+/*******************************
+ * PAGINACIÓN
+ *******************************/
+.rt-pagination-wrapper {
+  margin-top: 1rem;
+}
+
+.pagination .page-link {
+  background: rgba(15, 23, 42, 0.7);
+  color: #a5f3fc;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.pagination .page-item.active .page-link {
+  background: #38bdf8;
+  color: #0f172a;
+  border-color: #7dd3fc;
+  font-weight: 700;
+}
+
+.pagination .page-link:hover {
+  background: rgba(56, 189, 248, 0.25);
+  color: #fff;
+}
+
+/*******************************
+ * ANIMACIONES
+ *******************************/
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

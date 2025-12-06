@@ -28,8 +28,41 @@ export class ServBookJson {
     ));
   }
 
-  getBookId(id:number):Observable<Book>{
-    return this.http.get<Book>(`${this.bookUrl}/${id}`);
+  getMovieById(id:number):Observable<Book>{
+  
+    const url= `${this.bookUrl}/${id}`;
+    return this.http.get<Book>(url);
   }
+
+  getid(id:number):Observable<Book>{
+    const url= `${this.bookUrl}/${id}`;
+    return this.http.get<Book>(url);
+    
+  }
+
+  serchBook(title:string):Observable<Book[]>{
+  return this.http.get<Book[]>(this.bookUrl)
+  .pipe(map((books)=>books.filter(b=>b.title.toLowerCase().includes(title.toLowerCase()))
+));
+  }
+
+  removeBook(id:number):Observable<void>{
+    const urlBookEliminar = `${this.bookUrl}/${id}`;
+    return this.http.delete<void>(urlBookEliminar);
+
+  }
+
+  updateBook(book:Book):Observable<Book>{
+    const urlBookEditar = `${this.bookUrl}/${book.id}`; 
+    return this.http.put<Book>(urlBookEditar, book);
+
+  }
+
+  addBook(book:Book):Observable<Book>{
+    return this.http.post<Book>(this.bookUrl, book);
+
+  }
+
+
 }
 

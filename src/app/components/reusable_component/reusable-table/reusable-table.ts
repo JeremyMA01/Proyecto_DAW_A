@@ -1,5 +1,9 @@
+
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ServBookJson } from '../../../services/serv-book-json';
+import { Book } from '../../../models/Book';
 import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-reusable-table',
@@ -8,18 +12,41 @@ import { CommonModule } from '@angular/common';
   templateUrl: './reusable-table.html',
   styleUrl: './reusable-table.css',
 })
-export class ReusableTable implements OnChanges {
-  // Datos que se mostrarán en las filas
-  @Input() datos: any[] = [];
-  // Columnas de la tabla
-  @Input() columnas: { key: string; label: string }[] = [];
 
+
+
+  
+  
+ 
+export class ReusableTable implements OnChanges {
+   books:Book[]=[];
+
+  //Datos que se mostraran en las filas
+  @Input() datos:any[] = [];
+  //Las columnas pertenecientes a las tablas
+  @Input() columnas:{ key:string; label:string}[] = [];
   @Output() filaClick = new EventEmitter<any>();
+  @Output() emilinarClick = new EventEmitter<any>();
+  @Output() verclick = new EventEmitter<any>();
+  @Output() editClick = new EventEmitter<any>();
+  // Datos que se mostrarán en las filas
+ 
+  // Columnas de la tabla
+ 
+
+
+ 
   @Output() eliminarClick = new EventEmitter<any>();   // 👈 nombre corregido
 
   // variables para la paginación
   page = 1;
   pageSize = 5;
+
+   constructor (private miServicio : ServBookJson){
+    
+
+  }
+
 
   ngOnChanges() {
     if ((!this.columnas || this.columnas.length === 0) && this.datos.length > 0) {
@@ -34,8 +61,17 @@ export class ReusableTable implements OnChanges {
     this.filaClick.emit(fila);
   }
 
-  onEliminarClick(fila: any) {
-    this.eliminarClick.emit(fila);
+
+  Onview(fila:any){
+  this.verclick.emit(fila);
+
+  }
+
+
+
+  onEliminarClick(fila:any){
+  this.emilinarClick.emit(fila);
+
   }
 
   private capitalizar(text: string) {
@@ -55,4 +91,13 @@ export class ReusableTable implements OnChanges {
   setPage(p: number) {
     this.page = p;
   }
+
+  OnEditClick(fila:any){
+    this.editClick.emit(fila);
+
+  }
+
+  
+
+
 }

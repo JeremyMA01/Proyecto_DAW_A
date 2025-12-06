@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Review } from '../../models/Review';
 import { map, Observable } from 'rxjs';
+import { Book } from '../../models/Book';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServReviewJson {
     private reviewUrl = "http://localhost:3000/Review";
+     private bookUrl = "http://localhost:3000/Libros";
 
     constructor(private http:HttpClient){}
 
@@ -43,7 +45,8 @@ export class ServReviewJson {
     }
     /*
     getBookId(id:number):Observable<Book>{
-      return this.http.get<book>(`${this.bookUrl}/${id}`)
+      
+      return this.http.get<Book>(`${this.bookUrl}/${id}`)
     }
       */
 
