@@ -29,14 +29,14 @@ import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-d
 })
 export class CrudUsuariosComponent implements OnInit {
 
-  
+  // Formulario reactivo
   form!: FormGroup;
 
-  
+  // Datos
   usuarios: Usuario[] = [];
   usuariosFiltrados: Usuario[] = [];
 
-  
+  // Columnas para la tabla reutilizable
   columnasTabla = [
     { key: 'id',           label: 'ID' },
     { key: 'nombre',       label: 'Nombre' },
@@ -47,13 +47,14 @@ export class CrudUsuariosComponent implements OnInit {
     { key: 'action',       label: 'Acciones' }
   ];
 
+  // Texto de búsqueda
   terminoBusqueda = '';
 
-  
+  // Edición
   editando = false;
   usuarioSeleccionado: Usuario | null = null;
 
-  
+  // Diálogo de confirmación de eliminación
   dialogVisible = false;
   usuarioParaEliminar: Usuario | null = null;
 
@@ -67,18 +68,64 @@ export class CrudUsuariosComponent implements OnInit {
     this.cargarUsuarios();
   }
 
+  /**
+   * Inicializa el formulario con validaciones:
+   * - nombre y ciudad: solo letras y espacios
+   * - teléfono: solo números (7 a 15 dígitos)
+   */
   private inicializarFormulario(): void {
     this.form = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      telefono: [''],
-      ciudad: ['', Validators.required],
-      rol: ['lector', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(4)]],
+      nombre: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          // solo letras y espacios (incluye tildes y ñ)
+          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+        ]
+      ],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
+      telefono: [
+        '',
+        [
+          // opcional, pero si escribe algo deben ser solo números (7-15 dígitos)
+          Validators.pattern(/^[0-9]{7,15}$/)
+        ]
+      ],
+      ciudad: [
+        '',
+        [
+          Validators.required,
+          // solo letras y espacios
+          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+        ]
+      ],
+      rol: [
+        'lector',
+        [
+          Validators.required
+        ]
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4)
+        ]
+      ],
       estadoActivo: [true]
     });
   }
 
+  /**
+   * Carga todos los usuarios desde JSON-Server
+   */
   private cargarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
       this.usuarios = usuarios;
@@ -86,6 +133,9 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
+  /**
+   * Aplica filtro en memoria por nombre, email y ciudad
+   */
   aplicarFiltro(): void {
     const txt = this.terminoBusqueda.toLowerCase().trim();
 
@@ -105,6 +155,9 @@ export class CrudUsuariosComponent implements OnInit {
     this.aplicarFiltro();
   }
 
+  /**
+   * Guardar (crear o actualizar) usando JSON-Server
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -114,6 +167,7 @@ export class CrudUsuariosComponent implements OnInit {
     const valores = this.form.value;
 
     if (this.editando && this.usuarioSeleccionado) {
+      // ACTUALIZAR
       const actualizado: Usuario = {
         ...this.usuarioSeleccionado,
         nombre: valores.nombre,
@@ -131,6 +185,7 @@ export class CrudUsuariosComponent implements OnInit {
       });
 
     } else {
+      // CREAR
       const nuevo: Omit<Usuario, 'id'> = {
         nombre: valores.nombre,
         email: valores.email,
@@ -148,7 +203,9 @@ export class CrudUsuariosComponent implements OnInit {
     }
   }
 
-  
+  /**
+   * Click en la fila (o en el lápiz) → cargar datos al formulario
+   */
   onFilaClick(usuario: Usuario): void {
     this.editando = true;
     this.usuarioSeleccionado = usuario;
@@ -164,13 +221,17 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
-  
+  /**
+   * Click en el botón eliminar de la tabla → abrir modal de confirmación
+   */
   onEliminarClick(usuario: Usuario): void {
     this.usuarioParaEliminar = usuario;
     this.dialogVisible = true;
   }
 
-  
+  /**
+   * Confirmar eliminar en el diálogo reutilizable
+   */
   confirmarEliminar(): void {
     if (!this.usuarioParaEliminar) return;
 
@@ -181,12 +242,17 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
-  
+  /**
+   * Cancelar eliminación
+   */
   cancelarEliminar(): void {
     this.dialogVisible = false;
     this.usuarioParaEliminar = null;
   }
 
+  /**
+   * Reset del formulario a estado inicial
+   */
   resetFormulario(): void {
     this.form.reset({
       nombre: '',
@@ -201,16 +267,25 @@ export class CrudUsuariosComponent implements OnInit {
     this.usuarioSeleccionado = null;
   }
 
+  /**
+   * Helper para mostrar errores en los campos
+   */
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!control && control.invalid && control.touched;
   }
 
-  
+  /**
+   * Click en el icono de editar de la tabla
+   */
   onEditarClick(usuario: Usuario): void {
-    
     this.onFilaClick(usuario);
   }
+
+  /**
+   * Click en el switch/acción de "Activo / Inactivo"
+   * (si lo conectas desde la tabla con (toggleActivo)="onToggleActivo($event)")
+   */
   onToggleActivo(usuario: Usuario): void {
     const actualizado: Usuario = {
       ...usuario,
@@ -218,22 +293,18 @@ export class CrudUsuariosComponent implements OnInit {
     };
 
     this.usuarioService.actualizar(actualizado).subscribe(() => {
-      // si el usuario que está cargado en el formulario es éste, actualizamos el form
       if (this.usuarioSeleccionado && this.usuarioSeleccionado.id === actualizado.id) {
         this.usuarioSeleccionado = actualizado;
         this.form.patchValue({ estadoActivo: actualizado.estadoActivo });
       }
-
-      this.cargarUsuarios(); // recarga la tabla de arriba
+      this.cargarUsuarios();
     });
   }
 
-
-  
+  /**
+   * Click en "ver" (si en algún momento quieres usarlo)
+   */
   onVerClick(usuario: Usuario): void {
-  
     console.log('Ver usuario:', usuario);
-
-    
   }
 }

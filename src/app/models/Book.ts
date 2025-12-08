@@ -7,5 +7,8 @@ export interface Book{
     year:number,
     genre:number,
     active:boolean,
-    releaseDate:string
+    releaseDate:string,  
+    categorie:string,
+  
+
 }

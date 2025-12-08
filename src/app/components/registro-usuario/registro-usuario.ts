@@ -29,20 +29,68 @@ export class RegistroUsuarioComponent {
     private usuarioService: UsuarioService,
     private router: Router
   ) {
-   this.form = this.fb.group({
-  nombre: ['', [Validators.required, Validators.minLength(3)]],
-  email: ['', [Validators.required, Validators.email]],
-  telefono: [''],
-  ciudad: ['', Validators.required],
-  rol: ['lector', Validators.required],   // por defecto lector
-  password: ['', [Validators.required, Validators.minLength(6)]],
-});
+    this.form = this.fb.group({
+      // Solo letras (con tildes y ñ) y espacios, mínimo 3 caracteres
+      nombre: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+        ]
+      ],
 
+      email: ['', [Validators.required, Validators.email]],
+
+      // Teléfono opcional, pero si se llena, solo números de 7 a 15 dígitos
+      telefono: [
+        '',
+        [
+          Validators.pattern(/^[0-9]{7,15}$/)
+        ]
+      ],
+
+      // Solo letras para ciudad
+      ciudad: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+        ]
+      ],
+
+      // por defecto lector
+      rol: ['lector', Validators.required],
+
+      // Mínimo 6 caracteres
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
   }
 
+  
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!control && control.invalid && control.touched;
+  }
+
+
+  soloLetras(event: KeyboardEvent) {
+    const pattern = /[A-Za-zÁÉÍÓÚáéíóúÑñ ]/;
+    const inputChar = event.key;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+ 
+  soloNumeros(event: KeyboardEvent) {
+    const pattern = /[0-9]/;
+    const inputChar = event.key;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 
   onSubmit(): void {
@@ -60,12 +108,10 @@ export class RegistroUsuarioComponent {
       ciudad: valores.ciudad,
       rol: valores.rol,
       password: valores.password,
-      estadoActivo: true,   // al registrarse queda activo
+      estadoActivo: true,   
     };
 
     this.usuarioService.crear(nuevoUsuario).subscribe(() => {
-      // No podemos escribir en el .json desde el navegador,
-      // pero el servicio lo guarda en memoria (BehaviorSubject)
       this.registroExitosoVisible = true;
       this.form.reset({
         rol: 'lector',

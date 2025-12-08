@@ -15,6 +15,7 @@ import { NuevaContrasenaComponent } from './components/auth/nueva-contrasena/nue
 
 import { CrudUsuariosComponent } from './components/crud-usuarios/crud-usuarios.component';
 import { ContactMessageComponent } from './components/contact-messages/contact-message.component';
+import { Categories } from './components/categories/categories';
 
 
 
@@ -44,6 +45,8 @@ export const routes: Routes = [
   // Reseñas
   { path: 'resenas-view/:id', component: ReviewView },
   { path: 'resenas-crud', component: ReviewCrud },
+
+  { path: 'categories', component: Categories},
 
   // CRUD Usuarios
   { path: 'usuarios', component: CrudUsuariosComponent },

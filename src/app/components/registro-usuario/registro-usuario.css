@@ -1,4 +1,9 @@
 /* Fondo general con estilo tipo Tailwind (oscuro y degradado) */
+:host {
+  display: block;
+  margin: -50px; /* Compensa el padding del contenedor padre */
+}
+
 .registro-wrapper {
   background: radial-gradient(circle at top left, #22c55e22 0, transparent 55%),
               radial-gradient(circle at bottom right, #0ea5e922 0, transparent 55%),
