@@ -216,7 +216,7 @@
       "ciudad": "Manta",
       "rol": "cliente",
       "password": "User123*",
-      "estadoActivo": true
+      "estadoActivo": false
     },
     {
       "id": "5",
@@ -236,15 +236,35 @@
       "ciudad": "Loja",
       "rol": "cliente",
       "password": "User123*",
+      "estadoActivo": false
+    },
+    {
+      "id": "d85c",
+      "nombre": "Maria Lopez",
+      "email": "maria.lopez@email.com",
+      "telefono": "0991234567",
+      "ciudad": "Quito",
+      "rol": "lector",
+      "password": "1234",
       "estadoActivo": true
     },
     {
-      "id": "1a20",
-      "nombre": "camaton",
-      "email": "22@hotmail.com",
-      "telefono": "0961912893",
-      "ciudad": "guayaquil",
+      "id": "41b0",
+      "nombre": "Maria Lopez",
+      "email": "maria.lopez@email.com",
+      "telefono": "0991234567",
+      "ciudad": "Quito",
       "rol": "lector",
+      "password": "1234",
+      "estadoActivo": true
+    },
+    {
+      "id": 7,
+      "nombre": "alejandro",
+      "email": "ale@libreria.com",
+      "telefono": "0961912894",
+      "ciudad": "GUAYAQUIL",
+      "rol": "donante",
       "password": "123456",
       "estadoActivo": true
     }

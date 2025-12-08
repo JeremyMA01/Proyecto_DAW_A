@@ -1,4 +1,5 @@
 import { provideRouter, Routes } from '@angular/router';
+import { adminGuard } from './guards/admin.guard';
 
 import { HomeComponents } from './components/home-components/home-components';
 
@@ -44,7 +45,7 @@ export const routes: Routes = [
 
   { path: 'categories', component: Categories},
 
-  { path: 'usuarios', component: CrudUsuariosComponent },
+  { path: 'usuarios', component: CrudUsuariosComponent, canActivate: [adminGuard] },
 
   { path: 'mensajes', component: ContactMessageComponent },
 

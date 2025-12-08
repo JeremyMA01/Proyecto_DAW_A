@@ -52,6 +52,24 @@ export class App implements OnInit, OnDestroy {
         this.isAuthPage = authRoutes.some(route => currentUrl.startsWith(route));
       });
   }
+  irAUsuarios() {
+    const userStr = localStorage.getItem('currentUser');
+    
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      
+      if (user.rol === 'administrador') {
+        // SI ES ADMIN: Navega
+        this.router.navigate(['/usuarios']);
+      } else {
+        // SI NO ES ADMIN: Muestra error
+        alert('⛔ Acceso denegado: Solo los administradores pueden gestionar usuarios.');
+      }
+    } else {
+      // SI NO ESTÁ LOGUEADO
+      this.router.navigate(['/login']);
+    }
+  }
 
   ngOnDestroy() {
     // Limpiar suscripción para evitar memory leaks
