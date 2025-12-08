@@ -10,3 +10,7 @@
 .border-dashed {
     border-style: dashed !important;
 }
+
+.content-container{
+    padding: 50px ;
+}

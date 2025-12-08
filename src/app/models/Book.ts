@@ -6,5 +6,6 @@ export interface Book{
     budget:number,
     year:number,
     genre:string,
+    categorie:string,
     active:boolean
 }

@@ -1,3 +1,9 @@
+:host {
+  display: block;
+  margin: -50px; /* Compensa el padding del contenedor padre */
+
+}
+
 /* Fondo general para el módulo admin */
 .crud-wrapper {
   background: radial-gradient(circle at top left, #22c55e22 0, transparent 55%),

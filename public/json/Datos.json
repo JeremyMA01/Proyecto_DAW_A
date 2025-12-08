@@ -153,6 +153,50 @@
       "id_book": 2
     }
   ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Infantil",
+      "description": "Libros para niños de todas las edades",
+      "active": true
+    },
+    {
+      "id": "2",
+      "name": "Juvenil",
+      "description": "Libros dirigidos a adolescentes y jóvenes adultos",
+      "active": true
+    },
+    {
+      "id": "3",
+      "name": "Académicos",
+      "description": "Libros de estudio y material educativo",
+      "active": true
+    },
+    {
+      "id": "4",
+      "name": "Autoayuda",
+      "description": "Libros de desarrollo personal y superación",
+      "active": true
+    },
+    {
+      "id": "5",
+      "name": "Religión",
+      "description": "Libros sobre temas espirituales y religiosos",
+      "active": true
+    },
+    {
+      "id": "6",
+      "name": "Negocios",
+      "description": "Libros sobre emprendimiento, finanzas y management",
+      "active": true
+    },
+    {
+      "name": "Cocina",
+      "description": "Libros de recetas y técnicas culinarias",
+      "active": true,
+      "id": "7"
+    }
+  ],
   "Usuario": [
     {
       "id": "1",

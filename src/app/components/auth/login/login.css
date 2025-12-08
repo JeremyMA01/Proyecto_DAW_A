@@ -1,9 +1,17 @@
 /* Fondo general oscuro con degradados suaves */
+/* En login.component.css */
+:host {
+  display: block;
+  margin: -50px; /* Compensa el padding del contenedor padre */
+  height: 100vh;
+}
+
 .auth-wrapper {
   background: radial-gradient(circle at top left, #22c55e22 0, transparent 55%),
               radial-gradient(circle at bottom right, #0ea5e922 0, transparent 55%),
               #020617;
   padding: 1.5rem;
+  height: 100vh;
 }
 
 /* Card tipo glass con brillo y sombra profunda */
