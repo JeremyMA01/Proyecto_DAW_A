@@ -1,8 +1,10 @@
 import { provideRouter, Routes } from '@angular/router';
 
 import { HomeComponents } from './components/home-components/home-components';
+
 import { BookView } from './components/books/book-view/book-view';
 import { BookList } from './components/books/book-list/book-list';
+
 import { ReviewCrud } from './components/review/review-crud/review-crud';
 import { ReviewView } from './components/review/review-view/review-view';
 
@@ -21,40 +23,31 @@ import { Categories } from './components/categories/categories';
 
 export const routes: Routes = [
 
-  // Página inicial: LOGIN
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // Login
   { path: 'login', component: LoginComponent },
 
-  // Registro público
   { path: 'registro', component: RegistroUsuarioComponent },
 
-  // Recuperación de contraseña
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'verificar-codigo', component: VerificarCodigoComponent },
   { path: 'nueva-contrasena', component: NuevaContrasenaComponent },
 
-  // Home
   { path: 'home-components', component: HomeComponents },
 
-  // Libros
   { path: 'book-list', component: BookList },
   { path: 'book-view/:id', component: BookView },
 
-  // Reseñas
-  { path: 'resenas-view/:id', component: ReviewView },
-  { path: 'resenas-crud', component: ReviewCrud },
+  { path: 'review-view/:id', component: ReviewView },
+  { path: 'review', component: ReviewView},
+  { path: 'review-crud', component: ReviewCrud },
 
   { path: 'categories', component: Categories},
 
-  // CRUD Usuarios
   { path: 'usuarios', component: CrudUsuariosComponent },
 
-  // CRUD Mensajes
   { path: 'mensajes', component: ContactMessageComponent },
 
-  // Cualquier ruta rara → login
   { path: '**', redirectTo: 'login' }
 ];
 

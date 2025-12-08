@@ -145,12 +145,12 @@
   ],
   "Review": [
     {
-      "id": "e2b2",
-      "user": "Hurtado",
-      "comment": "AKJSDLKASJKDA",
-      "score": 4,
-      "isRecommend": true,
-      "id_book": 2
+      "user": "Anthony Lopez",
+      "score": 3,
+      "comment": "Excelente libro",
+      "isRecommend": false,
+      "id": "2",
+      "id_book": 1
     }
   ],
   "categories": [
