@@ -5,6 +5,7 @@ export interface Book{
     author:string,
     budget:number,
     year:number,
-    genre:string,
-    active:boolean
+    genre:number,
+    active:boolean,
+    releaseDate:string
 }

@@ -1,22 +1,22 @@
 {
   "Libros": [
     {
-      "id": "1",
       "title": "Cien Años de Soledad",
       "author": "Gabriel García Márquez",
       "year": 1967,
-      "genre": "Romance",
+      "genre": "11",
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 20,
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJvSAV5ld6uZ2nWHf_u6sHkoULM8ap3e-CoKPnSnHjIrLn8moFJYl3MZPVaqQrAZzGirtvnDCw0Tn0SJbwiUOPNMxUTRJF2vz8V5q8gN9_mA&s=10"
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJvSAV5ld6uZ2nWHf_u6sHkoULM8ap3e-CoKPnSnHjIrLn8moFJYl3MZPVaqQrAZzGirtvnDCw0Tn0SJbwiUOPNMxUTRJF2vz8V5q8gN9_mA&s=10",
+      "id": "1"
     },
     {
       "id": "2",
       "title": "1984",
       "author": "George Orwell",
       "year": 1949,
-      "genre": "Ficción Científica",
+      "genre": 2,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 18,
@@ -27,7 +27,7 @@
       "title": "El Hobbit",
       "author": "J.R.R. Tolkien",
       "year": 1937,
-      "genre": "Fantasía",
+      "genre": 7,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 25,
@@ -38,7 +38,7 @@
       "title": "La Sombra del Viento",
       "author": "Carlos Ruiz Zafón",
       "year": 2001,
-      "genre": "Misterio",
+      "genre": 8,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 22,
@@ -49,7 +49,7 @@
       "title": "El Código Da Vinci",
       "author": "Dan Brown",
       "year": 2003,
-      "genre": "Thriller",
+      "genre": 9,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 30,
@@ -60,55 +60,66 @@
       "title": "Orgullo y Prejuicio",
       "author": "Jane Austen",
       "year": 1813,
-      "genre": "Drama",
+      "genre": 10,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 18,
-      "poster": "https://example.com/images/orgullo-y-prejuicio.jpg"
+      "poster": "https://m.media-amazon.com/images/I/81OthjkJBuL._AC_UF1000,1000_QL80_.jpg"
     },
     {
       "id": "7",
       "title": "Viaje al Centro de la Tierra",
       "author": "Jules Verne",
       "year": 1864,
-      "genre": "Aventura",
+      "genre": "11",
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 15,
-      "poster": "https://example.com/images/viaje-al-centro-de-la-tierra.jpg"
+      "poster": "https://images.cdn3.buscalibre.com/fit-in/360x360/75/eb/75eb5612db5984589be2258fc891b0b0.jpg"
     },
     {
       "id": "8",
       "title": "Sapiens: De Animales a Dioses",
       "author": "Yuval Noah Harari",
       "year": 2011,
-      "genre": "No Ficción",
+      "genre": 2,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 28,
-      "poster": "https://example.com/images/sapiens.jpg"
+      "poster": "https://m.media-amazon.com/images/I/713jIoMO3UL.jpg"
     },
     {
       "id": "9",
       "title": "El Diario de Ana Frank",
       "author": "Ana Frank",
       "year": 1947,
-      "genre": "Biografía",
+      "genre": "12",
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 20,
-      "poster": "https://example.com/images/diario-de-ana-frank.jpg"
+      "poster": "https://images.cdn1.buscalibre.com/fit-in/360x360/5e/63/5e6382195f84bb7b5c555af930ef6ec2.jpg"
     },
     {
       "id": "10",
       "title": "Cien Sonetos de Amor",
       "author": "Pablo Neruda",
       "year": 1959,
-      "genre": "Poesía",
+      "genre": 13,
       "active": true,
       "releaseDate": "2024-06-14",
       "budget": 12,
-      "poster": "https://example.com/images/cien-sonetos-de-amor.jpg"
+      "poster": "https://anterior.mrbooks.com/mrbooks/portadas/9788418933714.webp"
+    },
+    {
+      "id": "f377",
+      "title": "sss",
+      "author": "sss",
+      "year": 2015,
+      "genre": "9",
+      "active": true,
+      "releaseDate": "2025-12-10",
+      "budget": 19,
+      "poster": "e"
     }
   ],
   "Generos": [
@@ -140,6 +151,41 @@
     {
       "id": "6",
       "name": "Historia",
+      "active": true
+    },
+    {
+      "id": "7",
+      "name": "Fantasía",
+      "active": true
+    },
+    {
+      "id": "8",
+      "name": "Misterio",
+      "active": true
+    },
+    {
+      "id": "9",
+      "name": "Suspenso",
+      "active": true
+    },
+    {
+      "id": "10",
+      "name": "Drama",
+      "active": true
+    },
+    {
+      "id": "11",
+      "name": "Aventura",
+      "active": true
+    },
+    {
+      "id": "12",
+      "name": "Biografía",
+      "active": true
+    },
+    {
+      "id": "13",
+      "name": "Poesía",
       "active": true
     }
   ],

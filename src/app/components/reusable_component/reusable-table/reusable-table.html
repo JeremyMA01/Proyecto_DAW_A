@@ -1,116 +1,76 @@
-<div class="container mt-4">
-  <div class="card shadow-sm border-0">
-    <div class="card-body">
+<div class="tabla-wrapper">
+  <div class="tabla-card">
 
-      <table class="table table-hover align-middle">
-        <thead class="table-primary">
-          <tr>
+    <h2 class="tabla-title">Listado de Libros</h2>
+
+    <table class="tabla-modern">
+      <thead>
+        <tr>
+          @for (col of columnas; track $index) {
+            <th>{{ col.label }}</th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (fila of pageActual(); track $index) {
+          <tr (click)="onFilaClick(fila)" class="row-hover">
+
             @for (col of columnas; track $index) {
-              <th class="text-center">{{ col.label }}</th>
+              <td>
+
+                <ng-container [ngSwitch]="col.key">
+
+                  <!-- Estado activo -->
+                  <span *ngSwitchCase="'estadoActivo'">
+                    <span class="estado-pill" [class.activo]="fila.estadoActivo" [class.inactivo]="!fila.estadoActivo">
+                      {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </span>
+
+                  <!-- Columna acciones -->
+                  <span *ngSwitchCase="'action'" class="acciones">
+                    <button class="btn-icon view" (click)="Onview(fila, $event)">
+                      <i class="bi bi-eye-fill"></i>
+                    </button>
+
+                    <button class="btn-icon edit" (click)="OnEditClick(fila, $event)">
+                      <i class="bi bi-pencil-fill"></i>
+                    </button>
+
+                    <button class="btn-icon delete" (click)="onEliminarClick(fila, $event)">
+                      <i class="bi bi-trash-fill"></i>
+                    </button>
+                  </span>
+
+                  <!-- Campos comunes + género -->
+                  <span *ngSwitchDefault>
+                    @if (col.key === 'genre') {
+                      {{ obtenerGeneroNombre(fila[col.key]) }}
+                    } @else {
+                      {{ fila[col.key] }}
+                    }
+                  </span>
+
+                </ng-container>
+              </td>
             }
           </tr>
-        </thead>
+        }
+      </tbody>
+    </table>
 
-        <tbody>
-          @for (fila of pageActual(); track $index) {
-            <tr
-              class="table-row"
-              style="cursor: pointer"
-              (click)="onFilaClick(fila)">
+    <nav class="pagination-modern">
+      <button class="page-btn" [disabled]="page === 1" (click)="setPage(page - 1)">Anterior</button>
 
-              @for (col of columnas; track $index) {
-                <td class="text-center">
-                  <ng-container [ngSwitch]="col.key">
+      @for (p of [].constructor(totalPaginas()); track $index) {
+        <button class="page-number" [class.active]="page === ($index + 1)" (click)="setPage($index + 1)">
+          {{ $index + 1 }}
+        </button>
+      }
 
-                    <!-- 🟢 Columna especial para estadoActivo -->
-                  <span *ngSwitchCase="'estadoActivo'">
-  <button
-    type="button"
-    class="badge-estado btn btn-sm"
-    [ngClass]="fila.estadoActivo ? 'badge-activo' : 'badge-inactivo'"
-    (click)="OnToggleActivo(fila, $event)">
-    {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
-  </button>
-</span>
+      <button class="page-btn" [disabled]="page === totalPaginas()" (click)="setPage(page + 1)">Siguiente</button>
+    </nav>
 
-                    <!-- 🔴 Columna de acciones -->
-                    <span *ngSwitchCase="'action'"
-                          class="d-inline-flex gap-1 justify-content-center">
-
-                     <!--
-<button
-  type="button"
-  class="btn btn-sm btn-ghost-secondary"
-  title="Ver"
-  (click)="Onview(fila); $event.stopPropagation()">
-  <i class="bi bi-eye-fill"></i>
-</button>
--->
-
-                      <!-- ✏ Editar -->
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-ghost-warning"
-                        title="Editar"
-                        (click)="OnEditClick(fila, $event)">
-                        <i class="bi bi-pencil-fill"></i>
-                      </button>
-
-                      <!-- 🗑 Eliminar -->
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-ghost-danger"
-                        title="Eliminar"
-                        (click)="onEliminarClick(fila, $event)">
-                        <i class="bi bi-trash-fill"></i>
-                      </button>
-                    </span>
-
-                    <!-- Campos normales -->
-                    <span *ngSwitchDefault>
-                      {{ fila[col.key] }}
-                    </span>
-
-                  </ng-container>
-                </td>
-              }
-            </tr>
-          }
-        </tbody>
-      </table>
-
-      <nav class="d-flex justify-content-center mt-3">
-        <ul class="pagination">
-          <li class="page-item" [class.disabled]="page === 1">
-            <button
-              class="page-link"
-              (click)="setPage(page - 1)"
-              [disabled]="page === 1">
-              Anterior
-            </button>
-          </li>
-
-          @for (p of [].constructor(totalPaginas()); track $index) {
-            <li class="page-item" [class.active]="page === ($index + 1)">
-              <button
-                class="page-link"
-                (click)="setPage($index + 1)">
-                {{ $index + 1 }}
-              </button>
-            </li>
-          }
-
-          <li class="page-item" [class.disabled]="page === totalPaginas()">
-            <button
-              class="page-link"
-              (click)="setPage(page + 1)"
-              [disabled]="page === totalPaginas()">
-              Siguiente
-            </button>
-          </li>
-        </ul>
-      </nav>
-
-    </div>
   </div>
 </div>

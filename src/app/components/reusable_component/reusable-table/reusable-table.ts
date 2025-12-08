@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
 export class ReusableTable implements OnChanges {
 
   @Input() datos: any[] = [];
+  @Input() generos:any[] =[]; 
+  @Input() obtenerGeneroNombre!: (id: number) => string;
+
   @Input() columnas: { key: string; label: string }[] = [];
 
   @Output() filaClick = new EventEmitter<any>();
@@ -84,4 +87,7 @@ export class ReusableTable implements OnChanges {
   setPage(p: number) {
     this.page = p;
   }
+
+
+
 }
