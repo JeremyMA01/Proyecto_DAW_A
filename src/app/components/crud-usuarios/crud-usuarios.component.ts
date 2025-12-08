@@ -58,6 +58,12 @@ export class CrudUsuariosComponent implements OnInit {
   dialogVisible = false;
   usuarioParaEliminar: Usuario | null = null;
 
+  // PATRONES DE VALIDACIÓN (REGEX)
+  // Solo letras, espacios y caracteres latinos (áéíóúñ...)
+  readonly patronSoloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+  // Solo números
+  readonly patronSoloNumeros = /^[0-9]+$/;
+
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService
@@ -69,9 +75,7 @@ export class CrudUsuariosComponent implements OnInit {
   }
 
   /**
-   * Inicializa el formulario con validaciones:
-   * - nombre y ciudad: solo letras y espacios
-   * - teléfono: solo números (7 a 15 dígitos)
+   * Inicializa el formulario con validaciones estrictas
    */
   private inicializarFormulario(): void {
     this.form = this.fb.group({
@@ -80,30 +84,33 @@ export class CrudUsuariosComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(3),
-          // solo letras y espacios (incluye tildes y ñ)
-          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+          // REGLA: Nombre no puede tener números
+          Validators.pattern(this.patronSoloLetras)
         ]
       ],
       email: [
         '',
         [
           Validators.required,
+          // REGLA: Formato estricto de email
           Validators.email
         ]
       ],
       telefono: [
         '',
         [
-          // opcional, pero si escribe algo deben ser solo números (7-15 dígitos)
-          Validators.pattern(/^[0-9]{7,15}$/)
+          // REGLA: Solo números (7 a 15 dígitos opcionalmente, o solo patrón numérico)
+          Validators.pattern(this.patronSoloNumeros),
+          Validators.minLength(7),
+          Validators.maxLength(15)
         ]
       ],
       ciudad: [
         '',
         [
           Validators.required,
-          // solo letras y espacios
-          Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
+          // REGLA: Ciudad solo letras, no números
+          Validators.pattern(this.patronSoloLetras)
         ]
       ],
       rol: [
@@ -116,7 +123,8 @@ export class CrudUsuariosComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(4)
+          // REGLA: Mínimo 6 caracteres
+          Validators.minLength(6)
         ]
       ],
       estadoActivo: [true]
@@ -185,7 +193,7 @@ export class CrudUsuariosComponent implements OnInit {
       });
 
     } else {
-      // CREAR
+      // CREAR (El ID lo maneja el servicio automáticamente)
       const nuevo: Omit<Usuario, 'id'> = {
         nombre: valores.nombre,
         email: valores.email,
@@ -275,17 +283,10 @@ export class CrudUsuariosComponent implements OnInit {
     return !!control && control.invalid && control.touched;
   }
 
-  /**
-   * Click en el icono de editar de la tabla
-   */
   onEditarClick(usuario: Usuario): void {
     this.onFilaClick(usuario);
   }
 
-  /**
-   * Click en el switch/acción de "Activo / Inactivo"
-   * (si lo conectas desde la tabla con (toggleActivo)="onToggleActivo($event)")
-   */
   onToggleActivo(usuario: Usuario): void {
     const actualizado: Usuario = {
       ...usuario,
@@ -301,10 +302,31 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
 
-  /**
-   * Click en "ver" (si en algún momento quieres usarlo)
-   */
   onVerClick(usuario: Usuario): void {
     console.log('Ver usuario:', usuario);
+  }
+
+  // ------------------------------------------------------------------
+  // METODOS AUXILIARES PARA EL HTML (Opcional: usar con keypress)
+  // ------------------------------------------------------------------
+
+  /**
+   * Bloquea la escritura de números. Usar en (keypress)="bloquearNumeros($event)"
+   */
+  bloquearNumeros(event: KeyboardEvent): void {
+    const pattern = /[0-9]/;
+    if (pattern.test(event.key)) {
+      event.preventDefault(); // Evita que se escriba el número
+    }
+  }
+
+  /**
+   * Bloquea la escritura de letras. Usar en (keypress)="bloquearLetras($event)"
+   */
+  bloquearLetras(event: KeyboardEvent): void {
+    const pattern = /[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/;
+    if (pattern.test(event.key)) {
+      event.preventDefault(); // Evita que se escriba la letra
+    }
   }
 }

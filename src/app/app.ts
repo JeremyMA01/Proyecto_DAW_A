@@ -19,12 +19,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    RouterModule,
-    BookList,
-    ReusableTable,
-    HomeComponents,
-    ReviewCrud,
-    ReviewView
+    RouterModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
@@ -56,6 +51,24 @@ export class App implements OnInit, OnDestroy {
         const currentUrl = event.urlAfterRedirects || event.url;
         this.isAuthPage = authRoutes.some(route => currentUrl.startsWith(route));
       });
+  }
+  irAUsuarios() {
+    const userStr = localStorage.getItem('currentUser');
+    
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      
+      if (user.rol === 'administrador') {
+        // SI ES ADMIN: Navega
+        this.router.navigate(['/usuarios']);
+      } else {
+        // SI NO ES ADMIN: Muestra error
+        alert('⛔ Acceso denegado: Solo los administradores pueden gestionar usuarios.');
+      }
+    } else {
+      // SI NO ESTÁ LOGUEADO
+      this.router.navigate(['/login']);
+    }
   }
 
   ngOnDestroy() {

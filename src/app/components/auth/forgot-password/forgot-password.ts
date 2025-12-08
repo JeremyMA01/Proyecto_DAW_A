@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { UsuarioService } from '../../../services/usuario.service';
+import { Usuario } from '../../../models/usuario.model';
 import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog';
 
 @Component({
@@ -28,28 +29,27 @@ export class ForgotPasswordComponent {
   ) {}
 
   enviarCodigo() {
-    const usuario = this.usuarioService
-      .getUsuariosSnapshot()
-      .find(u => u.email === this.email);
+    this.usuarioService.getUsuarios().subscribe((usuarios: Usuario[]) => {
+      const usuario = usuarios.find((u: Usuario) => u.email === this.email);
 
-    if (!usuario) {
-      this.errorMsg = 'El correo no está registrado.';
-      this.okMsg = '';
-      return;
-    }
+      if (!usuario) {
+        this.errorMsg = 'El correo no está registrado.';
+        this.okMsg = '';
+        return;
+      }
 
-    this.errorMsg = '';
+      this.errorMsg = '';
 
-    // Generar código de 6 dígitos
-    const codigo = Math.floor(100000 + Math.random() * 900000).toString();
-    this.codigoGenerado = codigo;
+      // Generar código de 6 dígitos
+      const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+      this.codigoGenerado = codigo;
 
-    // Guardar temporalmente
-    localStorage.setItem('resetEmail', this.email);
-    localStorage.setItem('resetCode', codigo);
+      // Guardar temporalmente
+      localStorage.setItem('resetEmail', this.email);
+      localStorage.setItem('resetCode', codigo);
 
-    
-    this.dialogVisible = true;
+      this.dialogVisible = true;
+    });
   }
 
   irAVerificar() {

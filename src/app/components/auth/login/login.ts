@@ -7,6 +7,7 @@ import { Usuario } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -33,28 +34,31 @@ export class LoginComponent {
   }
 
  onSubmit(): void {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
-
-  const { email, password } = this.form.value;
-
-  this.usuarioService.login(email, password).subscribe(usuario => {
-    if (!usuario) {
-      this.errorMsg = 'Correo o contraseña incorrectos o usuario inactivo.';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
       return;
     }
 
-    this.errorMsg = '';
+    const { email, password } = this.form.value;
 
-    if (usuario.rol === 'administrador') {
-      // Admin: puede ir directo al CRUD de usuarios o a un dashboard de admin
-      this.router.navigate(['/usuarios']);
-    } else {
-      // Usuario normal
-      this.router.navigate(['/home-components']);
-    }
-  });
-}
+    this.usuarioService.login(email, password).subscribe((usuario: Usuario | null) => {
+      // Validar si existe y si está activo
+      if (!usuario || usuario.estadoActivo === false) {
+        this.errorMsg = 'Correo o contraseña incorrectos o usuario inactivo.';
+        return;
+      }
+
+      this.errorMsg = '';
+
+      // --- IMPORTANTE: GUARDAR USUARIO EN SESIÓN ---
+      localStorage.setItem('currentUser', JSON.stringify(usuario));
+
+      // Redirección según rol
+      if (usuario.rol === 'administrador') {
+        this.router.navigate(['/usuarios']);
+      } else {
+        this.router.navigate(['/home-components']);
+      }
+    });
+  }
 }
