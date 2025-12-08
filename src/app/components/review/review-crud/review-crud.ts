@@ -2,14 +2,13 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { ServReviewJson } from '../../../services/review/serv-review-json';
 import { Router } from '@angular/router';
 import { Review } from '../../../models/Review';
-import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog';
 import { ReusableTable } from '../../reusable_component/reusable-table/reusable-table';
 import { ReusableReviewForm } from "../../reusable_component/reusable-review-form/reusable-review-form";
 
 @Component({
   selector: 'app-review-crud',
   standalone: true,
-  imports: [ReusableReviewForm],
+  imports: [ReusableTable, ReusableReviewForm],
   templateUrl: './review-crud.html',
   styleUrl: './review-crud.css',
 })

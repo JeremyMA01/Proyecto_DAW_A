@@ -1,114 +1,83 @@
-<div class="container mt-4">
-  <div class="card shadow-sm border-0">
-    <div class="card-body">
-
-      <table class="table table-hover align-middle">
-        <thead class="table-primary">
-          <tr>
-            @for (col of columnas; track $index) {
-              <th class="text-center">{{ col.label }}</th>
-            }
-          </tr>
-        </thead>
-
-        <tbody>
-          @for (fila of pageActual(); track $index) {
-            <tr
-              class="table-row"
-              style="cursor: pointer"
-              (click)="onFilaClick(fila)">
-
-              @for (col of columnas; track $index) {
-                <td class="text-center">
-                  <ng-container [ngSwitch]="col.key">
-
-                  <span *ngSwitchCase="'estadoActivo'">
-  <button
-    type="button"
-    class="badge-estado btn btn-sm"
-    [ngClass]="fila.estadoActivo ? 'badge-activo' : 'badge-inactivo'"
-    (click)="OnToggleActivo(fila, $event)">
-    {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
-  </button>
-</span>
-
-                    <span *ngSwitchCase="'action'"
-                          class="d-inline-flex gap-1 justify-content-center">
-
-                     <!--
-<button
-  type="button"
-  class="btn btn-sm btn-ghost-secondary"
-  title="Ver"
-  (click)="Onview(fila); $event.stopPropagation()">
-  <i class="bi bi-eye-fill"></i>
-</button>
--->
-
-                      <!-- ✏ Editar -->
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-ghost-warning"
-                        title="Editar"
-                        (click)="OnEditClick(fila, $event)">
-                        <i class="bi bi-pencil-fill"></i>
-                      </button>
-
-                      <!-- 🗑 Eliminar -->
-                      <button
-                        type="button"
-                        class="btn btn-sm btn-ghost-danger"
-                        title="Eliminar"
-                        (click)="onEliminarClick(fila, $event)">
-                        <i class="bi bi-trash-fill"></i>
-                      </button>
-                    </span>
-
-                    <!-- Campos normales -->
-                    <span *ngSwitchDefault>
-                      {{ fila[col.key] }}
-                    </span>
-
-                  </ng-container>
-                </td>
+<div class="container-fluid mt-4">
+  <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light">
+            <tr>
+              @for (col of columnas; track col.key) {
+                <th class="px-4 py-3 text-secondary text-uppercase fw-bold" style="font-size: 0.85rem;">
+                  {{ col.label }}
+                </th>
               }
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
 
-      <nav class="d-flex justify-content-center mt-3">
-        <ul class="pagination">
+          <tbody>
+            @for (fila of pageActual(); track $index) {
+              <tr class="table-row" (click)="onFilaClick(fila)" style="cursor: pointer">
+                @for (col of columnas; track col.key) {
+                  <td class="px-4 py-3">
+                    @switch (col.key) {
+                      
+                      @case ('estadoActivo') {
+                        <span 
+                          class="badge rounded-pill px-3 py-2"
+                          [ngClass]="fila.estadoActivo ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
+                          (click)="OnToggleActivo(fila, $event)">
+                          {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
+                        </span>
+                      }
+
+                      @case ('action') {
+                        <div class="d-flex gap-2" (click)="$event.stopPropagation()">
+                          <button class="btn btn-outline-warning btn-sm border-0" 
+                                  title="Editar" (click)="OnEditClick(fila)">
+                            <i class="bi bi-pencil-square"></i>
+                          </button>
+                          <button class="btn btn-outline-danger btn-sm border-0" 
+                                  title="Eliminar" (click)="onEliminarClick(fila)">
+                            <i class="bi bi-trash3-fill"></i>
+                          </button>
+                        </div>
+                      }
+
+                      @default {
+                        <span class="text-dark">{{ fila[col.key] }}</span>
+                      }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer bg-white border-top-0 py-3">
+      <nav class="d-flex justify-content-between align-items-center">
+        <small class="text-muted">
+          Mostrando página {{page}} de {{totalPaginas()}}
+        </small>
+        <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="page === 1">
-            <button
-              class="page-link"
-              (click)="setPage(page - 1)"
-              [disabled]="page === 1">
-              Anterior
-            </button>
+            <button class="page-link shadow-none" (click)="setPage(page - 1)">Anterior</button>
           </li>
-
+          
           @for (p of [].constructor(totalPaginas()); track $index) {
             <li class="page-item" [class.active]="page === ($index + 1)">
-              <button
-                class="page-link"
-                (click)="setPage($index + 1)">
+              <button class="page-link shadow-none" (click)="setPage($index + 1)">
                 {{ $index + 1 }}
               </button>
             </li>
           }
 
           <li class="page-item" [class.disabled]="page === totalPaginas()">
-            <button
-              class="page-link"
-              (click)="setPage(page + 1)"
-              [disabled]="page === totalPaginas()">
-              Siguiente
-            </button>
+            <button class="page-link shadow-none" (click)="setPage(page + 1)">Siguiente</button>
           </li>
         </ul>
       </nav>
-
     </div>
   </div>
 </div>
