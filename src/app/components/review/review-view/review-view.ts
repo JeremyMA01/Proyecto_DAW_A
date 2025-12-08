@@ -1,79 +1,41 @@
-import { Component, ElementRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { Review } from '../../../models/Review';
-import { ServReviewJson } from '../../../services/review/serv-review-json';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe, UpperCasePipe, DatePipe } from '@angular/common';
-import { ServBookJson } from '../../../services/serv-book-json';
+import { Review } from '../../../models/Review';
 import { Book } from '../../../models/Book';
+import { ServReviewJson } from '../../../services/review/serv-review-json';
+import { ServBookJson } from '../../../services/serv-book-json';
 import { ServHomeJson } from '../../../services/home/serv-home-json';
-
-declare var bootstrap: any;
+import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
 
 @Component({
   selector: 'app-review-view',
-  imports: [CurrencyPipe, DatePipe, UpperCasePipe, ReactiveFormsModule],
+  standalone: true,
+  imports: [CurrencyPipe, DatePipe, UpperCasePipe, ReusableReviewForm],
   templateUrl: './review-view.html',
   styleUrl: './review-view.css',
 })
-export class ReviewView implements OnInit, AfterViewInit {
+
+export class ReviewView implements OnInit{
   reviews: Review[] = [];
-  review: Review | null = null;
   book: Book | null = null;
-  editingId: number | null = null;
+
   promedioGeneral: number = 0;
   totalOpiniones: number = 0;
-  formReview!: FormGroup;
-  modalRef: any;
   distribucion: any = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-  
   currentBookId: number = 0;
-
-  @ViewChild('reviewModalRef') modalElement!: ElementRef;
-
-  constructor(
-    private servReview: ServReviewJson,
-    private servBook: ServBookJson,
-    private servHome: ServHomeJson,
-    private router: ActivatedRoute,
-    private fb: FormBuilder
-  ) {
-    this.formReview = this.fb.group({
-      user: ['', Validators.required],
-      comment: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500), Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,\s!?'"()-]+$/)]],
-      score: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
-      isRecommend: [true]
-    });
-  }
+  
+  constructor(private servReview: ServReviewJson, private servBook: ServBookJson, private servHome: ServHomeJson, private router: ActivatedRoute){} 
+    
 
   ngOnInit() {
     this.currentBookId = Number(this.router.snapshot.paramMap.get("id"));
-    
+
     if (this.currentBookId) {
       this.loadBookId(this.currentBookId);
       this.loadReviewBook(this.currentBookId);
     }
-  }
-
-  ngAfterViewInit() {
-    if (this.modalElement) {
-      this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
-    }
-  }
-
-  loadBookId(id: number): void {
-    if (id != 0) {
-      this.servBook.getBookId(id).subscribe((data: Book) => {
-          this.book = data;
-      });
-    }
-  }
-
-  loadReviewBook(id: number): void {
-    this.servReview.getReviewIdBook(id).subscribe((data: Review[]) => {
-        this.reviews = data;
-        this.calcularEstadistica();
-    });
   }
 
   calcularEstadistica() {
@@ -116,72 +78,78 @@ export class ReviewView implements OnInit, AfterViewInit {
     return colors[index];
   }
 
+  loadBookId(id: number): void {
+    if (id != 0) {
+      this.servBook.getBookId(id).subscribe((data: Book) => {
+        this.book = data;
+      });
+    }
+  }
+
+  loadReviewBook(id: number): void {
+    this.servReview.getReviewIdBook(id).subscribe((data: Review[]) => {
+      this.reviews = data;
+      this.calcularEstadistica();
+    });
+  }
+  
   comprar(book: Book) {
     this.servHome.comprar(book);
-  }
-
-  openNew() {
-    this.editingId = null;
-    this.review = null;
-    
-    this.formReview.reset({
-      user: '', 
-      score: 5,
-      isRecommend: true,
-      comment: ''
-    });
-
-    if (this.modalRef) this.modalRef.show();
-  }
-
-  openEdit(r: Review) {
-    this.editingId = r.id ?? null;
-    this.review = r;
-    this.formReview.patchValue(r);
-    if (this.modalRef) this.modalRef.show();
-  }
-
-  save() {
-    if (this.formReview.invalid) {
-      this.formReview.markAllAsTouched();
-      return;
-    }
-
-    const datos = this.formReview.value;
-    
-    if(this.currentBookId) datos.id_book = this.currentBookId;
-
-    if (this.editingId) {
-      let reviewUpdate: Review = { ...datos, id: this.editingId };
-      this.servReview.updateReview(reviewUpdate).subscribe(() => {
-        alert("¡Review Actualizada!");
-        this.modalRef.hide();
-        this.loadReviewBook(this.currentBookId); 
-      });
-    } else {
-      let reviewNew: Review = { ...datos };
-      this.servReview.addReview(reviewNew).subscribe(() => {
-        alert("¡Review publicada!");
-        this.modalRef.hide();
-        this.loadReviewBook(this.currentBookId);
-      });
-    }
   }
 
   search(user: HTMLInputElement) {
     let parametro = user.value.toLowerCase();
     this.servReview.searchReview(parametro).subscribe((data: Review[]) => {
-        this.reviews = data;
-        // Opcional: recalcular estadística basada en búsqueda
+      this.reviews = data;
     });
   }
+  
+   save(review:Review){
+    
+    const reviewF: any = {
+      ...review,
+      id_book: this.currentBookId, 
+      score: Number(review.score),
+      id: review.id ? String(review.id) : undefined, 
+      publishedDate: review.id ? review.publishedDate : new Date().toISOString()
+    };   
+
+    console.log('review listo para enviar ' + reviewF.id);
+
+   if(reviewF.id){
+
+      this.servReview.updateReview(reviewF).subscribe(
+        (data:Review)=>{
+          alert('Review Editada!');
+          this.loadReviewBook(this.currentBookId);
+        });
+    }else{ 
+
+      reviewF.id = this.getId();
+      
+      this.servReview.addReview(reviewF).subscribe(
+        ()=>{
+          alert('Review Creada!');
+          this.loadReviewBook(this.currentBookId);
+        }
+      );
+    }
+  }
+
+  getId():string{
+    if(this.reviews.length === 0) return "1";
+      const id = this.reviews.map(r => Number(r.id) || 0);
+      const stringId = Math.max(...id) + 1;
+      return String(stringId);
+    }
+  
 
   delete(review: Review) {
     const confirmar = confirm('¿Estas seguro de eliminar la reseña?');
     if (confirmar) {
       this.servReview.deleteReview(review.id!).subscribe(() => {
-          alert("¡Eliminado exitosamente!");
-          this.loadReviewBook(this.currentBookId); 
+        alert("¡Eliminado exitosamente!");
+        this.loadReviewBook(this.currentBookId);
       });
     }
   }

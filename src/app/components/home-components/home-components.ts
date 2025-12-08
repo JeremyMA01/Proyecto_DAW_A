@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ServHomeJson } from '../../services/home/serv-home-json';
 @Component({
   selector: 'app-home-components',
-  imports: [UpperCasePipe,DatePipe,CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe],
   templateUrl: './home-components.html',
   styleUrl: './home-components.css',
 })
@@ -61,6 +61,6 @@ export class HomeComponents {
     }
 
      view(id:number|null){
-      this.router.navigate(['/resenas-view/',id]);
+      this.router.navigate(['/review-view/',id]);
      }
 }

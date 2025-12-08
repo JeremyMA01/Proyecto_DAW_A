@@ -19,12 +19,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    RouterModule,
-    BookList,
-    ReusableTable,
-    HomeComponents,
-    ReviewCrud,
-    ReviewView
+    RouterModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
