@@ -197,7 +197,7 @@
       "id": "7"
     }
   ],
-  "Usuario": [
+  "Usuarios": [
     {
       "id": "1",
       "nombre": "Administrador Principal",
@@ -206,26 +206,6 @@
       "ciudad": "Guayaquil",
       "rol": "administrador",
       "password": "Admin123*",
-      "estadoActivo": true
-    },
-    {
-      "id": "2",
-      "nombre": "Maria Lopez",
-      "email": "maria.lopez@email.com",
-      "telefono": "0991234567",
-      "ciudad": "Quito",
-      "rol": "cliente",
-      "password": "User123*",
-      "estadoActivo": true
-    },
-    {
-      "id": "3",
-      "nombre": "Carlos Ruiz",
-      "email": "carlos.ruiz@email.com",
-      "telefono": "0987654321",
-      "ciudad": "Cuenca",
-      "rol": "cliente",
-      "password": "User123*",
       "estadoActivo": true
     },
     {
@@ -256,6 +236,16 @@
       "ciudad": "Loja",
       "rol": "cliente",
       "password": "User123*",
+      "estadoActivo": true
+    },
+    {
+      "id": "1a20",
+      "nombre": "camaton",
+      "email": "22@hotmail.com",
+      "telefono": "0961912893",
+      "ciudad": "guayaquil",
+      "rol": "lector",
+      "password": "123456",
       "estadoActivo": true
     }
   ]

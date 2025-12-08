@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, firstValueFrom } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Usuario } from '../models/usuario.model';
 })
 export class UsuarioService {
 
-  private apiUrl = 'http://localhost:3000/usuarios';
+  private apiUrl = 'http://localhost:3000/Usuarios';
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,12 @@ export class UsuarioService {
     return this.http.get<Usuario[]>(this.apiUrl);
   }
 
-  // Obtener solo activos (si quieres)
+  // Obtener "snapshot" compatible con ForgotPassword, Login, etc.
+  async getUsuariosSnapshot(): Promise<Usuario[]> {
+    return await firstValueFrom(this.http.get<Usuario[]>(this.apiUrl));
+  }
+
+  // Obtener solo activos
   getUsuariosActivos(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl)
       .pipe(map(usuarios => usuarios.filter(u => u.estadoActivo === true)));
@@ -55,5 +60,13 @@ export class UsuarioService {
   // Eliminar
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // LOGIN (compatible con JSON Server)
+  login(email: string, password: string): Observable<Usuario | null> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}?email=${email}&password=${password}`)
+      .pipe(
+        map(usuarios => usuarios.length > 0 ? usuarios[0] : null)
+      );
   }
 }

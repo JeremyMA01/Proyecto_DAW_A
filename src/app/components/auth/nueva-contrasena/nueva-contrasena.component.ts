@@ -26,6 +26,7 @@ export class NuevaContrasenaComponent {
   ) {}
 
   guardarNuevaPassword() {
+    // --- VALIDACIONES DE FORMULARIO ---
     if (!this.password || !this.confirmarPassword) {
       this.errorMsg = 'Debes ingresar y confirmar la nueva contraseña.';
       this.okMsg = '';
@@ -44,34 +45,47 @@ export class NuevaContrasenaComponent {
       return;
     }
 
+    // --- RECUPERAR EMAIL DEL LOCALSTORAGE ---
     const email = localStorage.getItem('resetEmail');
+
     if (!email) {
       this.errorMsg = 'No se encontró el correo asociado. Vuelve a iniciar el proceso.';
       this.okMsg = '';
       return;
     }
 
-    const usuarios: Usuario[] = this.usuarioService.getUsuariosSnapshot();
-    const usuario = usuarios.find((u: Usuario) => u.email === email);
+    // --- AHORA TODO ES ASÍNCRONO CON JSON SERVER ---
+    this.usuarioService.getUsuarios().subscribe((usuarios: Usuario[]) => {
 
-    if (!usuario) {
-      this.errorMsg = 'El usuario ya no existe o fue modificado.';
-      this.okMsg = '';
-      return;
-    }
+      const usuario = usuarios.find((u: Usuario) => u.email === email);
 
-    const actualizado: Usuario = { ...usuario, password: this.password };
+      if (!usuario) {
+        this.errorMsg = 'El usuario ya no existe o fue eliminado.';
+        this.okMsg = '';
+        return;
+      }
 
-    this.usuarioService.actualizar(actualizado).subscribe(() => {
-      this.errorMsg = '';
-      this.okMsg = 'Contraseña actualizada correctamente. Ahora puedes iniciar sesión.';
+      // --- CREAR OBJETO ACTUALIZADO ---
+      const actualizado: Usuario = {
+        ...usuario,
+        password: this.password
+      };
 
-      localStorage.removeItem('resetEmail');
-      localStorage.removeItem('resetCode');
+      // --- ACTUALIZAR EN JSON SERVER ---
+      this.usuarioService.actualizar(actualizado).subscribe(() => {
+        
+        this.errorMsg = '';
+        this.okMsg = 'Contraseña actualizada correctamente. Ahora puedes iniciar sesión.';
 
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 1500);
+        // Limpiar datos temporales
+        localStorage.removeItem('resetEmail');
+        localStorage.removeItem('resetCode');
+
+        // Redirigir
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
+      });
     });
   }
 }
