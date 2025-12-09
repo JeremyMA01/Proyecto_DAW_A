@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core'; // <--- 1. IMPORTAR OnInit y ChangeDetectorRef
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -27,7 +27,7 @@ declare const bootstrap: any;
   templateUrl: './crud-usuarios.component.html',
   styleUrl: './crud-usuarios.component.css',
 })
-export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar OnInit
+export class CrudUsuariosComponent implements OnInit {
   // Formulario
   form!: FormGroup;
   
@@ -42,7 +42,7 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
     { key: 'telefono', label: 'Teléfono' },
     { key: 'ciudad', label: 'Ciudad' },
     { key: 'rol', label: 'Rol' },
-    { key: 'active', label: 'Estado' } // Asegúrate que en tu JSON se llame 'active' o 'estadoActivo'
+    { key: 'active', label: 'Estado' }
   ];
   
   // Modal
@@ -53,15 +53,19 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
   editando = false;
   usuarioEditando: Usuario | null = null;
   
-  // Diálogos
+  // Diálogos (como en categorías - variables separadas)
   showDeleteDialog = false;
   showSuccessDialog = false;
   showErrorDialog = false;
+  showFormErrorDialog = false;
   
-  // Datos para diálogos
+  // Mensajes para diálogos (variables separadas como en categorías)
+  successMessage = '';
+  errorMessage = '';
+  formErrorMessage = '';
+  
+  // Para eliminar
   usuarioParaEliminar: Usuario | null = null;
-  dialogMessage = '';
-  dialogTitle = '';
   
   // Patrones
   readonly patronSoloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
@@ -69,20 +73,17 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
   
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService,
-    private cdr: ChangeDetectorRef // <--- 3. INYECTAR ChangeDetectorRef
+    private usuarioService: UsuarioService
   ) {}
 
-  // <--- 4. Mover la inicialización al ngOnInit (Mejor práctica que el constructor)
   ngOnInit(): void {
     this.inicializarFormulario();
     this.cargarUsuarios();
   }
   
   ngAfterViewInit() {
-    // Protección por si el modalElement aún no existe
-    if(this.modalElement) {
-        this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+    if (this.modalElement) {
+      this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
     }
   }
   
@@ -116,27 +117,24 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
     });
   }
   
+  // Getter para acceder a los controles del formulario
+  get f() {
+    return this.form.controls;
+  }
+  
   // Cargar usuarios
   private cargarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
-      console.log('Usuarios recibidos:', usuarios);
-      
-      // Asignamos los datos
       this.usuarios = usuarios;
-
-      // <--- 5. FORZAR ACTUALIZACIÓN DE LA VISTA
-      // Esto le dice a Angular: "Oye, cambiaron los datos, actualiza la tabla YA"
-      this.cdr.detectChanges(); 
     });
   }
   
-  // Búsqueda (llamada desde HTML)
+  // Búsqueda
   search(busq: HTMLInputElement) {
     let parametro = busq.value.toLowerCase();
     this.usuarioService.searchUsuarios(parametro).subscribe(
       (datos: Usuario[]) => {
         this.usuarios = datos;
-        this.cdr.detectChanges(); // <--- Agregarlo aquí también por si acaso
       }
     );
   }
@@ -152,7 +150,7 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
       ciudad: '',
       rol: 'lector',
       password: '',
-      estadoActivo: true
+      active: true
     });
     this.modalRef.show();
   }
@@ -179,7 +177,8 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.showError('Por favor, complete todos los campos correctamente');
+      this.formErrorMessage = 'Por favor, complete todos los campos correctamente.';
+      this.showFormErrorDialog = true;
       return;
     }
     
@@ -200,19 +199,20 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
       
       this.usuarioService.actualizar(usuarioActualizado).subscribe(
         () => {
-          this.showSuccess('Usuario actualizado exitosamente');
+          this.successMessage = 'Usuario actualizado exitosamente';
+          this.showSuccessDialog = true;
           this.modalRef.hide();
           this.cargarUsuarios();
         },
         (error) => {
-          this.showError('Error al actualizar usuario: ' + error.message);
+          this.errorMessage = 'Error al actualizar usuario: ' + error.message;
+          this.showErrorDialog = true;
         }
       );
     } else {
       // Crear nuevo
       let nextId: string;
       if (this.usuarios.length > 0) {
-        // Aseguramos que el ID se parsee correctamente
         const maxId = Math.max(...this.usuarios.map(u => parseInt(String(u.id)) || 0));
         nextId = (maxId + 1).toString();
       } else {
@@ -232,12 +232,14 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
       
       this.usuarioService.crear(nuevoUsuario).subscribe(
         () => {
-          this.showSuccess('Usuario creado exitosamente');
+          this.successMessage = 'Usuario creado exitosamente';
+          this.showSuccessDialog = true;
           this.modalRef.hide();
           this.cargarUsuarios();
         },
         (error) => {
-          this.showError('Error al crear usuario: ' + error.message);
+          this.errorMessage = 'Error al crear usuario: ' + error.message;
+          this.showErrorDialog = true;
         }
       );
     }
@@ -254,13 +256,15 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
     if (this.usuarioParaEliminar) {
       this.usuarioService.eliminar(this.usuarioParaEliminar.id).subscribe(
         () => {
-          this.showSuccess('Usuario eliminado exitosamente');
+          this.successMessage = 'Usuario eliminado exitosamente';
+          this.showSuccessDialog = true;
           this.showDeleteDialog = false;
           this.usuarioParaEliminar = null;
           this.cargarUsuarios();
         },
         (error) => {
-          this.showError('Error al eliminar usuario: ' + error.message);
+          this.errorMessage = 'Error al eliminar usuario: ' + error.message;
+          this.showErrorDialog = true;
           this.showDeleteDialog = false;
           this.usuarioParaEliminar = null;
         }
@@ -286,41 +290,23 @@ export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar On
         this.cargarUsuarios();
       },
       (error) => {
-        this.showError('Error al cambiar estado: ' + error.message);
+        this.errorMessage = 'Error al cambiar estado: ' + error.message;
+        this.showErrorDialog = true;
       }
     );
   }
   
-  // Helper para mostrar errores
-  campoInvalido(campo: string): boolean {
-    const control = this.form.get(campo);
-    return !!(control && control.invalid && control.touched);
-  }
-  
-  // Mostrar diálogo de éxito
-  private showSuccess(message: string): void {
-    this.dialogTitle = 'Éxito';
-    this.dialogMessage = message;
-    this.showSuccessDialog = true;
-    this.cdr.detectChanges(); // Forzar actualización para que se vea el modal
-  }
-  
-  // Mostrar diálogo de error
-  private showError(message: string): void {
-    this.dialogTitle = 'Error';
-    this.dialogMessage = message;
-    this.showErrorDialog = true;
-    this.cdr.detectChanges(); // Forzar actualización
-  }
-  
-  // Cerrar diálogo de éxito
+  // Cerrar diálogos (métodos separados como en categorías)
   closeSuccessDialog(): void {
     this.showSuccessDialog = false;
   }
   
-  // Cerrar diálogo de error
   closeErrorDialog(): void {
     this.showErrorDialog = false;
+  }
+  
+  closeFormErrorDialog(): void {
+    this.showFormErrorDialog = false;
   }
   
   // Métodos para bloqueo de caracteres
