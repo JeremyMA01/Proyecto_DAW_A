@@ -101,14 +101,15 @@ export class RegistroUsuarioComponent {
 
     const valores = this.form.value;
 
-    const nuevoUsuario: Omit<Usuario, 'id'> = {
+    const nuevoUsuario: Usuario = {
+      id: '0', 
       nombre: valores.nombre,
       email: valores.email,
-      telefono: valores.telefono,
+      telefono: valores.telefono || '',
       ciudad: valores.ciudad,
-      rol: valores.rol,
+      rol: 'lector',
       password: valores.password,
-      estadoActivo: true,   
+      estadoActivo: true
     };
 
     this.usuarioService.crear(nuevoUsuario).subscribe(() => {

@@ -279,7 +279,7 @@
     {
       "name": "Cocina",
       "description": "Libros de recetas y técnicas culinarias",
-      "active": true,
+      "active": false,
       "id": "7"
     }
   ],
@@ -291,11 +291,11 @@
       "telefono": "",
       "ciudad": "Guayaquil",
       "rol": "administrador",
-      "password": "Admin123*",
+      "password": "1234",
       "estadoActivo": true
     },
     {
-      "id": "4",
+      "id": "2",
       "nombre": "Sofia Garcia",
       "email": "sofia.garcia@email.com",
       "telefono": "0955555555",
@@ -305,7 +305,7 @@
       "estadoActivo": true
     },
     {
-      "id": "5",
+      "id": "3",
       "nombre": "David Vera",
       "email": "david.vera@email.com",
       "telefono": "0911112222",
@@ -315,7 +315,7 @@
       "estadoActivo": false
     },
     {
-      "id": "6",
+      "id": "4",
       "nombre": "Elena Torres",
       "email": "elena.torres@email.com",
       "telefono": "0933334444",
@@ -325,20 +325,17 @@
       "estadoActivo": false
     },
     {
-<<<<<<< HEAD
-      "id": 7,
-=======
-      "id": "d85c",
+      "id": "5",
       "nombre": "Maria Lopez",
       "email": "maria.lopez@email.com",
       "telefono": "0991234567",
-      "ciudad": "Quito",
+      "ciudad": "Guayaquil",
       "rol": "lector",
-      "password": "1234",
+      "password": "123456",
       "estadoActivo": true
     },
     {
-      "id": "41b0",
+      "id": "6",
       "nombre": "Maria Lopez",
       "email": "maria.lopez@email.com",
       "telefono": "0991234567",
@@ -349,7 +346,6 @@
     },
     {
       "id": "7",
->>>>>>> e283489e40586bcd101d4e795f3b0567f8260fa0
       "nombre": "alejandro",
       "email": "ale@libreria.com",
       "telefono": "0961912894",
@@ -369,12 +365,52 @@
       "estadoActivo": true
     },
     {
-      "id": 9,
+      "id": "9",
       "nombre": "Harry",
       "email": "harsier.o@gmail.com",
       "telefono": "",
       "ciudad": "Guayaquil",
       "rol": "donante",
+      "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": "10",
+      "nombre": "Segundo Camaton",
+      "email": "segundo@gmail.com",
+      "telefono": "0912121212",
+      "ciudad": "Guayaquil",
+      "rol": "lector",
+      "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": "11",
+      "nombre": "segundo",
+      "email": "segundo@gmail.com",
+      "telefono": "0912121212",
+      "ciudad": "Guayaquil",
+      "rol": "lector",
+      "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": "12",
+      "nombre": "Alina Solorzano",
+      "email": "alina@gmail.com",
+      "telefono": "0912112121",
+      "ciudad": "Guayaquil",
+      "rol": "lector",
+      "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": "13",
+      "nombre": "Nick Wilde",
+      "email": "nick@gmail.com",
+      "telefono": "0912121212",
+      "ciudad": "guayaquil",
+      "rol": "lector",
       "password": "123456",
       "estadoActivo": true
     }
