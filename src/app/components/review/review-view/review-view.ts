@@ -114,8 +114,6 @@ export class ReviewView implements OnInit{
       publishedDate: review.id ? review.publishedDate : new Date().toISOString()
     };   
 
-    console.log('review listo para enviar ' + reviewF.id);
-
    if(reviewF.id){
 
       this.servReview.updateReview(reviewF).subscribe(
@@ -145,7 +143,7 @@ export class ReviewView implements OnInit{
   
 
   delete(review: Review) {
-    const confirmar = confirm('¿Estas seguro de eliminar la reseña?');
+    const confirmar = confirm('¿Estás seguro de eliminar la reseña?');
     if (confirmar) {
       this.servReview.deleteReview(review.id!).subscribe(() => {
         alert("¡Eliminado exitosamente!");

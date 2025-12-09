@@ -1,1 +1,14 @@
-<p>review-crud works!</p>
+<app-reusable-table
+    [datos]="reviews"
+    [columnas]="columnas"
+    (searchClick)="search($event)"
+    (newClick)="reviewModalRef.openNew()"
+    (editClick)="reviewModalRef.openEdit($event)"
+    (eliminarClick)="delete($event)"
+>    
+</app-reusable-table>
+<app-reusable-review-form 
+  #reviewModalRef
+  [mostrarCampos]="false"
+  (onSaveReview)="save($event)">
+</app-reusable-review-form>

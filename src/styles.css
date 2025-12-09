@@ -6,6 +6,10 @@
     padding: 0 40px;
 }
 
+.error{
+    color: red;
+}
+
 /* --- ESTRUCTURA DE CABECERA (LOGO SUPERIOR) --- */
 .header-top-logo {
     padding: 15px 0;
@@ -258,4 +262,268 @@
     transform: translateY(-1px);
     box-shadow: 0 
 }
+
+
+/*estilo tabla*/
+/* Fondo y card general */
+.tabla-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.tabla-card {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  padding: 30px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 1400px;
+  color: #e2e8f0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* Título */
+.tabla-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #38bdf8;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* TABLA */
+.tabla-modern {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e2e8f0;
+}
+
+.tabla-modern thead {
+  background: rgba(255,255,255,0.06);
+}
+
+.tabla-modern th {
+  padding: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: #7dd3fc;
+}
+
+.tabla-modern td {
+  padding: 14px;
+}
+
+/* Filas hover */
+.row-hover {
+  transition: background 0.2s, transform 0.2s;
+}
+
+.row-hover:hover {
+  background: rgba(255,255,255,0.05);
+  transform: scale(1.01);
+}
+
+/* ESTADO ACTIVO / INACTIVO */
+.estado-pill {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.estado-pill.activo {
+  background: #10b981;
+  color: #fff;
+}
+
+.estado-pill.inactivo {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* BOTONES DE ACCIÓN */
+.acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-icon {
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 1rem;
+}
+
+.btn-icon.view {
+  background: #38bdf8;
+  color: #0f172a;
+}
+.btn-icon.view:hover {
+  background: #7dd3fc;
+}
+
+.btn-icon.edit {
+  background: #facc15;
+  color: #0f172a;
+}
+.btn-icon.edit:hover {
+  background: #fde047;
+}
+
+.btn-icon.delete {
+  background: #ef4444;
+  color: white;
+}
+.btn-icon.delete:hover {
+  background: #f87171;
+}
+
+/* PAGINACIÓN */
+.pagination-modern {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.page-btn,
+.page-number {
+  background: #1e3a8a;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.page-number.active {
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.page-btn:hover,
+.page-number:hover {
+  background: #3b82f6;
+}
+
+/* --- WRAPPER GENERAL --- */
+.listado-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.listado-card {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  width: 100%;
+  max-width: 1400px;
+  padding: 30px;
+  border-radius: 18px;
+  color: #e2e8f0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+/* TITULO */
+.title-modern {
+  text-align: center;
+  color: #38bdf8;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 25px;
+}
+
+/* --- ACCIONES SUPERIORES --- */
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.btn-new {
+  background: #38bdf8;
+  color: #0f172a;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-new:hover {
+  background: #7dd3fc;
+}
+
+.input-search {
+  width: 250px;
+  padding: 10px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #e2e8f0;
+}
+
+/* --- MODAL ESTILO LOGIN --- */
+.modal-modern .modal-content {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  color: white;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.modal-modern-title {
+  color: #38bdf8;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.modern-input-group {
+  margin-bottom: 15px;
+}
+
+.modern-label {
+  font-weight: 600;
+  color: #7dd3fc;
+}
+
+.modern-input {
+  width: 100%;
+  padding: 10px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: white;
+}
+
+.btn-save {
+  background: #38bdf8;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.btn-cancel {
+  background: #64748b;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: white;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+/* Checkbox */
+.modern-check input {
+  margin-right: 8px;
+}
+
 

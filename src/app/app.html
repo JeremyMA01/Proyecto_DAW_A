@@ -9,32 +9,38 @@
   <div class="header-bottom-nav sticky-top bg-white shadow-sm border-top" style="top: 0; z-index: 1020;">
     <div class="container">
       <div class="d-flex justify-content-between align-items-center py-2">
+
         <ul class="main-nav-links d-flex list-unstyled gap-4 mb-0 m-0">
           <li><a routerLink="home-components" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Inicio</a></li>
           <li><a routerLink="book-list" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Inventario</a></li>
           <li><a routerLink="review" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Reseñas</a></li>
           <li><a routerLink="categories" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Categorías</a></li>
+          <li><a routerLink="donaciones-crud" routerLinkActive="active" class="text-decoration-none text-dark fw-bold" >Donaciones</a></li>
           <li><a routerLink="/novedades" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Novedades</a></li>
           <li>
-  <a (click)="irAUsuarios()" 
-     class="text-decoration-none text-dark fw-bold" 
-     style="cursor: pointer;">
-     Usuarios
-  </a>
-</li>
+            <a (click)="irAUsuarios()" class="text-decoration-none text-dark fw-bold" style="cursor: pointer;">
+              Usuarios
+            </a>
+          </li>
         </ul>
 
         <div class="user-actions d-flex align-items-center gap-3">
           <span class="cart-icon fs-5" style="cursor: pointer;">🛒</span>
           <span class="text-muted small">|</span>
-          <li><a routerLink="usuarios" routerLinkActive="active" ...>Usuarios</a></li>
+
+          <!-- CORREGIDO: eliminar '...' -->
+          <a routerLink="usuarios" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">
+            Usuarios
+          </a>
+
           <a routerLink="/mi-cuenta" class="btn btn-sm btn-outline-primary rounded-pill px-3">Mi cuenta</a>
         </div>
+
       </div>
     </div>
   </div>
 </ng-container>
 
 <div class="content-container">
-  <router-outlet />
+  <router-outlet></router-outlet>
 </div>

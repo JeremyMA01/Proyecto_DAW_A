@@ -6,6 +6,7 @@ import { ReusableTable } from "../../reusable_component/reusable-table/reusable-
 import { DialogConfirm } from '../../dialog/dialog-confirm/dialog-confirm';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { validate } from '@angular/forms/signals';
 
 declare const bootstrap: any;
 
@@ -18,7 +19,7 @@ declare const bootstrap: any;
 })
 export class BookList {
 
-  private router = new Router();
+  //private router = new Router();
   @Input() datos: any[] = [];
 
   books: Book[] = [];
@@ -32,6 +33,7 @@ export class BookList {
     { key: 'year', label: 'Año' },
     { key: 'genre', label: 'Genero' },
     { key: 'active', label: 'Estado' },
+    {key: 'budget', label: 'Presupuesto'},
     { key: 'action', label: 'Acciones' },
   ];
 
@@ -48,19 +50,22 @@ export class BookList {
 
   constructor(
     private servBook: ServBookJson,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router :Router
   ) {
     this.loadBook();
     this.loadGenero();
 
     this.formBook = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-Z0-9 ]+$/)]],
-      author: ['', [Validators.required, Validators.minLength(3)]],
-      genre: ['', Validators.required],
-      year: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ0-9 ]+$/)]],
+      author: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZÀ-ÿ0-9 ]+$/)]],
+      year: [null, Validators.required],
+      genre: [null, Validators.required],
+      active: [true],      
       releaseDate: ['', Validators.required],
-      poster: ['', Validators.required],
-      active: [true]
+      budget:['', [Validators.required, Validators.min(10), Validators.max(100000000), Validators.pattern(/^\d+$/)]],
+      poster: ['', Validators.required]
+      
     });
   }
 
@@ -69,30 +74,36 @@ export class BookList {
     this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
 
-  // 📌 Carga todos los libros
+  
   loadBook(): void {
     this.servBook.getBook().subscribe((data: Book[]) => {
       this.books = data;
     });
   }
 
-  // 📌 Cargar libro por ID (versión HEAD)
+ 
   loadBookId(id: number): void {
     this.servBook.getBookId(id).subscribe((data: Book) => {
       this.book = data;
     });
   }
 
-  // 📌 Cargar Géneros (versión del otro commit)
+  getgeneroname(generoId:number){
+    const genBuscar = this.generos.find((g)=> Number(g.id) === Number(generoId));
+    return genBuscar ? genBuscar.name:"Sin genero";
+
+  }
+
+ 
   loadGenero(): void {
     this.servBook.getGenre().subscribe((data: Genre[]) => {
       this.generos = data;
     });
   }
 
-  // -----------------------
-  // FUNCIONES COMPLEMENTARIAS
-  // -----------------------
+
+
+
 
   search(busq: HTMLInputElement) {
     let parametro = busq.value.toLowerCase();
@@ -123,6 +134,7 @@ export class BookList {
   }
 
   view(book: Book) {
+      console.log("Libro enviado al view: ", book);
     this.router.navigate(['/book-view', book.id]);
   }
 
@@ -134,12 +146,20 @@ export class BookList {
 
   openEdit(book: Book) {
     this.editingId = Number(book.id);
-    this.formBook.patchValue(book);
+    
+    this.formBook.patchValue(book);  
+
     this.modalRef.show();
   }
 
   save() {
-    if (this.formBook.invalid) return;
+    if (this.formBook.invalid){ 
+      if(this.formBook.invalid){
+        alert("invalido")
+      }
+      return;
+
+    }
 
     const datos = this.formBook.value;
 

@@ -1,0 +1,205 @@
+<div class="min-vh-100 p-4" style="background:#0a1526; color:#e8f1ff;">
+
+    <div class="container mt-5 p-4 rounded shadow-sm"
+        style="background:#101f36; color:#e8f1ff;">
+
+        <!-- ENCABEZADO -->
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h2 class="mb-0 fw-bold" style="color:#37c7ff;">Donaciones</h2>
+
+            <button class="btn d-flex align-items-center"
+                style="background:#1ab4ff; color:white; border:none;"
+                (click)="openNew()">
+                <i class="bi bi-plus-lg me-2"></i> Nueva Donación
+            </button>
+        </div>
+
+        <!-- BUSCADOR Y CONTADOR -->
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <reusable-search (search)="searchText($event)"></reusable-search>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="small" style="color:#9bb4d1;">Total de Libros: {{ books.length }}</span>
+            </div>
+        </div>
+
+        <!-- TABLA -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle"
+                style="color:#e8f1ff;">
+
+                <thead style="background:#0d1b31; color:#37c7ff;">
+                    <tr>
+                        <th>Título</th>
+                        <th>Fecha</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th><i class="bi bi-info-circle-fill me-1"></i>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for(book of books; track book.id) {
+                    <tr style="background:rgba(255,255,255,0.02);">
+                        <td class="fw-bold text-truncate">{{book.title}}</td>
+                        <td>{{book.releaseDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{book.author}}</td>
+                        <td>
+                            <span class="badge bg-secondary">{{book.genre}}</span>
+                        </td>
+
+                        <td>
+                            @if (book.Estado === 'Nuevo') {
+                            <span class="badge bg-success">Nuevo</span>
+                            } @else {
+                            <span class="badge bg-warning text-dark">Usado</span>
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <div class="btn-group">
+
+                                <!-- Ver -->
+                                <button class="btn btn-sm"
+                                    style="border-color:#0dcaf0; color:#0dcaf0;"
+                                    title="Ver" (click)="view(book.id)">
+                                    <i class="bi bi-binoculars"></i>
+                                </button>
+
+                                <!-- Editar -->
+                                <button class="btn btn-sm"
+                                    style="border-color:#ffc107; color:#ffc107;"
+                                    title="Editar" (click)="openEdit(book)">
+                                    <i class="bi bi-pen"></i>
+                                </button>
+
+                                <!-- Eliminar -->
+                                <button class="btn btn-sm"
+                                    style="border-color:#dc3545; color:#dc3545;"
+                                    title="Eliminar" (click)="delete(book)">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+                    }
+
+                    @empty {
+                    <tr>
+                        <td colspan="6" class="text-center py-4" style="color:#9bb4d1;">
+                            <i class="bi bi-box-seam fs-4 d-block mb-2"></i>
+                            No se encontraron donaciones de libros.
+                        </td>
+                    </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef
+    aria-labelledby="bookModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background:#101f36; color:#e8f1ff;">
+
+            <div class="modal-header" style="background:#0d1b31; color:#37c7ff;">
+                <h5 class="modal-title">
+                    {{ editingId ? 'Editar Libro' : 'Nueva Donación de Libro' }}
+                </h5>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form [formGroup]="formBook">
+                <div class="modal-body">
+
+                    <!-- FILA 1 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Título *</label>
+                            <input type="text" class="form-control"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="title">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Autor *</label>
+                            <input type="text" class="form-control"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="author">
+                        </div>
+                    </div>
+
+                    <!-- FILA 2 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Género *</label>
+                            <select class="form-select"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="genre">
+                                <option value="" disabled>Seleccione un género</option>
+                                <option value="Ficcion">Ficción</option>
+                                <option value="Novela">Novela</option>
+                                <option value="Historia">Historia</option>
+                                <option value="Ciencia">Ciencia</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Fecha de Publicación</label>
+                            <input type="date" class="form-control"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="releaseDate">
+                        </div>
+                    </div>
+
+                    <!-- ESTADO -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Estado del Libro</label>
+                        <select class="form-select"
+                            style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                            formControlName="Estado">
+                            <option value="Nuevo">Nuevo</option>
+                            <option value="Usado">Usado</option>
+                        </select>
+                    </div>
+
+                    <!-- POSTER -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Poster (URL)</label>
+                        <input type="url" class="form-control"
+                            style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                            formControlName="poster">
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        style="background:#6c757d;"
+                        data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+
+                    <button class="btn"
+                        style="background:#1ab4ff; color:white;"
+                        type="button"
+                        (click)="save()"
+                        [disabled]="formBook.invalid">
+                        <i class="bi bi-save me-1"></i> Guardar
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

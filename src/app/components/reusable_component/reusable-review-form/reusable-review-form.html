@@ -1,4 +1,5 @@
-<div class="modal fade" id="reviewModal" tabindex="-1" #reviewModalRef>
+
+<!--<div class="modal fade" id="reviewModal" tabindex="-1" #reviewModalRef>
     <div class="modal-dialog">
         <div class="modal-content">
             
@@ -84,4 +85,99 @@
 
         </div> 
         </div>
+</div>-->
+<div class="modal fade" id="reviewModal" tabindex="-1" #reviewModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{editingId ? 'Editar reseña' : 'Agregar reseña'}}
+        </h5>
+        <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="formReview">
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Usuario</label>
+            <input type="text" class="form-control" formControlName="user"
+              [class.is-invalid]="formReview.get('user')?.invalid && (formReview.get('user')?.touched || formReview.get('user')?.dirty)">
+
+            <div class="invalid-feedback d-block"> @if(formReview.get('user')?.invalid && (formReview.get('user')?.touched ||
+              formReview.get('user')?.dirty)){
+              @if(formReview.get('user')?.errors?.['required']){ <div>El campo usuario es obligatorio!</div> }
+              @if(formReview.get('user')?.errors?.['minlength']){ <div>Mínimo 3 caracteres!</div> }
+              @if(formReview.get('user')?.errors?.['maxlength']){ <div>Máximo 25 caracteres!</div> }
+              @if(formReview.get('user')?.errors?.['pattern']){ <div>Solo letras y números!</div> }
+              }
+            </div>
+          </div>
+
+          @if (mostrarCampos) {
+          <div class="mb-3">
+            <label class="form-label fw-bold">ID del Libro</label>
+            <input type="text" class="form-control" formControlName="id_book"
+              [class.is-invalid]="formReview.get('id_book')?.invalid && formReview.get('id_book')?.touched">
+            <div class="invalid-feedback d-block">
+              @if(formReview.get('id_book')?.invalid && formReview.get('id_book')?.touched){
+                <div>El ID de libro es obligatorio!</div>
+              }
+            </div>
+          </div>
+          }
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Puntuación</label>
+            <select class="form-select" formControlName="score"
+              [class.is-invalid]="formReview.get('score')?.invalid && formReview.get('score')?.touched">
+              <option value="">Seleccione...</option>
+              <option value="1">1 ★</option>
+              <option value="2">2 ★★</option>
+              <option value="3">3 ★★★</option>
+              <option value="4">4 ★★★★</option>
+              <option value="5">5 ★★★★★</option>
+            </select>
+            <div class="invalid-feedback d-block">
+              @if(formReview.get('score')?.invalid && formReview.get('score')?.touched){
+              @if(formReview.get('score')?.errors?.['required']){ <div>¡Selecciona una calificación!</div> }
+              }
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Comentario</label>
+            <textarea class="form-control" formControlName="comment" rows="3"
+              [class.is-invalid]="formReview.get('comment')?.invalid && (formReview.get('comment')?.touched || formReview.get('comment')?.dirty)"></textarea>
+            <div class="invalid-feedback d-block">
+              @if(formReview.get('comment')?.invalid && (formReview.get('comment')?.touched ||
+              formReview.get('comment')?.dirty)){
+              @if(formReview.get('comment')?.errors?.['required']){ <div>El comentario es obligatorio!</div> }
+              @if(formReview.get('comment')?.errors?.['minlength']){ <div>Mínimo 3 caracteres!</div> }
+              @if(formReview.get('comment')?.errors?.['maxlength']){ <div>Máximo 300 caracteres!</div> }
+              @if(formReview.get('comment')?.errors?.['pattern']){ <div>Caracteres inválidos!</div> }
+              }
+            </div>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" formControlName="isRecommend" id="chkRecommend">
+            <label class="form-check-label user-select-none" for="chkRecommend">
+              ¿Recomienda este libro?
+            </label>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" (click)="close()">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="save()" [disabled]="formReview.invalid">
+          {{editingId ? 'Actualizar' : 'Guardar'}}
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

@@ -4,8 +4,12 @@ export interface Book{
     poster:string,
     author:string,
     budget:number,
+    Estado: String,
     year:number,
-    genre:string,
+    genre:number,
+    active:boolean,
+    releaseDate:string,  
     categorie:string,
-    active:boolean
+  
+
 }

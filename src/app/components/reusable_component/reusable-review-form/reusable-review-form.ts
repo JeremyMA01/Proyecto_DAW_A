@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Output, ViewChild, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Output, ViewChild, EventEmitter, Input } from '@angular/core';
 import { Review } from '../../../models/Review';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -12,6 +12,7 @@ declare var bootstrap:any;
   styleUrl: './reusable-review-form.css',
 })
 export class ReusableReviewForm implements AfterViewInit{
+  @Input() mostrarCampos:boolean = false;
   @Output() onSaveReview = new EventEmitter<Review>();
 
   formReview!:FormGroup;
@@ -27,6 +28,7 @@ export class ReusableReviewForm implements AfterViewInit{
         comment:['', [Validators.required, Validators.minLength(3), Validators.maxLength(300),
                   Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,\s¿?\[\]'"()-]+$/)]],
         isRecommend:[true],
+        id_book: ['', Validators.required]
     });
   } 
 
@@ -40,6 +42,7 @@ export class ReusableReviewForm implements AfterViewInit{
   }
 
   /*Abrir modalRef - Crear*/
+  /*
   openNew(){
     this.editingId = null;
     this.formReview.reset({isRecommend:true});
@@ -51,7 +54,24 @@ export class ReusableReviewForm implements AfterViewInit{
 
     this.modalRef.show();
   }
+  */
 
+  openNew(){
+    this.editingId = null;
+    this.formReview.reset({isRecommend:true});
+    
+    const id_book = this.formReview.get('id_book');
+    if(this.mostrarCampos){
+      id_book?.setValidators([Validators.required]);
+    }else{
+      id_book?.clearValidators();
+    }
+    id_book?.updateValueAndValidity();
+
+      this.modalRef.show();
+
+  }
+  
   /*Abrir modalRef - Editar*/
   openEdit(review:Review){
     this.editingId = review.id ?? null;   
@@ -80,9 +100,11 @@ export class ReusableReviewForm implements AfterViewInit{
         return;
     }
 
+    //Obteniendo los valores del formulario
     const datos = this.formReview.value;
-
+    //Creando el objeto final
     const reviewF: Review = {...datos, id:this.editingId};
+    //Enviando el objeto al padre
     this.onSaveReview.emit(reviewF);
     this.close();
   }

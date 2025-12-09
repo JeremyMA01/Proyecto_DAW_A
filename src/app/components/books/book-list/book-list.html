@@ -1,111 +1,147 @@
-<h2>Listado de Libros</h2>
-<!-- <button class="btn btn-danger mb-3" (click)="dialogVisible = true">
-  Eliminar
+<div class="listado-wrapper">
 
-</button> -->
-<button class="btn btn-success" (click)="openNew()">Nuevo Libro</button>
-<input type="text" class="form-control mb-3" placeholder="buscar pelicula... " #busq (keyup)="search(busq)">
-<app-reusable-table
-  [datos]="books"
-  [columnas]="columnas"
-  (emilinarClick)="delete($event)"
-  (verClick)="view($event)"
-  (editClick)="openEdit($event)">
+  <div class="listado-card">
 
-</app-reusable-table>
+    <h2 class="title-modern">Listado de Libros</h2>
 
-@if (dialogVisible) {
-  <app-dialog-confirm
-    (aceptar)="onAceptar()"
-    (cancelar)="onCancelar()">
-  </app-dialog-confirm>
-}
+    <!-- Acciones superiores -->
+    <div class="top-actions">
+      <button class="btn-new" (click)="openNew()">+ Nuevo Libro</button>
 
-<!-- MODAL PARA CREAR / EDITAR LIBRO -->
+      <input
+        type="text"
+        class="input-search"
+        placeholder="Buscar libro..."
+        #busq
+        (keyup)="search(busq)"
+      />
+    </div>
+
+    <!-- TABLA -->
+    <app-reusable-table
+      [datos]="books"
+      [columnas]="columnas"
+      [generos]="generos"
+      [obtenerGeneroNombre]="getgeneroname.bind(this)"
+      (emilinarClick)="delete($event)"
+      (verClick)="view($event)"
+      (editClick)="openEdit($event)"
+    >
+    </app-reusable-table>
+
+    <!-- DIALOG CONFIRM -->
+    @if (dialogVisible) {
+      <app-dialog-confirm
+        (aceptar)="onAceptar()"
+        (cancelar)="onCancelar()"
+      ></app-dialog-confirm>
+    }
+
+  </div>
+</div>
+
+
+<!-- MODAL PARA CREAR O EDITAR -->
 <div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef>
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-modern">
+    <div class="modal-content modal-modern-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">
+      <div class="modal-header modal-modern-header">
+        <h5 class="modal-title modal-modern-title">
           {{ editingId ? 'Editar Libro' : 'Nuevo Libro' }}
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <!-- Formulario reactivo -->
-      <form [formGroup]="formBook">
+      <form [formGroup]="formBook" class="modal-form-modern">
         <div class="modal-body">
 
-          <!-- TÍTULO -->
-          <div class="mb-3">
-            <label class="form-label">Título</label>
-            <input type="text" class="form-control" formControlName="title" />
+          <!-- Título -->
+          <div class="modern-input-group">
+            <label class="modern-label">Título</label>
+            <input type="text" class="modern-input" formControlName="title" />
+
+            <span class="error">
+              @if(formBook.get('title')?.invalid && (formBook.get("title")?.dirty || formBook.get("title")?.touched)){
+                @if(formBook.get("title")?.errors?.['required']){ Título requerido }
+                @if(formBook.get("title")?.errors?.['minlength']){ Mínimo 3 caracteres }
+                @if(formBook.get("title")?.errors?.['pattern']){ Solo letras, números y espacios }
+              }
+            </span>
           </div>
 
-          <!-- AUTOR -->
-          <div class="mb-3">
-            <label class="form-label">Autor</label>
-            <input type="text" class="form-control" formControlName="author" />
+          <!-- Autor -->
+          <div class="modern-input-group">
+            <label class="modern-label">Autor</label>
+            <input type="text" class="modern-input" formControlName="author" />
+            <span class="error">
+              @if(formBook.get('author')?.invalid && (formBook.get("author")?.dirty || formBook.get("author")?.touched)){
+                @if(formBook.get("author")?.errors?.['required']){ Autor requerido }
+                @if(formBook.get("author")?.errors?.['minlength']){ Mínimo 3 caracteres }
+              }
+            </span>
           </div>
 
-          <!-- GÉNERO -->
-           <div class="mb-3">
-            <label class="form-label">Género</label>
-            <input type="text" class="form-control" formControlName="genre">
+          <!-- Año -->
+          <div class="modern-input-group">
+            <label class="modern-label">Año de publicación</label>
+            <input type="number" class="modern-input" formControlName="year" />
           </div>
 
-           <div class="mb-3">
-            <label class="form-label">Género</label>
-            <select class="form-select" formControlName="genre">
-              </select>
-              </div>
+          <!-- Género -->
+          <div class="modern-input-group">
+            <label class="modern-label">Género</label>
+            <select class="modern-input" formControlName="genre">
+              <option value="">Seleccione...</option>
+              @for (g of generos; track $index) {
+                <option [value]="g.id">{{ g.name }}</option>
+              }
+            </select>
 
-          <!-- AÑO DE Publicaion -->
-            <div class="mb-3">
-            <label class="form-label">Fecha de Publicacion</label>
-            <input
-              type="date"
-              formControlName="releaseDate"
-              [min]="minDate"
-              [max]="maxDate"
-              class="form-control"
-            />
+            <span class="error">
+              @if(formBook.get('genre')?.invalid && (formBook.get("genre")?.dirty || formBook.get("genre")?.touched)){
+                @if(formBook.get("genre")?.errors?.['required']){ Género requerido }
+              }
+            </span>
           </div>
 
-          <div class="mb-3">
-  <label class="form-label">Año</label>
-  <input type="number" class="form-control" formControlName="year">
-</div>
-
-
-          <!-- POSTER -->
-          <div class="mb-3">
-            <label class="form-label">Poster (URL)</label>
-            <input type="text" class="form-control" formControlName="poster" />
+          <!-- Fecha -->
+          <div class="modern-input-group">
+            <label class="modern-label">Fecha de Publicación</label>
+            <input type="date" class="modern-input" formControlName="releaseDate" />
           </div>
 
-        
+          <!-- Presupuesto -->
+          <div class="modern-input-group">
+            <label class="modern-label">Presupuesto</label>
+            <input type="number" class="modern-input" formControlName="budget" />
 
-        <div class="form-check mb-3">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              formControlName="active"
-              id="checkActive"
-            />
-            <label class="form-check-label" for="checkActive">Activa</label>
+            <span class="error">
+              @if(formBook.get('budget')?.invalid && (formBook.get("budget")?.dirty || formBook.get("budget")?.touched)){
+                @if(formBook.get("budget")?.errors?.['required']){ Requerido }
+                @if(formBook.get("budget")?.errors?.['min']){ Mínimo 10 }
+                @if(formBook.get("budget")?.errors?.['max']){ Máximo 100000000 }
+              }
+            </span>
           </div>
+
+          <!-- Poster -->
+          <div class="modern-input-group">
+            <label class="modern-label">Poster (URL)</label>
+            <input type="text" class="modern-input" formControlName="poster" />
+          </div>
+
+          <!-- Active -->
+          <div class="form-check modern-check">
+            <input type="checkbox" formControlName="active" id="checkActive" />
+            <label class="form-check-label" for="checkActive">Activo</label>
+          </div>
+
         </div>
 
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
-            Cancelar
-          </button>
-
-          <button class="btn btn-primary" type="button" (click)="save()">
-            Guardar
-          </button>
+        <div class="modal-footer modal-modern-footer">
+          <button type="button" class="btn-cancel" (click)="modalRef.hide()">Cancelar</button>
+          <button type="button" class="btn-save" (click)="save()">Guardar</button>
         </div>
       </form>
 

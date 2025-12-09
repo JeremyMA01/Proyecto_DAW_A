@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReusableReviewCrud } from './reusable-review-crud';
+import { ReusableSearch } from './reusable-search';
 
-describe('ReusableReviewCrud', () => {
-  let component: ReusableReviewCrud;
-  let fixture: ComponentFixture<ReusableReviewCrud>;
+describe('ReusableSearch', () => {
+  let component: ReusableSearch;
+  let fixture: ComponentFixture<ReusableSearch>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReusableReviewCrud]
+      imports: [ReusableSearch]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReusableReviewCrud);
+    fixture = TestBed.createComponent(ReusableSearch);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
