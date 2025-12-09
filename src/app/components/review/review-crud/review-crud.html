@@ -1,6 +1,8 @@
 <app-reusable-table
     [datos]="reviews"
     [columnas]="columnas"
+    (searchClick)="search($event)"
+    (newClick)="reviewModalRef.openNew()"
     (editClick)="reviewModalRef.openEdit($event)"
     (eliminarClick)="delete($event)"
 >    
