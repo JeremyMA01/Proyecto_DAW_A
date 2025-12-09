@@ -25,7 +25,7 @@
               {{ editando ? 'Editar usuario' : 'Registrar usuario' }}
             </h2>
 
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-2">
+            <form [formGroup]="form" class="space-y-2">
 
               <div class="mb-2">
                 <label class="form-label text-slate-200 text-sm">Nombre completo</label>
@@ -108,7 +108,7 @@
               </div>
 
               <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary btn-modern flex-grow-1 py-1">
+                <button type="button" class="btn btn-primary btn-modern flex-grow-1 py-1" (click)="onSubmit()">
                   {{ editando ? 'Actualizar' : 'Guardar' }}
                 </button>
                 <button type="button" class="btn btn-outline-light btn-sm btn-ghost" (click)="resetFormulario()">
@@ -129,44 +129,20 @@
               <div>
                 <h2 class="h6 mb-1">Listado de usuarios</h2>
                 <p class="mb-0 text-xs text-slate-400">
-                  Haz clic en una fila para editar, o en el ícono de papelera para eliminar.
+                  Haz clic en el ícono de lápiz para editar, o en el ícono de papelera para eliminar.
                 </p>
-              </div>
-
-              <div class="input-group input-group-sm search-group">
-                <span class="input-group-text search-prefix">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input
-                  type="text"
-                  class="form-control modern-input search-input"
-                  [(ngModel)]="terminoBusqueda"
-                  (ngModelChange)="onBuscarCambio()"
-                  placeholder="Buscar por nombre o correo...">
               </div>
             </div>
 
             <div class="table-wrapper flex-grow-1">
+              <!-- Tabla reutilizable -->
               <app-reusable-table
-                [datos]="usuariosFiltrados"
+                [datos]="usuarios"
                 [columnas]="columnasTabla"
                 (editClick)="onEditarClick($event)"
-                (verClick)="onVerClick($event)"
                 (eliminarClick)="onEliminarClick($event)"
                 (toggleActivo)="onToggleActivo($event)">
               </app-reusable-table>
-
-              <app-reusable-dialog
-                [visible]="dialogVisible"
-                titulo="Eliminar usuario"
-                [mensaje]="usuarioParaEliminar ? '¿Eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
-                textoAceptar="Eliminar"
-                textoCancelar="Cancelar"
-                tipo="danger"
-                (aceptar)="confirmarEliminar()"
-                (cancelar)="cancelarEliminar()">
-              </app-reusable-dialog>
-
             </div>
           </div>
         </div>
@@ -174,4 +150,39 @@
     </div>
 
   </div>
+
+  <!-- Diálogo de confirmación para eliminar -->
+  <app-reusable-dialog
+    [visible]="showDeleteDialog"
+    [titulo]="'Eliminar usuario'"
+    [mensaje]="usuarioParaEliminar ? '¿Estás seguro de eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
+    [textoAceptar]="'Eliminar'"
+    [textoCancelar]="'Cancelar'"
+    [tipo]="'danger'"
+    (aceptar)="confirmarEliminar()"
+    (cancelar)="cancelarEliminar()">
+  </app-reusable-dialog>
+
+  <!-- Diálogo de éxito -->
+  <app-reusable-dialog
+    [visible]="showSuccessDialog"
+    [titulo]="dialogTitle"
+    [mensaje]="dialogMessage"
+    [textoAceptar]="'Aceptar'"
+    [textoCancelar]="''"
+    [tipo]="'primary'"
+    (aceptar)="closeSuccessDialog()">
+  </app-reusable-dialog>
+
+  <!-- Diálogo de error -->
+  <app-reusable-dialog
+    [visible]="showErrorDialog"
+    [titulo]="dialogTitle"
+    [mensaje]="dialogMessage"
+    [textoAceptar]="'Aceptar'"
+    [textoCancelar]="''"
+    [tipo]="'danger'"
+    (aceptar)="closeErrorDialog()">
+  </app-reusable-dialog>
+
 </div>

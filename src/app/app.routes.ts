@@ -50,7 +50,7 @@ export const routes: Routes = [
   { path: 'donaciones-crud', component: DonacionesCrud }, 
 
 
-  { path: 'usuarios', component: CrudUsuariosComponent, canActivate: [adminGuard] },
+  { path: 'usuarios', component: CrudUsuariosComponent },
 
   { path: 'mensajes', component: ContactMessageComponent },
 
