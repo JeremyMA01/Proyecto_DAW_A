@@ -100,15 +100,13 @@
       "id": "9"
     },
     {
-      "id": "10",
       "title": "Cien Sonetos de Amor",
       "author": "Pablo Neruda",
-      "year": 1959,
-      "genre": 13,
-      "active": true,
+      "genre": "Historia",
       "releaseDate": "2024-06-14",
-      "budget": 12,
-      "poster": "https://anterior.mrbooks.com/mrbooks/portadas/9788418933714.webp"
+      "Estado": "Nuevo",
+      "poster": "https://anterior.mrbooks.com/mrbooks/portadas/9788418933714.webp",
+      "id": "10"
     }
   ],
   "Generos": [
@@ -201,27 +199,28 @@
       "user": "Katherine Rivas",
       "score": 5,
       "comment": "Libro bueno",
-      "isRecommend": false,
+      "isRecommend": true,
       "id_book": 2,
       "publishedDate": "2025-12-09",
       "id": "4"
     },
     {
-      "id": "5",
       "user": "Sofia",
       "score": 5,
       "comment": "Muy buen libro",
-      "isRecommend": true,
+      "isRecommend": false,
       "id_book": 2,
-      "publishedDate": "2025-12-09"
+      "publishedDate": "2025-12-09",
+      "id": "5"
     },
     {
       "id": "6",
-      "user": "Tanisha",
-      "score": 3,
-      "comment": "Libro decente",
+      "user": "Erick Santos",
+      "score": 4,
+      "comment": "Recomendado",
       "isRecommend": true,
-      "publishedDate": "2025-12-09T00:04:58.817Z"
+      "id_book": 3,
+      "publishedDate": "2025-12-09"
     }
   ],
   "categories": [
@@ -266,6 +265,12 @@
       "description": "Libros de recetas y técnicas culinarias",
       "active": false,
       "id": "7"
+    },
+    {
+      "id": "8",
+      "name": "Ficcion",
+      "description": "sjkfnkdf",
+      "active": true
     }
   ],
   "Usuarios": [
@@ -273,11 +278,11 @@
       "id": "1",
       "nombre": "Administrador Principal",
       "email": "admin@libreria.com",
-      "telefono": "",
+      "telefono": "0912121212",
       "ciudad": "Guayaquil",
       "rol": "administrador",
-      "password": "1234",
-      "estadoActivo": true
+      "password": "123456",
+      "active": true
     },
     {
       "id": "2",
@@ -287,7 +292,7 @@
       "ciudad": "Manta",
       "rol": "cliente",
       "password": "User123*",
-      "estadoActivo": true
+      "active": true
     },
     {
       "id": "3",
@@ -297,7 +302,7 @@
       "ciudad": "Ambato",
       "rol": "cliente",
       "password": "User123*",
-      "estadoActivo": false
+      "active": true
     },
     {
       "id": "4",
@@ -307,7 +312,7 @@
       "ciudad": "Loja",
       "rol": "cliente",
       "password": "User123*",
-      "estadoActivo": false
+      "active": true
     },
     {
       "id": "5",
@@ -317,7 +322,7 @@
       "ciudad": "Guayaquil",
       "rol": "lector",
       "password": "123456",
-      "estadoActivo": true
+      "active": true
     },
     {
       "id": "6",
@@ -327,77 +332,7 @@
       "ciudad": "Quito",
       "rol": "lector",
       "password": "1234",
-      "estadoActivo": true
-    },
-    {
-      "id": "7",
-      "nombre": "alejandro",
-      "email": "ale@libreria.com",
-      "telefono": "0961912894",
-      "ciudad": "GUAYAQUIL",
-      "rol": "donante",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "8",
-      "nombre": "cristhian briones ",
-      "email": "cristhian@gmail.com",
-      "telefono": "",
-      "ciudad": "Guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "9",
-      "nombre": "Harry",
-      "email": "harsier.o@gmail.com",
-      "telefono": "",
-      "ciudad": "Guayaquil",
-      "rol": "donante",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "10",
-      "nombre": "Segundo Camaton",
-      "email": "segundo@gmail.com",
-      "telefono": "0912121212",
-      "ciudad": "Guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "11",
-      "nombre": "segundo",
-      "email": "segundo@gmail.com",
-      "telefono": "0912121212",
-      "ciudad": "Guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "12",
-      "nombre": "Alina Solorzano",
-      "email": "alina@gmail.com",
-      "telefono": "0912112121",
-      "ciudad": "Guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "13",
-      "nombre": "Nick Wilde",
-      "email": "nick@gmail.com",
-      "telefono": "0912121212",
-      "ciudad": "guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
+      "active": true
     }
   ]
 }

@@ -1,24 +1,21 @@
-<div class="listado-wrapper">
-
-  <div class="listado-card">   
 
 
-    <p>Listado de libros </p>
-    
-    <div class="top-actions">
-      <button class="btn-new" (click)="openNew()">+ Nuevo Libro</button>
+<div class="encabezado">
+    <h2>Gestión de Inventario</h2> 
+</div>
 
-      <input
+<div class="encabezado-acciones">
+    <input
         type="text"
-        class="input-search"
+        class="busquedaInput"
         placeholder="Buscar libro..."
         #busq
         (keyup)="search(busq)"
         
       />
-    </div>
+    <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Nuevo Libro</button>
+</div>
    
-    <h2 class="tabla-title">Listado de Libros</h2>
     <app-reusable-table
       [datos]="books"
       [columnas]="columnas"
@@ -38,8 +35,6 @@
       ></app-dialog-confirm>
     }
 
-  </div>
-</div>
 
 
 <!-- MODAL PARA CREAR O EDITAR -->

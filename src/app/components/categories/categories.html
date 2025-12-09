@@ -1,9 +1,11 @@
 <div class="encabezado">
     <h2>Gestión de Categorías</h2> 
-    <button class="añadir" (click)="openNew()">Agregar Categoría</button>
 </div>
 
-<input type="text" class="busquedaInput" placeholder="Buscar categoría..." #busq (keyup)="search(busq)">
+<div class="encabezado-acciones">
+    <input type="text" class="busquedaInput" placeholder="Buscar categoría..." #busq (keyup)="search(busq)">
+    <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Agregar Categoría</button>
+</div>
 
 
 <!-- Tabla reutilizable -->
@@ -80,4 +82,37 @@
   [tipo]="'danger'"
   (aceptar)="confirmDelete()"
   (cancelar)="cancelDelete()">
+</app-reusable-dialog>
+
+<!-- Diálogo de éxito -->
+<app-reusable-dialog
+  [visible]="showSuccessDialog"
+  [titulo]="'Éxito'"
+  [mensaje]="successMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'primary'"
+  (aceptar)="closeSuccessDialog()">
+</app-reusable-dialog>
+
+<!-- Diálogo de error -->
+<app-reusable-dialog
+  [visible]="showErrorDialog"
+  [titulo]="'Error'"
+  [mensaje]="errorMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'danger'"
+  (aceptar)="closeErrorDialog()">
+</app-reusable-dialog>
+
+<!-- Diálogo de error de formulario -->
+<app-reusable-dialog
+  [visible]="showFormErrorDialog"
+  [titulo]="'Error en el formulario'"
+  [mensaje]="formErrorMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'danger'"
+  (aceptar)="closeFormErrorDialog()">
 </app-reusable-dialog>

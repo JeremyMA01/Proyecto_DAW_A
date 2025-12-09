@@ -1,25 +1,5 @@
 <div class="container-fluid mt-4">
 
-  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-    <div class="col-md-6 col-lg-4 p-0">
-      <div class="input-group input-group-sm border rounded-pill px-3 py-1 bg-white shadow-sm">
-        <span class="input-group-text border-0 bg-transparent text-muted">
-          <i class="bi bi-search"></i>
-        </span>
-        <input 
-          type="text" 
-          class="form-control border-0 shadow-none" 
-          placeholder="Filtrar resultados..."
-          #txtSearch
-          (keyup)="onSearch(txtSearch.value)">
-      </div>
-    </div>
-
-    <button class="btn btn-primary rounded-pill shadow-sm py-2 px-4" (click)="onNewClick()">
-      <i class="bi bi-plus-circle-fill me-2"></i> Crear Nuevo
-    </button>
-  </div>
-
   <div class="card shadow-sm border-0 rounded-3">
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -92,19 +72,19 @@
                   <div class="d-flex justify-content-center gap-1"
                        (click)="$event.stopPropagation()">
 
-                    <button class="btn btn-sm  btn-ghost-warning rounded-circle " 
+                    <button class="btn btn-icon btn-ghost-info" 
                     title="Ver"
                     (click)="Onview(fila, $event)">
                       <i class="bi bi-eye-fill"></i>
                     </button>
 
-                    <button class="btn btn-sm btn-ghost-warning rounded-circle"
+                    <button class="btn btn-icon btn-ghost-warning "
                             title="Editar" 
                             (click)="OnEditClick(fila)">
                       <i class="bi bi-pencil-fill"></i>
                     </button>
 
-                    <button class="btn btn-sm btn-ghost-danger rounded-circle"
+                    <button class="btn btn-icon btn-ghost-danger "
                             title="Eliminar"
                             (click)="onEliminarClick(fila)">
                       <i class="bi bi-trash3-fill"></i>

@@ -19,7 +19,7 @@ export class UsuarioService {
   // Obtener usuarios activos
   getUsuariosActivos(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.apiUrl)
-      .pipe(map(usuarios => usuarios.filter(u => u.estadoActivo === true)));
+      .pipe(map(usuarios => usuarios.filter(u => u.active === true)));
   }
 
   // Buscar usuarios

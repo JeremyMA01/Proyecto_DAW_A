@@ -1,24 +1,18 @@
-<div class="min-vh-100 p-4" style="background:#0a1526; color:#e8f1ff;">
+<div class="encabezado">
+    <h2>Gestión de Donaciones</h2> 
+</div>
 
-    <div class="container mt-5 p-4 rounded shadow-sm"
-        style="background:#101f36; color:#e8f1ff;">
+<div class="encabezado-acciones">
+    <div class="col-md-6">
+        <reusable-search (search)="searchText($event)"></reusable-search>
+    </div>
+     <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Nueva Donación </button>
+</div>
 
-        <!-- ENCABEZADO -->
-        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-            <h2 class="mb-0 fw-bold" style="color:#37c7ff;">Donaciones</h2>
 
-            <button class="btn d-flex align-items-center"
-                style="background:#1ab4ff; color:white; border:none;"
-                (click)="openNew()">
-                <i class="bi bi-plus-lg me-2"></i> Nueva Donación
-            </button>
-        </div>
-
-        <!-- BUSCADOR Y CONTADOR -->
+        <!-- CONTADOR -->
         <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <reusable-search (search)="searchText($event)"></reusable-search>
-            </div>
+            
             <div class="col-md-6 text-end">
                 <span class="small" style="color:#9bb4d1;">Total de Libros: {{ books.length }}</span>
             </div>
@@ -101,8 +95,12 @@
 
             </table>
         </div>
-    </div>
-</div>
+
+
+
+
+
+
 
 <!-- MODAL -->
 <div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef

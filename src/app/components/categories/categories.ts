@@ -9,22 +9,31 @@ declare const bootstrap: any;
 
 @Component({
   selector: 'app-categories',
-  imports: [ReactiveFormsModule, ReusableTable, ReusableDialog], // Agregar componentes
+  imports: [ReactiveFormsModule, ReusableTable, ReusableDialog],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
 export class Categories {
   categories: Categorie[] = [];
   selectedCategorie: Categorie | null = null;
+  
+  // Diálogos
   showDeleteDialog = false;
+  showSuccessDialog = false;
+  showErrorDialog = false;
+  showFormErrorDialog = false;
+  
+  // Mensajes para diálogos
+  successMessage = '';
+  errorMessage = '';
+  formErrorMessage = '';
 
   // Columnas para la tabla reutilizable
   columnas = [
     { key: 'id', label: 'ID' },
     { key: 'name', label: 'Nombre' },
     { key: 'description', label: 'Descripción' },
-    { key: 'active', label: 'Estado' },
-    { key: 'action', label: 'Acciones' }
+    { key: 'active', label: 'Estado' }
   ];
 
   formCategorie!: FormGroup;
@@ -97,10 +106,16 @@ export class Categories {
     if (this.selectedCategorie) {
       this.miServicio.deleteCategorie(this.selectedCategorie.id).subscribe(
         () => {
-          alert("Categoría eliminada exitosamente");
+          this.successMessage = 'Categoría eliminada exitosamente';
+          this.showSuccessDialog = true;
           this.loadCategories();
           this.showDeleteDialog = false;
           this.selectedCategorie = null;
+        },
+        (error) => {
+          this.errorMessage = 'Error al eliminar categoría: ' + error.message;
+          this.showErrorDialog = true;
+          this.showDeleteDialog = false;
         }
       );
     }
@@ -114,7 +129,8 @@ export class Categories {
   // Guardar (nuevo o editar)
   save() {
     if (this.formCategorie.invalid) {
-      alert("Formulario inválido");
+      this.formErrorMessage = 'Formulario inválido. Por favor, complete todos los campos correctamente.';
+      this.showFormErrorDialog = true;
       return;
     }
 
@@ -124,9 +140,14 @@ export class Categories {
       let categorieUpdate: Categorie = { ...datos, id: this.editingId };
       this.miServicio.updateCategorie(categorieUpdate).subscribe(
         () => {
-          alert("Categoría actualizada");
+          this.successMessage = 'Categoría actualizada exitosamente';
+          this.showSuccessDialog = true;
           this.modalRef.hide();
           this.loadCategories();
+        },
+        (error) => {
+          this.errorMessage = 'Error al actualizar categoría: ' + error.message;
+          this.showErrorDialog = true;
         }
       );
     } else { // Creando nuevo
@@ -148,11 +169,29 @@ export class Categories {
 
       this.miServicio.addCategorie(categorieNew).subscribe(
         () => {
-          alert("Categoría registrada exitosamente");
+          this.successMessage = 'Categoría registrada exitosamente';
+          this.showSuccessDialog = true;
           this.modalRef.hide();
           this.loadCategories();
+        },
+        (error) => {
+          this.errorMessage = 'Error al crear categoría: ' + error.message;
+          this.showErrorDialog = true;
         }
       );
     }
+  }
+
+  // Cerrar diálogos
+  closeSuccessDialog() {
+    this.showSuccessDialog = false;
+  }
+
+  closeErrorDialog() {
+    this.showErrorDialog = false;
+  }
+
+  closeFormErrorDialog() {
+    this.showFormErrorDialog = false;
   }
 }

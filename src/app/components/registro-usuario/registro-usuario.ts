@@ -109,7 +109,7 @@ export class RegistroUsuarioComponent {
       ciudad: valores.ciudad,
       rol: 'lector',
       password: valores.password,
-      estadoActivo: true
+      active: true
     };
 
     this.usuarioService.crear(nuevoUsuario).subscribe(() => {

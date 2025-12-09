@@ -1,5 +1,8 @@
-<div class="container mt-5">
-    <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto (CRUD)</h2>
+
+<div class="encabezado">
+    <h2>Gestión de Mensajes de Contacto</h2> 
+</div>
+
 
     @if (alertMessage) {
         <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
@@ -9,7 +12,7 @@
     }
 
     <div class="card shadow mb-5" id="messageFormContainer">
-        <div class="card-header bg-secondary text-white">
+        <div class="card-header text-white">
             <h4 class="mb-0">{{ isEditing ? 'Editar Mensaje' : 'Enviar Nuevo Mensaje' }}</h4>
         </div>
         <div class="card-body">
@@ -188,4 +191,3 @@
             }
         </div>
     </div>
-</div>

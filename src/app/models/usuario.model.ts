@@ -8,5 +8,5 @@ export interface Usuario {
   ciudad: string;
   rol: RolUsuario;
   password: string;
-  estadoActivo: boolean;
+  active: boolean;
 }

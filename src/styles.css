@@ -1,5 +1,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
-
+*{
+  font-family: "Poppins";
+}
 .main-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -201,15 +203,7 @@
     padding: 15px 15px 10px;
     flex-grow: 1;
 }
-.card-header h4 {
-    margin: 0 0 4px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1e3a8a;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+
 .rating-price {
     display: flex;
     flex-direction: column;
@@ -266,27 +260,12 @@
 
 /*estilo tabla*/
 /* Fondo y card general */
-.tabla-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 40px 0;
-}
-
-.tabla-card {
-  background: linear-gradient(145deg, #0f172a, #1e293b);
-  padding: 30px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 1400px;
-  color: #e2e8f0;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
 
 /* Título */
 .tabla-title {
   font-size: 28px;
   font-weight: 800;
-  color: #38bdf8;
+  color: #037cd3;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -319,10 +298,6 @@
   transition: background 0.2s, transform 0.2s;
 }
 
-.row-hover:hover {
-  background: rgba(255,255,255,0.05);
-  transform: scale(1.01);
-}
 
 /* ESTADO ACTIVO / INACTIVO */
 .estado-pill {
@@ -351,65 +326,119 @@
 
 .btn-icon {
   border: none;
-  padding: 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
+  font-size: 0.8rem;
+  border:none;
+  padding: 5px 9px !important;
+}
+/* BOTONES DE ACCIÓN - COLOR SÓLIDO, NO REDONDOS */
+.btn-ghost-info {
+  background-color: #0dcaf0 !important;  /* Azul info sólido */
+  color: white !important;
+}
+
+.btn-ghost-info:hover {
+  background-color: #0ba1c7 !important;
+  box-shadow: 0 4px 8px rgba(13, 202, 240, 0.3);
+}
+
+.btn-ghost-warning {
+  background-color: #ffc107 !important;  /* Amarillo warning sólido */
+  color: #212529 !important; 
+}
+
+.btn-ghost-warning:hover {
+  background-color: #e0a800 !important;
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+.btn-ghost-danger {
+  background-color: #dc3545 !important;  /* Rojo danger sólido */
+  color: white !important;
+}
+
+.btn-ghost-danger:hover {
+  background-color: #c82333 !important;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+
+/* Contenedor de botones */
+.d-flex.justify-content-center.gap-1 {
+  gap: 8px !important;
+}
+
+/* Si quieres que los íconos sean un poco más grandes */
+.btn-sm i {
   font-size: 1rem;
 }
-
-.btn-icon.view {
-  background: #38bdf8;
-  color: #0f172a;
-}
-.btn-icon.view:hover {
-  background: #7dd3fc;
-}
-
-.btn-icon.edit {
-  background: #facc15;
-  color: #0f172a;
-}
-.btn-icon.edit:hover {
-  background: #fde047;
-}
-
-.btn-icon.delete {
-  background: #ef4444;
-  color: white;
-}
-.btn-icon.delete:hover {
-  background: #f87171;
-}
-
-/* PAGINACIÓN */
-.pagination-modern {
-  display: flex;
+/* PAGINACIÓN MINIMALISTA ELEGANTE */
+.pagination {
+  margin: 0;
+  gap: 4px;
   justify-content: center;
-  margin-top: 25px;
-  gap: 10px;
 }
 
-.page-btn,
-.page-number {
-  background: #1e3a8a;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
+.page-item {
+  margin: 0;
+}
+
+.page-link {
+  background-color: transparent !important;
+  border: 2px solid #e2e8f0 !important;
+  color: #64748b !important;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  min-width: 42px;
+  text-align: center;
+}
+
+.page-link:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+  transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
   font-weight: 600;
-  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
-.page-number.active {
-  background: #38bdf8;
-  color: #0f172a;
-  font-weight: 800;
+.page-item.disabled .page-link {
+  background-color: transparent !important;
+  border-color: #e2e8f0 !important;
+  color: #cbd5e1 !important;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.page-btn:hover,
-.page-number:hover {
-  background: #3b82f6;
+.page-item.disabled .page-link:hover {
+  transform: none;
+  background-color: transparent !important;
+}
+
+/* Botones de navegación con íconos elegantes */
+.page-link[aria-label="Previous"]::before {
+  content: "‹";
+  margin-right: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.page-link[aria-label="Next"]::after {
+  content: "›";
+  margin-left: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 /* --- WRAPPER GENERAL --- */
@@ -438,6 +467,27 @@
   margin-bottom: 25px;
 }
 
+.encabezado {
+    display: flex;
+    padding: 0px 20px;
+}
+
+.encabezado-acciones{
+  display: flex;
+    position: relative;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.busquedaInput {
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 50px;
+    padding: 5px 16px;
+    width: 400px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
 /* --- ACCIONES SUPERIORES --- */
 .top-actions {
   display: flex;
@@ -446,24 +496,28 @@
 }
 
 .btn-new {
-  background: #38bdf8;
-  color: #0f172a;
-  padding: 10px 14px;
+  background: #0a62dd;
+  font-size: 15px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  position: absolute;
+  right: 30px;
+  color: white;
 }
+
 .btn-new:hover {
-  background: #7dd3fc;
+  background: #0348a8;
 }
 
 .input-search {
   width: 250px;
   padding: 10px;
-  background: #d5d7dc;
-  border: 1px solid #334155;
+  background: white;
+  border: 1px solid #cfcfcf;
   border-radius: 8px;
   color: #000000;
 }

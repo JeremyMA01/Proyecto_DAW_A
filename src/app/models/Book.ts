@@ -10,6 +10,4 @@ export interface Book{
     active:boolean,
     releaseDate:string,  
     categorie:string,
-  
-
 }

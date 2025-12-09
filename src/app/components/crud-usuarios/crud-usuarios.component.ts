@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
-  FormsModule
+  Validators
 } from '@angular/forms';
 
 import { Usuario } from '../../models/usuario.model'; 
@@ -14,12 +13,13 @@ import { UsuarioService } from '../../services/usuario.service';
 import { ReusableTable } from '../reusable_component/reusable-table/reusable-table';
 import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-dialog';
 
+declare const bootstrap: any;
+
 @Component({
   selector: 'app-crud-usuarios',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     ReusableTable,
     ReusableDialog
@@ -27,13 +27,12 @@ import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-d
   templateUrl: './crud-usuarios.component.html',
   styleUrl: './crud-usuarios.component.css',
 })
-export class CrudUsuariosComponent implements OnInit {
+export class CrudUsuariosComponent {
   // Formulario
   form!: FormGroup;
   
   // Datos
   usuarios: Usuario[] = [];
-  usuariosFiltrados: Usuario[] = [];
   
   // Columnas para tabla
   columnasTabla = [
@@ -43,12 +42,12 @@ export class CrudUsuariosComponent implements OnInit {
     { key: 'telefono', label: 'Teléfono' },
     { key: 'ciudad', label: 'Ciudad' },
     { key: 'rol', label: 'Rol' },
-    { key: 'estadoActivo', label: 'Estado' },
-    { key: 'action', label: 'Acciones' }
+    { key: 'active', label: 'Estado' }
   ];
   
-  // Búsqueda
-  terminoBusqueda = '';
+  // Modal
+  @ViewChild('usuarioModalRef') modalElement!: ElementRef;
+  modalRef: any;
   
   // Edición
   editando = false;
@@ -71,11 +70,13 @@ export class CrudUsuariosComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService
-  ) {}
-  
-  ngOnInit(): void {
+  ) {
     this.inicializarFormulario();
     this.cargarUsuarios();
+  }
+  
+  ngAfterViewInit() {
+    this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
   }
   
   // Inicializar formulario
@@ -104,36 +105,64 @@ export class CrudUsuariosComponent implements OnInit {
         Validators.required,
         Validators.minLength(6)
       ]],
-      estadoActivo: [true]
+      active: [true]
     });
   }
   
   // Cargar usuarios
-  private cargarUsuarios(): void {
-    this.usuarioService.getUsuarios().subscribe(usuarios => {
-      this.usuarios = usuarios;
-      this.aplicarFiltro();
-    });
-  }
+private cargarUsuarios(): void {
+  this.usuarioService.getUsuarios().subscribe(usuarios => {
+    console.log('Usuarios recibidos:', usuarios);
+    console.log('Primer usuario:', usuarios[0]);
+    console.log('Active del primer usuario:', usuarios[0]?.active);
+    console.log('Tipo de active:', typeof usuarios[0]?.active);
+    
+    this.usuarios = usuarios;
+  });
+}
   
-  // Aplicar filtro de búsqueda
-  aplicarFiltro(): void {
-    const txt = this.terminoBusqueda.toLowerCase().trim();
-    
-    if (!txt) {
-      this.usuariosFiltrados = [...this.usuarios];
-      return;
-    }
-    
-    this.usuariosFiltrados = this.usuarios.filter(u =>
-      u.nombre.toLowerCase().includes(txt) ||
-      u.email.toLowerCase().includes(txt) ||
-      u.ciudad.toLowerCase().includes(txt)
+  // Búsqueda (llamada desde HTML)
+  search(busq: HTMLInputElement) {
+    let parametro = busq.value.toLowerCase();
+    this.usuarioService.searchUsuarios(parametro).subscribe(
+      (datos: Usuario[]) => {
+        this.usuarios = datos;
+      }
     );
   }
   
-  onBuscarCambio(): void {
-    this.aplicarFiltro();
+  // Abrir modal para nuevo usuario
+  openNew() {
+    this.editando = false;
+    this.usuarioEditando = null;
+    this.form.reset({
+      nombre: '',
+      email: '',
+      telefono: '',
+      ciudad: '',
+      rol: 'lector',
+      password: '',
+      estadoActivo: true
+    });
+    this.modalRef.show();
+  }
+  
+  // Abrir modal para editar usuario
+  onEditarClick(usuario: Usuario): void {
+    this.editando = true;
+    this.usuarioEditando = usuario;
+    
+    this.form.patchValue({
+      nombre: usuario.nombre,
+      email: usuario.email,
+      telefono: usuario.telefono || '',
+      ciudad: usuario.ciudad,
+      rol: usuario.rol,
+      password: usuario.password,
+      active: usuario.active
+    });
+    
+    this.modalRef.show();
   }
   
   // Enviar formulario (guardar o actualizar)
@@ -156,13 +185,13 @@ export class CrudUsuariosComponent implements OnInit {
         ciudad: datos.ciudad,
         rol: datos.rol,
         password: datos.password,
-        estadoActivo: datos.estadoActivo
+        active: datos.active
       };
       
       this.usuarioService.actualizar(usuarioActualizado).subscribe(
         () => {
           this.showSuccess('Usuario actualizado exitosamente');
-          this.resetFormulario();
+          this.modalRef.hide();
           this.cargarUsuarios();
         },
         (error) => {
@@ -187,13 +216,13 @@ export class CrudUsuariosComponent implements OnInit {
         ciudad: datos.ciudad,
         rol: datos.rol,
         password: datos.password,
-        estadoActivo: datos.estadoActivo
+        active: datos.active
       };
       
       this.usuarioService.crear(nuevoUsuario).subscribe(
-        (response) => {
+        () => {
           this.showSuccess('Usuario creado exitosamente');
-          this.resetFormulario();
+          this.modalRef.hide();
           this.cargarUsuarios();
         },
         (error) => {
@@ -201,27 +230,6 @@ export class CrudUsuariosComponent implements OnInit {
         }
       );
     }
-  }
-  
-  // Editar usuario (desde tabla)
-  onEditarClick(usuario: Usuario): void {
-    this.editando = true;
-    this.usuarioEditando = usuario;
-    
-    this.form.patchValue({
-      nombre: usuario.nombre,
-      email: usuario.email,
-      telefono: usuario.telefono || '',
-      ciudad: usuario.ciudad,
-      rol: usuario.rol,
-      password: usuario.password,
-      estadoActivo: usuario.estadoActivo
-    });
-    
-    // Scroll al formulario
-    setTimeout(() => {
-      document.querySelector('.form-card')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
   }
   
   // Abrir diálogo para eliminar
@@ -259,42 +267,17 @@ export class CrudUsuariosComponent implements OnInit {
   onToggleActivo(usuario: Usuario): void {
     const usuarioActualizado: Usuario = {
       ...usuario,
-      estadoActivo: !usuario.estadoActivo
+      active: !usuario.active
     };
     
     this.usuarioService.actualizar(usuarioActualizado).subscribe(
       () => {
-        // Actualizar en memoria
-        const index = this.usuarios.findIndex(u => u.id === usuario.id);
-        if (index !== -1) {
-          this.usuarios[index] = usuarioActualizado;
-          this.aplicarFiltro();
-        }
+        this.cargarUsuarios();
       },
       (error) => {
         this.showError('Error al cambiar estado: ' + error.message);
       }
     );
-  }
-  
-  // Ver usuario
-  onVerClick(usuario: Usuario): void {
-    console.log('Ver usuario:', usuario);
-  }
-  
-  // Resetear formulario
-  resetFormulario(): void {
-    this.form.reset({
-      nombre: '',
-      email: '',
-      telefono: '',
-      ciudad: '',
-      rol: 'lector',
-      password: '',
-      estadoActivo: true
-    });
-    this.editando = false;
-    this.usuarioEditando = null;
   }
   
   // Helper para mostrar errores
