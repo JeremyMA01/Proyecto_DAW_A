@@ -1,5 +1,4 @@
-<!-- Solo mostrar header si NO estamos en login/registro -->
-<ng-container *ngIf="!isAuthPage">
+@if (!isAuthPage) {
   <div class="header-top-logo bg-white pb-2">
     <div class="container">
       <h3 class="site-logo mt-3" style="color: #0d3b66; font-weight: bold;">LibroStore</h3>
@@ -26,20 +25,15 @@
         <div class="user-actions d-flex align-items-center gap-3">
           <span class="cart-icon fs-5" style="cursor: pointer;">🛒</span>
           <span class="text-muted small">|</span>
-
-          <!-- CORREGIDO: eliminar '...' -->
-          <a routerLink="usuarios" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">
-            Usuarios
-          </a>
-
+          <li><a routerLink="usuarios" routerLinkActive="active">Usuarios</a></li>
           <a routerLink="/mi-cuenta" class="btn btn-sm btn-outline-primary rounded-pill px-3">Mi cuenta</a>
         </div>
 
       </div>
     </div>
   </div>
-</ng-container>
+}
 
 <div class="content-container">
-  <router-outlet></router-outlet>
+  <router-outlet />
 </div>
