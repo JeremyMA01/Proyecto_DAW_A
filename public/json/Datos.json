@@ -325,31 +325,7 @@
       "estadoActivo": false
     },
     {
-<<<<<<< HEAD
-      "id": 7,
-=======
-      "id": "d85c",
-      "nombre": "Maria Lopez",
-      "email": "maria.lopez@email.com",
-      "telefono": "0991234567",
-      "ciudad": "Quito",
-      "rol": "lector",
-      "password": "1234",
-      "estadoActivo": true
-    },
-    {
-      "id": "41b0",
-      "nombre": "Maria Lopez",
-      "email": "maria.lopez@email.com",
-      "telefono": "0991234567",
-      "ciudad": "Quito",
-      "rol": "lector",
-      "password": "1234",
-      "estadoActivo": true
-    },
-    {
       "id": "7",
->>>>>>> e283489e40586bcd101d4e795f3b0567f8260fa0
       "nombre": "alejandro",
       "email": "ale@libreria.com",
       "telefono": "0961912894",
@@ -369,7 +345,7 @@
       "estadoActivo": true
     },
     {
-      "id": 9,
+      "id": "9",
       "nombre": "Harry",
       "email": "harsier.o@gmail.com",
       "telefono": "",
@@ -377,6 +353,38 @@
       "rol": "donante",
       "password": "123456",
       "estadoActivo": true
+    }
+  ],
+  "ContactMessages": [
+    {
+      "id": "1",
+      "senderName": "Soporte Técnico",
+      "recipientName": "Pedro Lopez",
+      "subject": "Bienvenida a la aplicación",
+      "priority": "Normal",
+      "isUrgent": false,
+      "messageContent": "Hola Pedro, te damos la bienvenida a nuestra nueva plataforma de mensajería.",
+      "timestamp": "2024-05-15T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "senderName": "Ana Garcia",
+      "recipientName": "Carlos Ruiz",
+      "subject": "Reunión de proyecto",
+      "priority": "Urgente",
+      "isUrgent": true,
+      "messageContent": "Necesito que confirmemos la reunión para mañana a las 10 AM. Por favor, confirma si puedes asistir.",
+      "timestamp": "2024-05-16T15:30:00.000Z"
+    },
+    {
+      "id": "eb1b",
+      "senderName": "dsgfgfdg",
+      "recipientName": "Ana Garcia",
+      "subject": "sdfgdfg",
+      "priority": "Baja",
+      "isUrgent": true,
+      "messageContent": "sfgdfg",
+      "timestamp": "2025-12-09T04:48:37.349Z"
     }
   ]
 }

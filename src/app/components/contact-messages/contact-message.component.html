@@ -58,7 +58,7 @@
                         <select id="priority" class="form-select" formControlName="priority">
                             <option value="Baja">Baja</option>
                             <option value="Normal">Normal</option>
-                            <option value="Urgente">Urgente</option>
+                            <option value="Urgente">Inminente</option>
                         </select>
                     </div>
                     
@@ -124,9 +124,8 @@
                                 [ngClass]="{'bg-danger': message.priority === 'Urgente', 'bg-warning text-dark': message.priority === 'Normal', 'bg-info': message.priority === 'Baja'}">
                                 {{ message.priority }}
                             </span>
-                            <!-- Reemplazo de *ngIf por @if -->
                             @if (message.isUrgent) {
-                                <span class="badge bg-danger ms-2">🚨 URGENTE</span>
+                                <span class="badge bg-danger ms-2"> URGENTE</span>
                             }
                         </td>
                         <td>{{ message.timestamp | date:'short' }}</td>
