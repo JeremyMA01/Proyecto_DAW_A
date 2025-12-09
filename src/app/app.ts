@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { BookList } from "./components/books/book-list/book-list";
 import { ReusableTable } from "./components/reusable_component/reusable-table/reusable-table";
 import { HomeComponents } from "./components/home-components/home-components";
+import { DonacionesCrud } from './components/books/Donaciones-crud/donaciones-crud';
 import { ReviewCrud } from './components/review/review-crud/review-crud';
 import { ReviewView } from './components/review/review-view/review-view';
 import { CommonModule } from '@angular/common';
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     RouterOutlet,
     RouterLink,
+    DonacionesCrud,
     RouterLinkActive,
     RouterModule
   ],

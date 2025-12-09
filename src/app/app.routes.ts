@@ -20,6 +20,9 @@ import { CrudUsuariosComponent } from './components/crud-usuarios/crud-usuarios.
 import { ContactMessageComponent } from './components/contact-messages/contact-message.component';
 import { Categories } from './components/categories/categories';
 
+import { DonacionesCrud } from './components/books/Donaciones-crud/donaciones-crud';
+
+
 
 
 export const routes: Routes = [
@@ -44,6 +47,8 @@ export const routes: Routes = [
   { path: 'review-crud', component: ReviewCrud },
 
   { path: 'categories', component: Categories},
+  { path: 'donaciones-crud', component: DonacionesCrud }, 
+
 
   { path: 'usuarios', component: CrudUsuariosComponent, canActivate: [adminGuard] },
 
