@@ -47,6 +47,7 @@ export class ReusableTable implements OnChanges {
   }
 
   onSearch(user: string) {
+    this.busq = user.toLowerCase();
     this.searchClick.emit(user);
     this.page = 1;
   }

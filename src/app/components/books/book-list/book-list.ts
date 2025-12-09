@@ -34,7 +34,7 @@ export class BookList {
     { key: 'genre', label: 'Genero' },
     { key: 'active', label: 'Estado' },
     {key: 'budget', label: 'Presupuesto'},
-    { key: 'action', label: 'Acciones' },
+    //{ key: 'action', label: 'Acciones' },
   ];
 
   formBook!: FormGroup;
