@@ -1,7 +1,6 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto (CRUD)</h2>
 
-    <!-- Feedback Alert -->
     @if (alertMessage) {
         <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
             {{ alertMessage }}
@@ -9,7 +8,6 @@
         </div>
     }
 
-    <!-- Formulario de Creación/Edición -->
     <div class="card shadow mb-5" id="messageFormContainer">
         <div class="card-header bg-secondary text-white">
             <h4 class="mb-0">{{ isEditing ? 'Editar Mensaje' : 'Enviar Nuevo Mensaje' }}</h4>
@@ -21,7 +19,6 @@
                         <label for="senderName" class="form-label">Tu Nombre</label>
                         <input id="senderName" type="text" class="form-control" formControlName="senderName" placeholder="Ej: Juan Pérez"
                                [class.is-invalid]="messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched">
-                        <!-- Reemplazo de *ngIf por @if -->
                         @if (messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched) {
                             <div class="invalid-feedback d-block">
                                 El nombre del remitente es obligatorio.
@@ -34,12 +31,10 @@
                         <select id="recipientName" class="form-select" formControlName="recipientName"
                                [class.is-invalid]="messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched">
                             <option value="" disabled>Selecciona un usuario</option>
-                            <!-- Reemplazo de *ngFor por @for -->
                             @for (user of recipientOptions; track user) {
                                 <option [value]="user">{{ user }}</option>
                             }
                         </select>
-                        <!-- Reemplazo de *ngIf por @if -->
                         @if (messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched) {
                             <div class="invalid-feedback d-block">
                                 El destinatario es obligatorio.
@@ -51,7 +46,6 @@
                         <label for="subject" class="form-label">Asunto</label>
                         <input id="subject" type="text" class="form-control" formControlName="subject" placeholder="Asunto del mensaje"
                                [class.is-invalid]="messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched">
-                        <!-- Reemplazo de *ngIf por @if -->
                         @if (messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched) {
                             <div class="invalid-feedback d-block">
                                 El asunto es obligatorio y no debe superar 100 caracteres.
@@ -79,7 +73,6 @@
                         <label for="messageContent" class="form-label">Contenido del Mensaje</label>
                         <textarea id="messageContent" class="form-control" formControlName="messageContent" rows="4"
                                   [class.is-invalid]="messageForm.get('messageContent')?.invalid && messageForm.get('messageContent')?.touched"></textarea>
-                        <!-- Reemplazo de *ngIf por @if -->
                         @if (messageForm.get('messageContent')?.invalid && messageForm.get('messageContent')?.touched) {
                             <div class="invalid-feedback d-block">
                                 El contenido del mensaje es obligatorio.
@@ -120,7 +113,6 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Reemplazo de *ngFor por @for -->
                 @for (message of filteredMessages; track message.id) {
                     <tr>
                         <td>{{ message.id }}</td>
@@ -165,10 +157,8 @@
         </table>
     </div>
 
-    <!-- 🔑 VENTANA MODAL (Bootstrap) para Ver el Contenido Completo 🔑 -->
     <div class="modal fade" id="messageDetailModal" tabindex="-1" aria-labelledby="messageDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <!-- Reemplazo de *ngIf por @if -->
             @if (selectedMessage) {
                 <div class="modal-content">
                     <div class="modal-header bg-primary text-white">
@@ -190,7 +180,6 @@
                         </div>
                         <hr>
                         <h6 class="text-primary">Contenido Completo:</h6>
-                        <!-- Aplicamos la clase CSS 'message-content-modal' para el formato de texto -->
                         <p class="message-content-modal">{{ selectedMessage.messageContent }}</p>
                     </div>
                     <div class="modal-footer">
