@@ -111,14 +111,14 @@
       "poster": "https://anterior.mrbooks.com/mrbooks/portadas/9788418933714.webp"
     },
     {
-      "id": "f377",
-      "title": "sss",
-      "author": "sss",
-      "year": 2015,
-      "genre": "9",
+      "id": "b1ca",
+      "title": "jjj",
+      "author": "holl",
+      "year": 2018,
+      "genre": "12",
       "active": true,
-      "releaseDate": "2025-12-10",
-      "budget": 19,
+      "releaseDate": "2025-12-04",
+      "budget": 12,
       "poster": "e"
     }
   ],
@@ -355,8 +355,7 @@
       "estadoActivo": true
     },
     {
-
-      "id": 8,
+      "id": "8",
       "nombre": "cristhian briones ",
       "email": "cristhian@gmail.com",
       "telefono": "",
@@ -364,8 +363,6 @@
       "rol": "lector",
       "password": "123456",
       "estadoActivo": true
-
-  
     }
   ]
 }
