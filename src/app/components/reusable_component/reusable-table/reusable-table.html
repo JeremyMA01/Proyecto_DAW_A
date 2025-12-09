@@ -22,14 +22,14 @@
 
                 <ng-container [ngSwitch]="col.key">
 
-                  <!-- Estado activo -->
+                  
                   <span *ngSwitchCase="'estadoActivo'">
                     <span class="estado-pill" [class.activo]="fila.estadoActivo" [class.inactivo]="!fila.estadoActivo">
                       {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
                     </span>
                   </span>
 
-                  <!-- Columna acciones -->
+                 
                   <span *ngSwitchCase="'action'" class="acciones">
                     <button class="btn-icon view" (click)="Onview(fila, $event)">
                       <i class="bi bi-eye-fill"></i>
@@ -44,7 +44,7 @@
                     </button>
                   </span>
 
-                  <!-- Campos comunes + género -->
+                  
                   <span *ngSwitchDefault>
                     @if (col.key === 'genre') {
                       {{ obtenerGeneroNombre(fila[col.key]) }}
