@@ -2,12 +2,11 @@
 
   <div class="view-card">
 
-    <!-- Título -->
-    <h1 class="view-title">{{ book.title }}</h1>
+        <h1 class="view-title">{{ book.title }}</h1>
 
     <div class="view-content">
       
-      <!-- Imagen del libro -->
+     
       <div class="view-image">
         <img 
           [src]="book.poster || 'assets/no-image.png'"
@@ -15,7 +14,7 @@
         />
       </div>
 
-      <!-- Información del libro -->
+      
       <div class="view-info">
         <p><span>Autor:</span> {{ book.author }}</p>
         <p><span>Género:</span> {{ getgeneroName(book.genre) }}</p>
