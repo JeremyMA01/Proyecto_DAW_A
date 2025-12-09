@@ -462,10 +462,10 @@
 .input-search {
   width: 250px;
   padding: 10px;
-  background: #1e293b;
+  background: #d5d7dc;
   border: 1px solid #334155;
   border-radius: 8px;
-  color: #e2e8f0;
+  color: #000000;
 }
 
 /* --- MODAL ESTILO LOGIN --- */

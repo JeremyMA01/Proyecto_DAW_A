@@ -89,15 +89,15 @@
       "poster": "https://m.media-amazon.com/images/I/713jIoMO3UL.jpg"
     },
     {
-      "id": "9",
       "title": "El Diario de Ana Frank",
       "author": "Ana Frank",
       "year": 1947,
       "genre": "12",
-      "active": true,
+      "active": false,
       "releaseDate": "2024-06-14",
       "budget": 20,
-      "poster": "https://images.cdn1.buscalibre.com/fit-in/360x360/5e/63/5e6382195f84bb7b5c555af930ef6ec2.jpg"
+      "poster": "https://images.cdn1.buscalibre.com/fit-in/360x360/5e/63/5e6382195f84bb7b5c555af930ef6ec2.jpg",
+      "id": "9"
     },
     {
       "id": "10",
