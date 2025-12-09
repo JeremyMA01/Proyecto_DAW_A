@@ -273,10 +273,10 @@
       "id": "1",
       "nombre": "Administrador Principal",
       "email": "admin@libreria.com",
-      "telefono": "",
+      "telefono": "0991234567",
       "ciudad": "Guayaquil",
       "rol": "administrador",
-      "password": "1234",
+      "password": "123456",
       "estadoActivo": true
     },
     {
@@ -317,7 +317,7 @@
       "ciudad": "Guayaquil",
       "rol": "lector",
       "password": "123456",
-      "estadoActivo": true
+      "estadoActivo": false
     },
     {
       "id": "6",
@@ -385,16 +385,6 @@
       "email": "alina@gmail.com",
       "telefono": "0912112121",
       "ciudad": "Guayaquil",
-      "rol": "lector",
-      "password": "123456",
-      "estadoActivo": true
-    },
-    {
-      "id": "13",
-      "nombre": "Nick Wilde",
-      "email": "nick@gmail.com",
-      "telefono": "0912121212",
-      "ciudad": "guayaquil",
       "rol": "lector",
       "password": "123456",
       "estadoActivo": true
