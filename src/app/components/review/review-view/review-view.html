@@ -10,7 +10,8 @@
             <div class="col-md-9">
                 <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column justify-content-center">
                     <div class="mb-2">
-                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3">{{ book.genre }}</span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 me-2"> {{ book.genre }}
+                        </span>
                         @if(book.active){
                             <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill ms-2">En Stock</span>
                         } @else {
@@ -80,7 +81,12 @@
             <h3 class="fw-bold m-0">Comentarios</h3>
             <div class="input-group w-auto">
                 <span class="input-group-text bg-white border-end-0 rounded-start-pill ps-3"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0 rounded-end-pill ps-0" placeholder="Buscar..." #searchIn (keyup)="search(searchIn)">
+                
+                <input 
+                    type="text" 
+                    class="form-control border-start-0 rounded-end-pill ps-0" 
+                    placeholder="Buscar..." 
+                    #searchIn (input)="search(searchIn.value, currentBookId)">
             </div>
         </div>
     
@@ -157,5 +163,6 @@
 
 <app-reusable-review-form 
     #childForm 
-    (onSaveReview)="save($event)">
+    (onSaveReview)="save($event)"
+    [mostrarCampos]="false">
 </app-reusable-review-form>
