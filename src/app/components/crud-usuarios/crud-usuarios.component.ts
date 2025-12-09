@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core'; // <--- 1. IMPORTAR OnInit y ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -27,7 +27,7 @@ declare const bootstrap: any;
   templateUrl: './crud-usuarios.component.html',
   styleUrl: './crud-usuarios.component.css',
 })
-export class CrudUsuariosComponent {
+export class CrudUsuariosComponent implements OnInit { // <--- 2. Implementar OnInit
   // Formulario
   form!: FormGroup;
   
@@ -42,7 +42,7 @@ export class CrudUsuariosComponent {
     { key: 'telefono', label: 'Teléfono' },
     { key: 'ciudad', label: 'Ciudad' },
     { key: 'rol', label: 'Rol' },
-    { key: 'active', label: 'Estado' }
+    { key: 'active', label: 'Estado' } // Asegúrate que en tu JSON se llame 'active' o 'estadoActivo'
   ];
   
   // Modal
@@ -69,14 +69,21 @@ export class CrudUsuariosComponent {
   
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService
-  ) {
+    private usuarioService: UsuarioService,
+    private cdr: ChangeDetectorRef // <--- 3. INYECTAR ChangeDetectorRef
+  ) {}
+
+  // <--- 4. Mover la inicialización al ngOnInit (Mejor práctica que el constructor)
+  ngOnInit(): void {
     this.inicializarFormulario();
     this.cargarUsuarios();
   }
   
   ngAfterViewInit() {
-    this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+    // Protección por si el modalElement aún no existe
+    if(this.modalElement) {
+        this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+    }
   }
   
   // Inicializar formulario
@@ -110,16 +117,18 @@ export class CrudUsuariosComponent {
   }
   
   // Cargar usuarios
-private cargarUsuarios(): void {
-  this.usuarioService.getUsuarios().subscribe(usuarios => {
-    console.log('Usuarios recibidos:', usuarios);
-    console.log('Primer usuario:', usuarios[0]);
-    console.log('Active del primer usuario:', usuarios[0]?.active);
-    console.log('Tipo de active:', typeof usuarios[0]?.active);
-    
-    this.usuarios = usuarios;
-  });
-}
+  private cargarUsuarios(): void {
+    this.usuarioService.getUsuarios().subscribe(usuarios => {
+      console.log('Usuarios recibidos:', usuarios);
+      
+      // Asignamos los datos
+      this.usuarios = usuarios;
+
+      // <--- 5. FORZAR ACTUALIZACIÓN DE LA VISTA
+      // Esto le dice a Angular: "Oye, cambiaron los datos, actualiza la tabla YA"
+      this.cdr.detectChanges(); 
+    });
+  }
   
   // Búsqueda (llamada desde HTML)
   search(busq: HTMLInputElement) {
@@ -127,6 +136,7 @@ private cargarUsuarios(): void {
     this.usuarioService.searchUsuarios(parametro).subscribe(
       (datos: Usuario[]) => {
         this.usuarios = datos;
+        this.cdr.detectChanges(); // <--- Agregarlo aquí también por si acaso
       }
     );
   }
@@ -202,7 +212,8 @@ private cargarUsuarios(): void {
       // Crear nuevo
       let nextId: string;
       if (this.usuarios.length > 0) {
-        const maxId = Math.max(...this.usuarios.map(u => parseInt(u.id) || 0));
+        // Aseguramos que el ID se parsee correctamente
+        const maxId = Math.max(...this.usuarios.map(u => parseInt(String(u.id)) || 0));
         nextId = (maxId + 1).toString();
       } else {
         nextId = "1";
@@ -291,6 +302,7 @@ private cargarUsuarios(): void {
     this.dialogTitle = 'Éxito';
     this.dialogMessage = message;
     this.showSuccessDialog = true;
+    this.cdr.detectChanges(); // Forzar actualización para que se vea el modal
   }
   
   // Mostrar diálogo de error
@@ -298,6 +310,7 @@ private cargarUsuarios(): void {
     this.dialogTitle = 'Error';
     this.dialogMessage = message;
     this.showErrorDialog = true;
+    this.cdr.detectChanges(); // Forzar actualización
   }
   
   // Cerrar diálogo de éxito
