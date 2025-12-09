@@ -40,7 +40,6 @@
             </tr>
           </thead>
 
-<<<<<<< HEAD
           <tbody>
             @for (fila of pageActual(); track $index) {
 
@@ -64,12 +63,17 @@
                           {{ fila[col.key] ? 'Sí' : 'No' }}
                         </span>
                       }
-=======
-    <!--<h2 class="tabla-title">Listado de Libros</h2>-->
->>>>>>> 1696405db01f681c052973db6dc890133693b37a
+                        @case ('active') {   
+                       <span class="badge rounded-pill"
+                         [ngClass]="fila[col.key] 
+                          ? 'bg-success-subtle text-success' 
+                            : 'bg-danger-subtle text-danger'">
+                        {{ fila[col.key] ? 'Activo' : 'Inactivo' }}
+                         </span>
+                       }
 
                       @default {
-                        <!-- ✔️ SOLO ESTE BLOQUE FUE MODIFICADO -->
+                        
                         @if (col.key === 'genre') {
                           <span class="text-dark">
                             {{ obtenerGeneroNombre(fila[col.key]) }}
@@ -88,7 +92,9 @@
                   <div class="d-flex justify-content-center gap-1"
                        (click)="$event.stopPropagation()">
 
-                    <button class="btn-icon view" (click)="Onview(fila, $event)">
+                    <button class="btn btn-sm  btn-ghost-warning rounded-circle " 
+                    title="Ver"
+                    (click)="Onview(fila, $event)">
                       <i class="bi bi-eye-fill"></i>
                     </button>
 
@@ -158,5 +164,4 @@
 
   </div>
 </div>
-
 
