@@ -28,12 +28,12 @@ export class BookView {
       this.generos = data;
     });
 
-    //obtenemos el id que llega 
+    
     const id = this.router.snapshot.paramMap.get("id")
-    //buscamos la pelicula q tiene el id por el servicio 
+    
     this.servBook.getMovieById(Number(id)).subscribe(
       (dato:Book)=>{
-        this.book = dato;//actualizamos el libro con el dato del servicio
+        this.book = dato;
     
         } 
 
