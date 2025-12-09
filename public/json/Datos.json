@@ -237,6 +237,33 @@
       "comment": "Pesimo libro",
       "isRecommend": true,
       "publishedDate": "2025-12-09T00:04:58.817Z"
+    },
+    {
+      "id": "1",
+      "user": "Jeremy",
+      "score": 5,
+      "comment": "Excelente libro, recomendado.",
+      "isRecommend": true,
+      "id_book": 1,
+      "publishedDate": "2025-12-09T05:47:03.660Z"
+    },
+    {
+      "id": "2",
+      "user": "Keira",
+      "score": 4,
+      "comment": "Me gusto este libro.",
+      "isRecommend": true,
+      "id_book": 1,
+      "publishedDate": "2025-12-09T05:47:16.011Z"
+    },
+    {
+      "id": "3",
+      "user": "Jhon Molina",
+      "score": 4,
+      "comment": "No me gusto este libro, hay mejores opciones.",
+      "isRecommend": true,
+      "id_book": 1,
+      "publishedDate": "2025-12-09T05:47:35.275Z"
     }
   ],
   "categories": [
@@ -352,6 +379,16 @@
       "ciudad": "Guayaquil",
       "rol": "donante",
       "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": 10,
+      "nombre": "Jordy",
+      "email": "JordyIA@gmail.com",
+      "telefono": "",
+      "ciudad": "GUAYAQUIL",
+      "rol": "lector",
+      "password": "Jeremy123",
       "estadoActivo": true
     }
   ],
