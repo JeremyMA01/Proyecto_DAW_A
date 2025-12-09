@@ -75,6 +75,28 @@
 
 =======
 <div class="container-fluid mt-4">
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="input-group input-group-sm border rounded-pill px-3 py-1 bg-white shadow-sm">
+        <span class="input-group-text border-0 bg-transparent text-muted">
+          <i class="bi bi-search"></i>
+        </span>
+        <input 
+          type="text" 
+          class="form-control border-0 shadow-none" 
+          placeholder="Filtrar en esta tabla..."
+          #txtSearch
+          (keyup)="onSearch(txtSearch.value)">
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-8 text-end">
+      <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" (click)="onNewClick()">
+        <i class="bi bi-plus-lg me-1"></i> Nuevo
+      </button>
+    </div>
+  </div>
+
   <div class="card shadow-sm border-0 rounded-3">
     <div class="card-body p-0">
       <div class="table-responsive">
@@ -82,10 +104,11 @@
           <thead class="bg-light">
             <tr>
               @for (col of columnas; track col.key) {
-                <th class="px-4 py-3 text-secondary text-uppercase fw-bold" style="font-size: 0.85rem;">
+                <th class="px-4 py-3 text-secondary text-uppercase fw-bold" style="font-size: 0.82rem;">
                   {{ col.label }}
                 </th>
               }
+              <th class="px-4 py-3 text-secondary text-uppercase fw-bold text-center" style="font-size: 0.82rem;">Acciones</th>
             </tr>
           </thead>
 
@@ -96,26 +119,12 @@
                   <td class="px-4 py-3">
                     @switch (col.key) {
                       
-                      @case ('estadoActivo') {
-                        <span 
-                          class="badge rounded-pill px-3 py-2"
-                          [ngClass]="fila.estadoActivo ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
-                          (click)="OnToggleActivo(fila, $event)">
-                          {{ fila.estadoActivo ? 'Activo' : 'Inactivo' }}
+                      @case ('isRecommend') {
+                        <span class="badge rounded-pill" 
+                              [ngClass]="fila[col.key] ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
+                          <i class="bi" [ngClass]="fila[col.key] ? 'bi-hand-thumbs-up' : 'bi-hand-thumbs-down'"></i>
+                          {{ fila[col.key] ? 'Sí' : 'No' }}
                         </span>
-                      }
-
-                      @case ('action') {
-                        <div class="d-flex gap-2" (click)="$event.stopPropagation()">
-                          <button class="btn btn-outline-warning btn-sm border-0" 
-                                  title="Editar" (click)="OnEditClick(fila)">
-                            <i class="bi bi-pencil-square"></i>
-                          </button>
-                          <button class="btn btn-outline-danger btn-sm border-0" 
-                                  title="Eliminar" (click)="onEliminarClick(fila)">
-                            <i class="bi bi-trash3-fill"></i>
-                          </button>
-                        </div>
                       }
 
                       @default {
@@ -124,6 +133,24 @@
                     }
                   </td>
                 }
+                <td class="px-4 py-3 text-center">
+                  <div class="d-flex justify-content-center gap-2" (click)="$event.stopPropagation()">
+                    <button class="btn btn-sm btn-outline-warning border-0 rounded-circle" 
+                            title="Editar" (click)="OnEditClick(fila)">
+                      <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" 
+                            title="Eliminar" (click)="onEliminarClick(fila)">
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td [attr.colspan]="columnas.length + 1" class="text-center py-5 text-muted fst-italic">
+                  No se encontraron registros.
+                </td>
               </tr>
             }
           </tbody>
@@ -132,25 +159,24 @@
     </div>
 
     <div class="card-footer bg-white border-top-0 py-3">
-      <nav class="d-flex justify-content-between align-items-center">
-        <small class="text-muted">
+      <nav class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <small class="text-muted fw-medium">
           Mostrando página {{page}} de {{totalPaginas()}}
         </small>
+        
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" [class.disabled]="page === 1">
-            <button class="page-link shadow-none" (click)="setPage(page - 1)">Anterior</button>
+            <button class="page-link" (click)="setPage(page - 1)">Anterior</button>
           </li>
           
           @for (p of [].constructor(totalPaginas()); track $index) {
             <li class="page-item" [class.active]="page === ($index + 1)">
-              <button class="page-link shadow-none" (click)="setPage($index + 1)">
-                {{ $index + 1 }}
-              </button>
+              <button class="page-link" (click)="setPage($index + 1)">{{ $index + 1 }}</button>
             </li>
           }
 
           <li class="page-item" [class.disabled]="page === totalPaginas()">
-            <button class="page-link shadow-none" (click)="setPage(page + 1)">Siguiente</button>
+            <button class="page-link" (click)="setPage(page + 1)">Siguiente</button>
           </li>
         </ul>
       </nav>

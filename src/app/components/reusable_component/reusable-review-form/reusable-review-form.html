@@ -117,17 +117,6 @@
 
           @if (mostrarCampos) {
           <div class="mb-3">
-            <label class="form-label fw-bold">ID de la Reseña</label>
-            <input type="text" class="form-control" formControlName="id"
-              [class.is-invalid]="formReview.get('id')?.invalid && formReview.get('id')?.touched">
-            <div class="invalid-feedback d-block">
-              @if(formReview.get('id')?.invalid && formReview.get('id')?.touched){
-                <div>El ID de reseña es obligatorio!</div>
-              }
-            </div>
-          </div>
-
-          <div class="mb-3">
             <label class="form-label fw-bold">ID del Libro</label>
             <input type="text" class="form-control" formControlName="id_book"
               [class.is-invalid]="formReview.get('id_book')?.invalid && formReview.get('id_book')?.touched">

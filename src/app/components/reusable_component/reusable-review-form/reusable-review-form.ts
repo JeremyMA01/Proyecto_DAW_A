@@ -28,7 +28,6 @@ export class ReusableReviewForm implements AfterViewInit{
         comment:['', [Validators.required, Validators.minLength(3), Validators.maxLength(300),
                   Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ.,\s¿?\[\]'"()-]+$/)]],
         isRecommend:[true],
-        id: ['', Validators.required],
         id_book: ['', Validators.required]
     });
   } 
@@ -61,17 +60,12 @@ export class ReusableReviewForm implements AfterViewInit{
     this.editingId = null;
     this.formReview.reset({isRecommend:true});
     
-    const id = this.formReview.get('id');
     const id_book = this.formReview.get('id_book');
     if(this.mostrarCampos){
-      id?.setValidators([Validators.required]);
       id_book?.setValidators([Validators.required]);
     }else{
-      id?.clearValidators();
       id_book?.clearValidators();
     }
-    
-    id?.updateValueAndValidity();
     id_book?.updateValueAndValidity();
 
       this.modalRef.show();
