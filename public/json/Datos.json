@@ -216,7 +216,7 @@
       "ciudad": "Manta",
       "rol": "cliente",
       "password": "User123*",
-      "estadoActivo": false
+      "estadoActivo": true
     },
     {
       "id": "5",
@@ -237,26 +237,6 @@
       "rol": "cliente",
       "password": "User123*",
       "estadoActivo": false
-    },
-    {
-      "id": "d85c",
-      "nombre": "Maria Lopez",
-      "email": "maria.lopez@email.com",
-      "telefono": "0991234567",
-      "ciudad": "Quito",
-      "rol": "lector",
-      "password": "1234",
-      "estadoActivo": true
-    },
-    {
-      "id": "41b0",
-      "nombre": "Maria Lopez",
-      "email": "maria.lopez@email.com",
-      "telefono": "0991234567",
-      "ciudad": "Quito",
-      "rol": "lector",
-      "password": "1234",
-      "estadoActivo": true
     },
     {
       "id": 7,
