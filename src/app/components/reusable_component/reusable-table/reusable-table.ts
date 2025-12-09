@@ -52,19 +52,22 @@ export class ReusableTable implements OnChanges {
   }
 
 
-  OnEditClick(fila: any) {
+  OnEditClick(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
     this.editClick.emit(fila);
   }
 
-  onEliminarClick(fila: any) {
-    this.eliminarClick.emit(fila);
-    this.emilinarClick.emit(fila); // Mantengo ambos por tu compatibilidad
+  onEliminarClick(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    this.eliminarClick.emit(fila);   // CrudUsuarios
+    this.emilinarClick.emit(fila);   // BookList
   }
 
-  OnToggleActivo(fila: any, event: MouseEvent) {
-    event.stopPropagation(); // Evita que se abra el detalle al cambiar estado
-    this.toggleActivo.emit(fila);
+  OnToggleActivo(fila: any, event?: MouseEvent) {
+    if (event) event.stopPropagation();
+    this.toggleActivo.emit(fila);    // aquí sale un Usuario hacia el padre
   }
+
 
   private capitalizar(text: string) {
     return text.charAt(0).toUpperCase() + text.slice(1);

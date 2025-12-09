@@ -305,12 +305,22 @@
       "estadoActivo": true
     },
     {
-      "id": 7,
+      "id": "7",
       "nombre": "alejandro",
       "email": "ale@libreria.com",
       "telefono": "0961912894",
       "ciudad": "GUAYAQUIL",
       "rol": "donante",
+      "password": "123456",
+      "estadoActivo": true
+    },
+    {
+      "id": 8,
+      "nombre": "cristhian briones ",
+      "email": "cristhian@gmail.com",
+      "telefono": "",
+      "ciudad": "Guayaquil",
+      "rol": "lector",
       "password": "123456",
       "estadoActivo": true
     }
