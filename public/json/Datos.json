@@ -334,5 +334,27 @@
       "password": "1234",
       "active": true
     }
+  ],
+  "ContactMessages": [
+    {
+      "id": 1,
+      "senderName": "Soporte Técnico",
+      "recipientName": "Pedro Lopez",
+      "subject": "Bienvenida a la aplicación",
+      "priority": "Normal",
+      "isUrgent": false,
+      "messageContent": "Hola Pedro, te damos la bienvenida a nuestra nueva plataforma de mensajería.",
+      "timestamp": "2024-05-15T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "senderName": "Ana Garcia",
+      "recipientName": "Carlos Ruiz",
+      "subject": "Reunión de proyecto",
+      "priority": "Urgente",
+      "isUrgent": true,
+      "messageContent": "Necesito que confirmemos la reunión para mañana a las 10 AM. Por favor, confirma si puedes asistir.",
+      "timestamp": "2024-05-16T15:30:00.000Z"
+    }
   ]
 }
