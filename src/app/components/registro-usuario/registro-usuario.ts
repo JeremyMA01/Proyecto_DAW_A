@@ -42,7 +42,6 @@ export class RegistroUsuarioComponent {
 
       email: ['', [Validators.required, Validators.email]],
 
-      // Teléfono opcional, pero si se llena, solo números de 7 a 15 dígitos
       telefono: [
         '',
         [
@@ -50,7 +49,7 @@ export class RegistroUsuarioComponent {
         ]
       ],
 
-      // Solo letras para ciudad
+      
       ciudad: [
         '',
         [
@@ -59,10 +58,10 @@ export class RegistroUsuarioComponent {
         ]
       ],
 
-      // por defecto lector
+      
       rol: ['lector', Validators.required],
 
-      // Mínimo 6 caracteres
+    
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
