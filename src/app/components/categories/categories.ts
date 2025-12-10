@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReusableTable } from '../reusable_component/reusable-table/reusable-table';
 import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-dialog';
-declare const bootstrap: any;
+import { CommonModule } from '@angular/common';
 
+declare const bootstrap: any;
 @Component({
   selector: 'app-categories',
-  imports: [ReactiveFormsModule, ReusableTable, ReusableDialog],
+  imports: [CommonModule, ReactiveFormsModule, ReusableTable, ReusableDialog],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
@@ -33,6 +34,7 @@ export class Categories {
     { key: 'id', label: 'ID' },
     { key: 'name', label: 'Nombre' },
     { key: 'description', label: 'Descripción' },
+    { key: 'createdDate', label: 'Fecha Creación' },
     { key: 'active', label: 'Estado' }
   ];
 
@@ -48,10 +50,26 @@ export class Categories {
     this.loadCategories();
 
     this.formCategorie = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      description: ['', Validators.required],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]],
+      description: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(200)
+      ]],
+      createdDate: [this.getCurrentDate(), Validators.required],
       active: [true]
     });
+  }
+
+  // Función para obtener la fecha actual en formato YYYY-MM-DD
+  getCurrentDate(): string {
+    const now = new Date();
+    return now.toISOString().split('T')[0];
   }
 
   @ViewChild('categorieModalRef') modalElement!: ElementRef;
@@ -85,14 +103,27 @@ export class Categories {
   // Modal para nueva categoría
   openNew() {
     this.editingId = null;
-    this.formCategorie.reset({ active: true });
+    this.formCategorie.reset({
+      name: '',
+      description: '',
+      createdDate: this.getCurrentDate(),
+      active: true
+    });
     this.modalRef.show();
   }
 
   // Modal para editar categoría
   openEdit(categorie: Categorie) {
     this.editingId = categorie.id;
-    this.formCategorie.patchValue(categorie);
+    // Formatear la fecha para el input type="date"
+    const formattedDate = categorie.createdDate 
+      ? new Date(categorie.createdDate).toISOString().split('T')[0]
+      : this.getCurrentDate();
+    
+    this.formCategorie.patchValue({
+      ...categorie,
+      createdDate: formattedDate
+    });
     this.modalRef.show();
   }
 
@@ -194,4 +225,10 @@ export class Categories {
   closeFormErrorDialog() {
     this.showFormErrorDialog = false;
   }
+
+  // Método helper para facilitar el acceso a los controles en el HTML
+  get f() {
+    return this.formCategorie.controls;
+  }
 }
+

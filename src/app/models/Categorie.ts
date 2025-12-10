@@ -1,6 +1,7 @@
 export interface Categorie {
-    id: string,
-    name: string,
-    description: string,
-    active: boolean
+    id: string;
+    name: string;
+    description: string;
+    createdDate: string;  // ← Nueva propiedad agregada
+    active: boolean;
 }

@@ -197,7 +197,7 @@
       "user": "Sofia",
       "score": 5,
       "comment": "Muy buen libro",
-      "isRecommend": false,
+      "isRecommend": true,
       "id_book": 2,
       "publishedDate": "2025-12-09",
       "id": "5"
@@ -222,12 +222,13 @@
     {
       "name": "Juvenil",
       "description": "Libros dirigidos a adolescentes y jóvenes adultos",
-      "active": false,
+      "active": true,
       "id": "2"
     },
     {
       "name": "Académicos",
       "description": "Libros de estudio y material educativo",
+      "createdDate": "2025-11-09",
       "active": true,
       "id": "3"
     },
@@ -260,6 +261,13 @@
       "name": "Ficcion",
       "description": "sjkfnkdf",
       "active": true
+    },
+    {
+      "id": "9",
+      "name": "Ficcion",
+      "description": "hola mundo",
+      "createdDate": "2025-12-09",
+      "active": true
     }
   ],
   "Usuarios": [
@@ -291,7 +299,7 @@
       "ciudad": "Ambato",
       "rol": "cliente",
       "password": "User123*",
-      "active": false
+      "active": true
     },
     {
       "id": "4",
@@ -299,7 +307,7 @@
       "email": "elena.torres@email.com",
       "telefono": "0933334444",
       "ciudad": "Loja",
-      "rol": "cliente",
+      "rol": "lector",
       "password": "User123*",
       "active": true
     },
@@ -322,11 +330,21 @@
       "rol": "lector",
       "password": "1234",
       "active": true
+    },
+    {
+      "id": "7",
+      "nombre": "Erick GOmez",
+      "email": "erick@gmail.com",
+      "telefono": "091212121212",
+      "ciudad": "Guayaquil",
+      "rol": "lector",
+      "password": "123456",
+      "active": true
     }
   ],
   "ContactMessages": [
     {
-      "id": 1,
+      "id": "1",
       "senderName": "Soporte Técnico",
       "recipientName": "Pedro Lopez",
       "subject": "Bienvenida a la aplicación",
@@ -336,7 +354,7 @@
       "timestamp": "2024-05-15T10:00:00.000Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "senderName": "Ana Garcia",
       "recipientName": "Carlos Ruiz",
       "subject": "Reunión de proyecto",
