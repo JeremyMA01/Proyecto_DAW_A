@@ -30,7 +30,6 @@ export class RegistroUsuarioComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
-      // Solo letras (con tildes y ñ) y espacios, mínimo 3 caracteres
       nombre: [
         '',
         [

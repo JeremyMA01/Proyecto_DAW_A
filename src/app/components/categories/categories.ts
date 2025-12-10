@@ -18,18 +18,15 @@ export class Categories {
   categories: Categorie[] = [];
   selectedCategorie: Categorie | null = null;
   
-  // Diálogos
   showDeleteDialog = false;
   showSuccessDialog = false;
   showErrorDialog = false;
   showFormErrorDialog = false;
   
-  // Mensajes para diálogos
   successMessage = '';
   errorMessage = '';
   formErrorMessage = '';
 
-  // Columnas para la tabla reutilizable
   columnas = [
     { key: 'id', label: 'ID' },
     { key: 'name', label: 'Nombre' },
@@ -66,7 +63,6 @@ export class Categories {
     });
   }
 
-  // Función para obtener la fecha actual en formato YYYY-MM-DD
   getCurrentDate(): string {
     const now = new Date();
     return now.toISOString().split('T')[0];
@@ -95,12 +91,10 @@ export class Categories {
     );
   }
 
-  // Para el estado en la tabla
   obtenerEstadoNombre(activo: boolean): string {
     return activo ? 'Activo' : 'Inactivo';
   }
 
-  // Modal para nueva categoría
   openNew() {
     this.editingId = null;
     this.formCategorie.reset({
@@ -112,10 +106,8 @@ export class Categories {
     this.modalRef.show();
   }
 
-  // Modal para editar categoría
   openEdit(categorie: Categorie) {
     this.editingId = categorie.id;
-    // Formatear la fecha para el input type="date"
     const formattedDate = categorie.createdDate 
       ? new Date(categorie.createdDate).toISOString().split('T')[0]
       : this.getCurrentDate();
@@ -127,7 +119,6 @@ export class Categories {
     this.modalRef.show();
   }
 
-  // Diálogo para eliminar
   openDeleteDialog(categorie: Categorie) {
     this.selectedCategorie = categorie;
     this.showDeleteDialog = true;
@@ -157,7 +148,6 @@ export class Categories {
     this.selectedCategorie = null;
   }
 
-  // Guardar (nuevo o editar)
   save() {
     if (this.formCategorie.invalid) {
       this.formErrorMessage = 'Formulario inválido. Por favor, complete todos los campos correctamente.';
@@ -167,7 +157,7 @@ export class Categories {
 
     const datos = this.formCategorie.value;
 
-    if (this.editingId) { // Editando
+    if (this.editingId) { 
       let categorieUpdate: Categorie = { ...datos, id: this.editingId };
       this.miServicio.updateCategorie(categorieUpdate).subscribe(
         () => {
@@ -181,21 +171,19 @@ export class Categories {
           this.showErrorDialog = true;
         }
       );
-    } else { // Creando nuevo
-      // Calcular nuevo ID como string basado en las categorías existentes
+    } else { 
       let nextId: string;
 
       if (this.categories.length > 0) {
-        // Convertir IDs a números, encontrar el máximo, sumar 1 y convertir a string
         const maxId = Math.max(...this.categories.map(c => parseInt(c.id)));
         nextId = (maxId + 1).toString();
       } else {
-        nextId = "1"; // Primera categoría
+        nextId = "1"; 
       }
 
       let categorieNew: Categorie = {
         ...datos,
-        id: nextId  // ID como string
+        id: nextId 
       };
 
       this.miServicio.addCategorie(categorieNew).subscribe(
@@ -213,7 +201,6 @@ export class Categories {
     }
   }
 
-  // Cerrar diálogos
   closeSuccessDialog() {
     this.showSuccessDialog = false;
   }
@@ -226,7 +213,6 @@ export class Categories {
     this.showFormErrorDialog = false;
   }
 
-  // Método helper para facilitar el acceso a los controles en el HTML
   get f() {
     return this.formCategorie.controls;
   }

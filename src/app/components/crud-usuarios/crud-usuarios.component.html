@@ -7,7 +7,6 @@
     <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Agregar Usuario</button>
 </div>
 
-<!-- Tabla reutilizable -->
 <app-reusable-table
   [datos]="usuarios"
   [columnas]="columnasTabla"
@@ -47,7 +46,6 @@
             </div>
           </div>
 
-          <!-- Email -->
           <div class="mb-3">
             <label class="form-label">Correo electrónico *</label>
             <input 
@@ -149,7 +147,6 @@
   </div>
 </div>
 
-<!-- Diálogo de confirmación para eliminar -->
 <app-reusable-dialog
   [visible]="showDeleteDialog"
   [titulo]="'Eliminar usuario'"
@@ -161,7 +158,6 @@
   (cancelar)="cancelarEliminar()">
 </app-reusable-dialog>
 
-<!-- Diálogo de éxito -->
 <app-reusable-dialog
   [visible]="showSuccessDialog"
   [titulo]="'Éxito'"
@@ -172,7 +168,6 @@
   (aceptar)="closeSuccessDialog()">
 </app-reusable-dialog>
 
-<!-- Diálogo de error -->
 <app-reusable-dialog
   [visible]="showErrorDialog"
   [titulo]="'Error'"
@@ -183,7 +178,6 @@
   (aceptar)="closeErrorDialog()">
 </app-reusable-dialog>
 
-<!-- Diálogo de error de formulario -->
 <app-reusable-dialog
   [visible]="showFormErrorDialog"
   [titulo]="'Error en el formulario'"

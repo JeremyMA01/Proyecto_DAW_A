@@ -18,7 +18,6 @@
 
  
 
-  <!-- TABLA REUTILIZABLE -->
   <app-reusable-table
     [datos]="reviews"
     [columnas]="columnas"
@@ -27,7 +26,6 @@
     (verClick)="onVerClick($event)">
   </app-reusable-table>
 
-  <!-- MODAL DE RESEÑA -->
   <app-reusable-review-form 
     #reviewModalRef
     [mostrarCampos]="true"
@@ -36,7 +34,6 @@
 
 
 
-<!-- DIÁLOGO DE CONFIRMACIÓN PARA ELIMINAR -->
 <app-reusable-dialog
   [visible]="showDeleteDialog"
   [titulo]="'Eliminar reseña'"
@@ -48,7 +45,6 @@
   (cancelar)="cancelarEliminar()">
 </app-reusable-dialog>
 
-<!-- DIÁLOGO DE ÉXITO -->
 <app-reusable-dialog
   [visible]="showSuccessDialog"
   [titulo]="dialogTitle"
@@ -59,7 +55,6 @@
   (aceptar)="closeSuccessDialog()">
 </app-reusable-dialog>
 
-<!-- DIÁLOGO DE ERROR -->
 <app-reusable-dialog
   [visible]="showErrorDialog"
   [titulo]="dialogTitle"

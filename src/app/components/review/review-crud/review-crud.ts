@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { Review } from '../../../models/Review';
 import { ReusableTable } from '../../reusable_component/reusable-table/reusable-table';
 import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
-import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog'; // Agregar
+import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog'; 
 
 @Component({
   selector: 'app-review-crud',
   standalone: true,
-  imports: [ReusableTable, ReusableReviewForm, ReusableDialog], // Agregar ReusableDialog
+  imports: [ReusableTable, ReusableReviewForm, ReusableDialog], 
   templateUrl: './review-crud.html',
   styleUrl: './review-crud.css',
 })
@@ -28,7 +28,7 @@ export class ReviewCrud {
     { key: 'publishedDate', label: 'Fecha de Publicación' },
   ];
 
-  // Variables para diálogos
+
   showSuccessDialog = false;
   showErrorDialog = false;
   showDeleteDialog = false;
@@ -153,10 +153,8 @@ private getLocalDateString(): string {
 
   onVerClick(review: Review): void {
     console.log('Ver reseña:', review);
-    // this.router.navigate(['/review-view', review.id]);
   }
 
-  // Métodos para mostrar diálogos
   private showSuccess(message: string): void {
     this.dialogTitle = 'Éxito';
     this.dialogMessage = message;

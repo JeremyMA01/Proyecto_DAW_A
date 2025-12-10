@@ -37,7 +37,6 @@
 
 
 
-<!-- MODAL PARA CREAR O EDITAR -->
 <div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef>
   <div class="modal-dialog modal-modern">
     <div class="modal-content modal-modern-content">
@@ -52,7 +51,6 @@
       <form [formGroup]="formBook" class="modal-form-modern">
         <div class="modal-body">
 
-          <!-- Título -->
           <div class="modern-input-group">
             <label class="modern-label">Título</label>
             <input type="text" class="modern-input" formControlName="title" />
@@ -66,7 +64,6 @@
             </span>
           </div>
 
-          <!-- Autor -->
           <div class="modern-input-group">
             <label class="modern-label">Autor</label>
             <input type="text" class="modern-input" formControlName="author" />
@@ -78,13 +75,11 @@
             </span>
           </div>
 
-          <!-- Año -->
           <div class="modern-input-group">
             <label class="modern-label">Año de publicación</label>
             <input type="number" class="modern-input" formControlName="year" />
           </div>
 
-          <!-- Género -->
           <div class="modern-input-group">
             <label class="modern-label">Género</label>
             <select class="modern-input" formControlName="genre">
@@ -101,13 +96,11 @@
             </span>
           </div>
 
-          <!-- Fecha -->
           <div class="modern-input-group">
             <label class="modern-label">Fecha de Publicación</label>
             <input type="date" class="modern-input" formControlName="releaseDate" />
           </div>
 
-          <!-- Presupuesto -->
           <div class="modern-input-group">
             <label class="modern-label">Presupuesto</label>
             <input type="number" class="modern-input" formControlName="budget" />
@@ -121,13 +114,11 @@
             </span>
           </div>
 
-          <!-- Poster -->
           <div class="modern-input-group">
             <label class="modern-label">Poster (URL)</label>
             <input type="text" class="modern-input" formControlName="poster" />
           </div>
 
-          <!-- Active -->
           <div class="form-check modern-check">
             <input type="checkbox" formControlName="active" id="checkActive" />
             <label class="form-check-label" for="checkActive">Activo</label>

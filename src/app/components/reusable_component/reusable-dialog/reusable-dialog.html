@@ -1,14 +1,10 @@
-<!-- Solo se muestra cuando visible = true -->
 <div *ngIf="visible" class="rd-overlay">
 
-  <!-- Fondo oscuro que bloquea la pantalla -->
   <div class="rd-backdrop"></div>
 
-  <!-- Modal centrado -->
   <div class="rd-modal" role="dialog" aria-modal="true">
     <div class="rd-header">
       <h5 class="rd-title">
-        <!-- Icono / chip según tipo -->
         <span *ngIf="tipo === 'danger'" class="rd-pill rd-pill-danger">!</span>
         <span *ngIf="tipo === 'primary'" class="rd-pill rd-pill-primary">i</span>
         {{ titulo }}

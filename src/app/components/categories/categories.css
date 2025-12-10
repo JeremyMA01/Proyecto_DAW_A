@@ -14,20 +14,17 @@
     text-align: center;
 }
 
-/* Estilos para los badges de estado */
 .badge {
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 12px;
 }
 
-/* Estilos para el formulario */
 .form-control:focus {
     border-color: rgb(63, 150, 236);
     box-shadow: 0 0 0 0.2rem rgba(63, 150, 236, 0.25);
 }
 
-/* Estilos para la tabla */
 .table {
     margin-top: 20px;
 }

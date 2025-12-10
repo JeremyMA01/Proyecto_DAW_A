@@ -1,13 +1,11 @@
 
 
-/* Estilos para la tabla */
 .table-wrapper {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Estilos para los badges de estado */
 .estado-pill {
     padding: 4px 10px;
     border-radius: 20px;
@@ -25,7 +23,6 @@
     color: #721c24;
 }
 
-/* Para el formulario del modal */
 .form-control:focus {
     border-color: rgb(63, 150, 236);
     box-shadow: 0 0 0 0.2rem rgba(63, 150, 236, 0.25);

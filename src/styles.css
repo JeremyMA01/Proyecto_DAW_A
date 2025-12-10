@@ -12,7 +12,6 @@
     color: red;
 }
 
-/* --- ESTRUCTURA DE CABECERA (LOGO SUPERIOR) --- */
 .header-top-logo {
     padding: 15px 0;
     border-bottom: 1px solid #e5e7eb;
@@ -26,46 +25,41 @@
     cursor: pointer;
 }
 
-/* Contenedor para la Navegación y Acciones (LÍNEA INFERIOR) */
-/* En tu archivo CSS correspondiente */
+
 .header-bottom-nav {
   display: flex;
-  justify-content: space-between; /* Separa menú y usuario */
+  justify-content: space-between; 
   align-items: center;
-  padding: 10px 20px; /* Un poco de aire */
-  border-bottom: 1px solid #eee; /* Opcional: una línea sutil */
+  padding: 10px 20px; 
+  border-bottom: 1px solid #eee; 
 }
 
-/* --- NAVEGACIÓN (LINKS) --- */
 .main-nav-links {
     display: flex;
     gap: 30px;
-    list-style: none;/* --- ESTILO DE ESTRELLAS INTERACTIVAS --- */
+    list-style: none;
 .rating {
     display: flex;
-    flex-direction: row-reverse; /* TRUCO CLAVE: Invierte el orden visual */
+    flex-direction: row-reverse; 
     justify-content: center;
     gap: 8px;
 }
 
-/* Ocultamos los círculos de radio originales */
 .rating input {
     display: none; 
 }
 
-/* Diseñamos la estrella vacía */
 .rating label {
     cursor: pointer;
     width: 40px;
     height: 40px;
     font-size: 40px;
-    color: #e4e5e9; /* Color gris (desactivado) */
+    color: #e4e5e9; 
     transition: color 0.2s ease-in-out;
     line-height: 1;
     position: relative;
 }
 
-/* Dibujamos la estrella usando carácter Unicode */
 .rating label:before {
     content: "★";
     position: absolute;
@@ -73,21 +67,17 @@
     top: 0;
 }
 
-/* --- LA MAGIA DEL COLOR --- */
-/* Cuando pasas el mouse (Hover) */
+
 .rating label:hover,
 .rating label:hover ~ label {
-    color: #ffc107; /* Dorado al pasar el mouse */
+    color: #ffc107; 
 }
 
-/* Cuando seleccionas una estrella (Checked) */
-/* El operador ~ selecciona todos los hermanos SIGUIENTES en el HTML */
-/* Como usamos row-reverse, visualmente selecciona los ANTERIORES */
+
 .rating input:checked ~ label {
-    color: #ffc107; /* Dorado fijo al seleccionar */
+    color: #ffc107; 
 }
 
-/* Animación extra al hacer click */
 .rating input:checked + label:active {
     transform: scale(0.9);
 }
@@ -104,11 +94,10 @@
     transition: color 0.2s, border-bottom 0.2s;
 }
 .main-nav-links a:hover, .main-nav-links a.active {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
-    border-bottom: 2px solid #3b82f6; /* Usar un azul para el borde de acento */
+    color: #1e3a8a; 
+    border-bottom: 2px solid #3b82f6;
 }
 
-/* --- ACCIONES DE USUARIO (Carrito y Cuenta) --- */
 .user-actions {
     display: flex;
     align-items: center;
@@ -122,14 +111,13 @@
     font-weight: 500;
 }
 .user-actions a:hover {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
+    color: #1e3a8a;
 }
 .cart-icon {
     font-size: 1.5rem;
     cursor: pointer;
 }
 
-/* --- SECCIÓN DE PRODUCTOS (Novedades) --- */
 .movies-section {
     max-width: 1360px;
     margin: 0 auto 40px;
@@ -153,23 +141,21 @@
     transition: color 0.2s;
 }
 .view-all:hover {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
+    color: #1e3a8a; 
 }
 
-/* CONTENEDOR DE TARJETAS (MUY IMPORTANTE) */
 .movie-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea */
+    flex-wrap: wrap; 
     justify-content: flex-start; 
-    gap: 30px; /* Espacio entre las tarjetas */
+    gap: 30px;
     padding: 0;
 }
 
-/* --- TARJETA DE PRODUCTO (Card) Mejorada --- */
 .pelicula-card {
     background: #ffffff;
     border-radius: 12px;
-    width: 220px; /* **CORREGIDO**: Un ancho fijo para todas las tarjetas */
+    width: 220px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
     border: 1px solid transparent;
     transition: all 0.3s ease;
@@ -183,11 +169,10 @@
     border: 1px solid #e5e7eb;
 }
 
-/* ENVOLTURA DE IMAGEN (MUY IMPORTANTE) */
 .img-wrapper {
     position: relative;
-    width: 100%; /* **CORREGIDO**: Asegura que la imagen ocupe todo el ancho de su contenedor */
-    height: 300px; /* Altura fija para la imagen */
+    width: 100%; 
+    height: 300px; 
     overflow: hidden;
     margin: 0;
     border-radius: 12px 12px 0 0;
@@ -195,7 +180,7 @@
 .img-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* **CORREGIDO**: Ajusta la imagen para cubrir el espacio sin distorsión */
+    object-fit: cover; 
     border-radius: 12px 12px 0 0;
 }
 
@@ -211,7 +196,7 @@
     margin-top: 10px;
 }
 .rating {
-    color: #1e3a8a; /* Estrellas del mismo color que el texto principal */
+    color: #1e3a8a; 
     font-size: 1.1rem;
 }
 .stock, .out-of-stock {
@@ -222,10 +207,10 @@
     padding: 2px 0;
 }
 .stock {
-    color: #10b981; /* Verde para "En stock" */
+    color: #10b981; 
 }
 .out-of-stock {
-    color: #ef4444; /* Rojo para "Agotado" */
+    color: #ef4444; 
 }
 .price {
     font-size: 1.4rem;
@@ -240,8 +225,8 @@
 .btn-comprar {
     width: 100%;
     padding: 12px;
-    background-color: #1e3a8a; /* Fondo del botón de compra */
-    color: #ffffff; /* Texto del botón blanco */
+    background-color: #1e3a8a; 
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-weight: 700;
@@ -258,10 +243,6 @@
 }
 
 
-/*estilo tabla*/
-/* Fondo y card general */
-
-/* Título */
 .tabla-title {
   font-size: 28px;
   font-weight: 800;
@@ -270,7 +251,6 @@
   margin-bottom: 25px;
 }
 
-/* TABLA */
 .tabla-modern {
   width: 100%;
   border-collapse: collapse;
@@ -293,13 +273,11 @@
   padding: 14px;
 }
 
-/* Filas hover */
 .row-hover {
   transition: background 0.2s, transform 0.2s;
 }
 
 
-/* ESTADO ACTIVO / INACTIVO */
 .estado-pill {
   padding: 5px 12px;
   border-radius: 20px;
@@ -317,7 +295,6 @@
   color: #fff;
 }
 
-/* BOTONES DE ACCIÓN */
 .acciones {
   display: flex;
   gap: 8px;
@@ -333,9 +310,8 @@
   border:none;
   padding: 5px 9px !important;
 }
-/* BOTONES DE ACCIÓN - COLOR SÓLIDO, NO REDONDOS */
 .btn-ghost-info {
-  background-color: #0dcaf0 !important;  /* Azul info sólido */
+  background-color: #0dcaf0 !important;  
   color: white !important;
 }
 
@@ -345,7 +321,7 @@
 }
 
 .btn-ghost-warning {
-  background-color: #ffc107 !important;  /* Amarillo warning sólido */
+  background-color: #ffc107 !important;  
   color: #212529 !important; 
 }
 
@@ -355,7 +331,7 @@
 }
 
 .btn-ghost-danger {
-  background-color: #dc3545 !important;  /* Rojo danger sólido */
+  background-color: #dc3545 !important;  
   color: white !important;
 }
 
@@ -365,16 +341,13 @@
 }
 
 
-/* Contenedor de botones */
 .d-flex.justify-content-center.gap-1 {
   gap: 8px !important;
 }
 
-/* Si quieres que los íconos sean un poco más grandes */
 .btn-sm i {
   font-size: 1rem;
 }
-/* PAGINACIÓN MINIMALISTA ELEGANTE */
 .pagination {
   margin: 0;
   gap: 4px;
@@ -426,7 +399,6 @@
   background-color: transparent !important;
 }
 
-/* Botones de navegación con íconos elegantes */
 .page-link[aria-label="Previous"]::before {
   content: "‹";
   margin-right: 6px;
@@ -441,7 +413,6 @@
   font-weight: bold;
 }
 
-/* --- WRAPPER GENERAL --- */
 .listado-wrapper {
   display: flex;
   justify-content: center;
@@ -458,7 +429,6 @@
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* TITULO */
 .title-modern {
   text-align: center;
   color: #38bdf8;
@@ -488,7 +458,6 @@
     margin-top: 20px;
 }
 
-/* --- ACCIONES SUPERIORES --- */
 .top-actions {
   display: flex;
   justify-content: space-between;
@@ -522,7 +491,6 @@
   color: #000000;
 }
 
-/* --- MODAL ESTILO LOGIN --- */
 .modal-modern .modal-content {
   background: linear-gradient(145deg, #0f172a, #1e293b);
   color: white;
@@ -575,7 +543,6 @@
   font-size: 0.85rem;
 }
 
-/* Checkbox */
 .modern-check input {
   margin-right: 8px;
 }

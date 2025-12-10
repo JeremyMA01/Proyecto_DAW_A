@@ -8,7 +8,6 @@
 </div>
 
 
-<!-- Tabla reutilizable -->
 <app-reusable-table
   [datos]="categories"
   [columnas]="columnas"
@@ -17,8 +16,6 @@
   (newClick)="openNew()">
 </app-reusable-table>
 
-<!-- MODAL para agregar/editar -->
-<!-- MODAL para agregar/editar -->
 <div class="modal fade" id="categorieModal" tabindex="-1" #categorieModalRef>
   <div class="modal-dialog">
     <div class="modal-content">
@@ -31,7 +28,6 @@
 
       <form [formGroup]="formCategorie">
         <div class="modal-body">
-          <!-- NOMBRE -->
           <div class="mb-3">
             <label class="form-label">Nombre *</label>
             <input 
@@ -48,7 +44,6 @@
             </div>
           </div>
 
-          <!-- DESCRIPCIÓN -->
           <div class="mb-3">
             <label class="form-label">Descripción *</label>
             <textarea 
@@ -64,7 +59,6 @@
             </div>
           </div>
 
-          <!-- FECHA DE CREACIÓN -->
           <div class="mb-3">
             <label class="form-label">Fecha de Creación *</label>
             <input 
@@ -78,7 +72,6 @@
             </div>
           </div>
 
-          <!-- ACTIVE CHECKBOX -->
           <div class="form-check mb-3">
             <input
               class="form-check-input"
@@ -108,7 +101,6 @@
   </div>
 </div>
 
-<!-- Diálogo de confirmación para eliminar -->
 <app-reusable-dialog
   [visible]="showDeleteDialog"
   [titulo]="'Eliminar Categoría'"
@@ -120,7 +112,6 @@
   (cancelar)="cancelDelete()">
 </app-reusable-dialog>
 
-<!-- Diálogo de éxito -->
 <app-reusable-dialog
   [visible]="showSuccessDialog"
   [titulo]="'Éxito'"
@@ -131,7 +122,6 @@
   (aceptar)="closeSuccessDialog()">
 </app-reusable-dialog>
 
-<!-- Diálogo de error -->
 <app-reusable-dialog
   [visible]="showErrorDialog"
   [titulo]="'Error'"
@@ -142,7 +132,6 @@
   (aceptar)="closeErrorDialog()">
 </app-reusable-dialog>
 
-<!-- Diálogo de error de formulario -->
 <app-reusable-dialog
   [visible]="showFormErrorDialog"
   [titulo]="'Error en el formulario'"

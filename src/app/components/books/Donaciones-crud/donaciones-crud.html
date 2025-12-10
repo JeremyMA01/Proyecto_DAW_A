@@ -10,7 +10,6 @@
 </div>
 
 
-        <!-- CONTADOR -->
         <div class="row mb-4 align-items-center">
             
             <div class="col-md-6 text-end">
@@ -18,7 +17,6 @@
             </div>
         </div>
 
-        <!-- TABLA -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle"
                 style="color:#e8f1ff;">
@@ -56,21 +54,18 @@
                         <td class="text-center">
                             <div class="btn-group">
 
-                                <!-- Ver -->
                                 <button class="btn btn-sm"
                                     style="border-color:#0dcaf0; color:#0dcaf0;"
                                     title="Ver" (click)="view(book.id)">
                                     <i class="bi bi-binoculars"></i>
                                 </button>
 
-                                <!-- Editar -->
                                 <button class="btn btn-sm"
                                     style="border-color:#ffc107; color:#ffc107;"
                                     title="Editar" (click)="openEdit(book)">
                                     <i class="bi bi-pen"></i>
                                 </button>
 
-                                <!-- Eliminar -->
                                 <button class="btn btn-sm"
                                     style="border-color:#dc3545; color:#dc3545;"
                                     title="Eliminar" (click)="delete(book)">
@@ -102,7 +97,6 @@
 
 
 
-<!-- MODAL -->
 <div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef
     aria-labelledby="bookModalLabel" aria-hidden="true">
 
@@ -119,7 +113,6 @@
             <form [formGroup]="formBook">
                 <div class="modal-body">
 
-                    <!-- FILA 1 -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Título *</label>
@@ -136,7 +129,6 @@
                         </div>
                     </div>
 
-                    <!-- FILA 2 -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Género *</label>
@@ -159,7 +151,6 @@
                         </div>
                     </div>
 
-                    <!-- ESTADO -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">Estado del Libro</label>
                         <select class="form-select"
@@ -170,7 +161,6 @@
                         </select>
                     </div>
 
-                    <!-- POSTER -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">Poster (URL)</label>
                         <input type="url" class="form-control"
@@ -180,7 +170,6 @@
 
                 </div>
 
-                <!-- FOOTER -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                         style="background:#6c757d;"

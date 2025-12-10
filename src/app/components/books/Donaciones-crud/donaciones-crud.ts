@@ -35,11 +35,11 @@ export class DonacionesCrud {
 
     this.formBook = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      author: ['', Validators.required],     // ← CORREGIDO (antes decía "autor")
+      author: ['', Validators.required],   
       genre: ['', Validators.required],
       releaseDate: ['', Validators.required],
       Estado: ['Nuevo', Validators.required],
-      poster: ['']  // ← Agregado porque está en el HTML
+      poster: ['']  
     });
   }
 
@@ -78,7 +78,7 @@ export class DonacionesCrud {
 
     this.formBook.patchValue({
       title: book.title,
-      author: book.author,    // ← CORREGIDO
+      author: book.author,    
       genre: book.genre,
       releaseDate: book.releaseDate,
       Estado: book.Estado,
@@ -96,7 +96,6 @@ export class DonacionesCrud {
 
     const datos = this.formBook.value;
 
-    // EDITAR
     if (this.editingId) {
       const bookUpdated: Book = { ...datos, id: this.editingId };
 
@@ -107,7 +106,6 @@ export class DonacionesCrud {
       });
 
     } else {
-      // NUEVO
       const newBook: Book = { ...datos };
 
       this.miServicio.addBook(newBook).subscribe(() => {

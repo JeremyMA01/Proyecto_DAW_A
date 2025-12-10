@@ -28,13 +28,10 @@ declare const bootstrap: any;
   styleUrl: './crud-usuarios.component.css',
 })
 export class CrudUsuariosComponent implements OnInit {
-  // Formulario
   form!: FormGroup;
   
-  // Datos
   usuarios: Usuario[] = [];
   
-  // Columnas para tabla
   columnasTabla = [
     { key: 'id', label: 'ID' },
     { key: 'nombre', label: 'Nombre' },
@@ -45,29 +42,23 @@ export class CrudUsuariosComponent implements OnInit {
     { key: 'active', label: 'Estado' }
   ];
   
-  // Modal
   @ViewChild('usuarioModalRef') modalElement!: ElementRef;
   modalRef: any;
   
-  // Edición
   editando = false;
   usuarioEditando: Usuario | null = null;
   
-  // Diálogos (como en categorías - variables separadas)
   showDeleteDialog = false;
   showSuccessDialog = false;
   showErrorDialog = false;
   showFormErrorDialog = false;
   
-  // Mensajes para diálogos (variables separadas como en categorías)
   successMessage = '';
   errorMessage = '';
   formErrorMessage = '';
   
-  // Para eliminar
   usuarioParaEliminar: Usuario | null = null;
   
-  // Patrones
   readonly patronSoloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
   readonly patronSoloNumeros = /^[0-9]+$/;
   
@@ -87,7 +78,6 @@ export class CrudUsuariosComponent implements OnInit {
     }
   }
   
-  // Inicializar formulario
   private inicializarFormulario(): void {
     this.form = this.fb.group({
       nombre: ['', [
@@ -117,19 +107,16 @@ export class CrudUsuariosComponent implements OnInit {
     });
   }
   
-  // Getter para acceder a los controles del formulario
   get f() {
     return this.form.controls;
   }
   
-  // Cargar usuarios
   private cargarUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe(usuarios => {
       this.usuarios = usuarios;
     });
   }
   
-  // Búsqueda
   search(busq: HTMLInputElement) {
     let parametro = busq.value.toLowerCase();
     this.usuarioService.searchUsuarios(parametro).subscribe(
@@ -139,7 +126,6 @@ export class CrudUsuariosComponent implements OnInit {
     );
   }
   
-  // Abrir modal para nuevo usuario
   openNew() {
     this.editando = false;
     this.usuarioEditando = null;
@@ -155,7 +141,6 @@ export class CrudUsuariosComponent implements OnInit {
     this.modalRef.show();
   }
   
-  // Abrir modal para editar usuario
   onEditarClick(usuario: Usuario): void {
     this.editando = true;
     this.usuarioEditando = usuario;
@@ -173,7 +158,6 @@ export class CrudUsuariosComponent implements OnInit {
     this.modalRef.show();
   }
   
-  // Enviar formulario (guardar o actualizar)
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -185,7 +169,6 @@ export class CrudUsuariosComponent implements OnInit {
     const datos = this.form.value;
     
     if (this.editando && this.usuarioEditando) {
-      // Actualizar
       const usuarioActualizado: Usuario = {
         ...this.usuarioEditando,
         nombre: datos.nombre,
@@ -210,7 +193,6 @@ export class CrudUsuariosComponent implements OnInit {
         }
       );
     } else {
-      // Crear nuevo
       let nextId: string;
       if (this.usuarios.length > 0) {
         const maxId = Math.max(...this.usuarios.map(u => parseInt(String(u.id)) || 0));
@@ -245,13 +227,11 @@ export class CrudUsuariosComponent implements OnInit {
     }
   }
   
-  // Abrir diálogo para eliminar
   onEliminarClick(usuario: Usuario): void {
     this.usuarioParaEliminar = usuario;
     this.showDeleteDialog = true;
   }
   
-  // Confirmar eliminación
   confirmarEliminar(): void {
     if (this.usuarioParaEliminar) {
       this.usuarioService.eliminar(this.usuarioParaEliminar.id).subscribe(
@@ -272,13 +252,11 @@ export class CrudUsuariosComponent implements OnInit {
     }
   }
   
-  // Cancelar eliminación
   cancelarEliminar(): void {
     this.showDeleteDialog = false;
     this.usuarioParaEliminar = null;
   }
   
-  // Cambiar estado activo/inactivo
   onToggleActivo(usuario: Usuario): void {
     const usuarioActualizado: Usuario = {
       ...usuario,
@@ -296,7 +274,6 @@ export class CrudUsuariosComponent implements OnInit {
     );
   }
   
-  // Cerrar diálogos (métodos separados como en categorías)
   closeSuccessDialog(): void {
     this.showSuccessDialog = false;
   }
@@ -309,7 +286,6 @@ export class CrudUsuariosComponent implements OnInit {
     this.showFormErrorDialog = false;
   }
   
-  // Métodos para bloqueo de caracteres
   bloquearNumeros(event: KeyboardEvent): void {
     if (/[0-9]/.test(event.key)) {
       event.preventDefault();
