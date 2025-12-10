@@ -16,7 +16,7 @@
   (toggleActivo)="onToggleActivo($event)">
 </app-reusable-table>
 
-<!-- MODAL para agregar/editar usuario -->
+
 <div class="modal fade" id="usuarioModal" tabindex="-1" #usuarioModalRef>
   <div class="modal-dialog">
     <div class="modal-content">
@@ -30,7 +30,7 @@
       <form [formGroup]="form" class="space-y-2">
         <div class="modal-body">
           
-          <!-- Nombre -->
+          
           <div class="mb-3">
             <label class="form-label">Nombre completo *</label>
             <input 
@@ -62,7 +62,7 @@
             </div>
           </div>
 
-          <!-- Teléfono -->
+          
           <div class="mb-3">
             <label class="form-label">Teléfono</label>
             <input 
@@ -80,7 +80,7 @@
             </div>
           </div>
 
-          <!-- Ciudad -->
+         
           <div class="mb-3">
             <label class="form-label">Ciudad *</label>
             <input 
@@ -96,7 +96,7 @@
             </div>
           </div>
 
-          <!-- Rol -->
+          
           <div class="mb-3">
             <label class="form-label">Rol *</label>
             <select class="form-select" formControlName="rol"
@@ -110,7 +110,7 @@
             </div>
           </div>
 
-          <!-- Contraseña -->
+       
           <div class="mb-3">
             <label class="form-label">Contraseña *</label>
             <input 
@@ -125,7 +125,7 @@
             </div>
           </div>
 
-          <!-- Estado Activo -->
+          
           <div class="form-check mb-3">
             <input type="checkbox" class="form-check-input" formControlName="active" id="active">
             <label class="form-check-label" for="active">
