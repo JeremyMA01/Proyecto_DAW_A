@@ -61,4 +61,14 @@ export class ServReviewJson {
       )
     );
   }
+
+  getScoreFilter(score:number):Observable<Review[]>{
+    return this.http.get<Review[]>(this.reviewUrl).pipe(
+      map((reviews)=>
+        reviews.filter((r)=>
+        Number(r.score) === score)
+      )
+    )
+  }
+
 }

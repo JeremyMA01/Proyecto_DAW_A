@@ -169,4 +169,42 @@ export class ReviewView implements OnInit {
       });
     }
   }
+
+  filterScore(score:number){
+    if(this.totalOpiniones === 0){
+      console.log('No hay opiniones para filtrar');
+    }else{
+      this.servReview.getScoreFilter(score).subscribe(
+      )
+    }
+  }
+
+
+  cargarReseñas(){
+    return this.servReview.getReview().subscribe(
+      (data:Review[])=>{
+        this.reviews = data;
+      }
+    )
+  }
+
+  cargarReseñasId(id:number){
+    return this.servReview.getReviewIdBook(id).subscribe(
+      (data:Review[])=>{
+        this.reviews = data;
+      }
+    )
+  }
+
+  eliminarReseñas(id:number){
+    const confirmar = confirm('¿Estas seguro para eliminar?');
+    this.servReview.deleteReview(id).subscribe(
+
+      ()=>{
+        console.log('Eliminado');
+      }
+    )
+  }
 }
+
+

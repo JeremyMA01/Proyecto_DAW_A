@@ -191,26 +191,8 @@
   ],
   "Review": [
     {
-      "user": "Anthony Lopez",
-      "score": 5,
-      "comment": "Muy bueno",
-      "isRecommend": true,
-      "id_book": 1,
-      "publishedDate": "2025-12-09",
-      "id": "2"
-    },
-    {
-      "id": "3",
-      "user": "Cristhian Briones",
-      "score": 5,
-      "comment": "Recomendadisimo",
-      "isRecommend": true,
-      "id_book": 1,
-      "publishedDate": "2025-12-09"
-    },
-    {
       "user": "Katherine Rivas",
-      "score": 5,
+      "score": 2,
       "comment": "Libro bueno",
       "isRecommend": false,
       "id_book": 2,
@@ -219,18 +201,9 @@
     },
     {
       "id": "5",
-      "user": "Sofia",
+      "user": "Jeremy Mero",
       "score": 5,
-      "comment": "Muy buen libro",
-      "isRecommend": true,
-      "id_book": 2,
-      "publishedDate": "2025-12-09"
-    },
-    {
-      "id": "6",
-      "user": "Tanisha",
-      "score": 3,
-      "comment": "Libro decente",
+      "comment": "Excelente libro.",
       "isRecommend": true,
       "id_book": 1,
       "publishedDate": "2025-12-09"
