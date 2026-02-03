@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common'; // Agregamos DatePipe aquí
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http'; // ¡Importación necesaria!
 import { ContactMessage } from '../../models/contact-message.model';
 import { ContactMessageService } from '../../services/contact-message.service';
+
+import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-dialog';
+
 
 @Component({
   selector: 'app-contact-message',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, DatePipe],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DatePipe, ReusableDialog], 
   templateUrl: './contact-message.component.html',
   styleUrls: ['./contact-message.component.css']
 })
@@ -27,7 +29,9 @@ export class ContactMessageComponent implements OnInit {
   
   alertMessage: string | null = null;
   alertType: 'success' | 'danger' | 'warning' = 'success';
-
+  
+  isConfirmationModalVisible: boolean = false;
+  messageToDeleteId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -51,9 +55,15 @@ export class ContactMessageComponent implements OnInit {
   }
 
   loadMessages(): void {
-    this.messageService.getMessages().subscribe(data => {
-      this.messages = data;
-      this.applyFilter();
+    this.messageService.getMessages().subscribe({
+      next: data => {
+        this.messages = data;
+        this.applyFilter();
+      },
+      error: (error) => {
+        console.error('Error al cargar los mensajes:', error);
+        this.showAlert('Error al cargar los mensajes.', 'danger');
+      }
     });
   }
   
@@ -73,31 +83,40 @@ export class ContactMessageComponent implements OnInit {
       const updatedMessage: ContactMessage = {
         ...formValue,
         id: this.messageToEditId,
-        timestamp: new Date() 
+        timestamp: new Date() as any 
       };
-      this.messageService.updateMessage(updatedMessage).subscribe(
-        () => {
+      
+      this.messageService.updateMessage(updatedMessage).subscribe({
+        next: () => {
           this.showAlert('Mensaje actualizado con éxito.', 'success');
           this.loadMessages();
           this.resetForm();
         },
-        () => this.showAlert('Error al actualizar el mensaje.', 'danger')
-      );
+        error: (error) => {
+           console.error('Error al actualizar el mensaje:', error);
+           this.showAlert('Error al actualizar el mensaje.', 'danger');
+        }
+      });
+      
     } else {
-      this.messageService.createMessage(formValue).subscribe(
-        () => {
+      
+      this.messageService.createMessage(formValue).subscribe({
+        next: () => {
           this.showAlert('Mensaje enviado con éxito.', 'success');
           this.loadMessages();
           this.resetForm();
         },
-        () => this.showAlert('Error al enviar el mensaje.', 'danger')
-      );
+        error: (error) => {
+          console.error('Error al enviar el mensaje:', error);
+          this.showAlert('Error al enviar el mensaje.', 'danger');
+        }
+      });
     }
   }
 
   editMessage(message: ContactMessage): void {
     this.isEditing = true;
-    this.messageToEditId = message.id ?? null; 
+    this.messageToEditId = message.id ?? null;
     this.messageForm.patchValue({
       senderName: message.senderName,
       recipientName: message.recipientName,
@@ -109,23 +128,37 @@ export class ContactMessageComponent implements OnInit {
     document.getElementById('messageFormContainer')?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  deleteMessage(id: number | undefined): void {
+  prepareDelete(id: number | undefined): void {
     if (id === undefined) return;
-
-
-    console.warn(`[INFO] Eliminación del mensaje ID ${id} iniciada. Se requiere un modal de confirmación UI.`);
     
-    this.messageService.deleteMessage(id).subscribe(
-      success => {
-        if (success) {
-          this.showAlert('Mensaje eliminado con éxito.', 'success');
-          this.loadMessages();
-        } else {
-          this.showAlert('Error: No se encontró el mensaje a eliminar.', 'danger');
-        }
+    this.messageToDeleteId = id;
+    this.isConfirmationModalVisible = true;
+  }
+  
+  confirmDelete(): void {
+    const id = this.messageToDeleteId;
+    this.isConfirmationModalVisible = false;
+
+    if (id === null || id === undefined) {
+      this.showAlert('Error: ID de mensaje no válido para eliminar.', 'danger');
+      return;
+    }
+
+    this.messageService.deleteMessage(id).subscribe({
+      next: () => {
+        this.showAlert('Mensaje eliminado con éxito.', 'success');
+        this.loadMessages();
       },
-      () => this.showAlert('Error en la operación de eliminación.', 'danger')
-    );
+      error: (error) => {
+        console.error('Error al eliminar el mensaje:', error);
+        this.showAlert('Error al eliminar el mensaje.', 'danger');
+      }
+    });
+  }
+  
+  cancelDelete(): void {
+      this.isConfirmationModalVisible = false;
+      this.messageToDeleteId = null;
   }
 
   resetForm(): void {
@@ -153,5 +186,4 @@ export class ContactMessageComponent implements OnInit {
       this.alertMessage = null;
     }, 5000); 
   }
-
 }

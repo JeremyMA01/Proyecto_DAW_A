@@ -27,7 +27,6 @@ export class ServBookJson {
     );
   }
 
-  // 🔹 Ya lo tenías, lo dejo igual
   getMovieById(id: number): Observable<Book> {
     const url = `${this.bookUrl}/${id}`;
     return this.http.get<Book>(url);
@@ -38,12 +37,9 @@ export class ServBookJson {
     return this.http.get<Book>(url);
   }
 
-  // 🔹 NUEVO: alias con el nombre que usa BookList
   getBookId(id: number): Observable<Book> {
     const url = `${this.bookUrl}/${id}`;
     return this.http.get<Book>(url);
-    // o simplemente:
-    // return this.getid(id);
   }
 
   serchBook(title: string): Observable<Book[]> {

@@ -24,7 +24,7 @@ export class ReusableTable implements OnChanges {
   @Output() editClick = new EventEmitter<any>();
   @Output() toggleActivo = new EventEmitter<any>();
 
-  busq: string = '';
+
   page = 1;
   pageSize = 5;
 
@@ -44,15 +44,6 @@ export class ReusableTable implements OnChanges {
   Onview(fila: any, event?: MouseEvent) {
     if (event) event.stopPropagation();
     this.verClick.emit(fila);
-  }
-
-  onSearch(user: string) {
-    this.searchClick.emit(user);
-    this.page = 1;
-  }
-
-  onNewClick() {
-    this.newClick.emit();
   }
 
   OnEditClick(fila: any) {

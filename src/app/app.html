@@ -1,7 +1,7 @@
 @if (!isAuthPage) {
   <div class="header-top-logo bg-white pb-2">
     <div class="container">
-      <h3 class="site-logo mt-3" style="color: #0d3b66; font-weight: bold;">LibroStore</h3>
+      <h3 class="site-logo mt-3" style="color: #0d3b66; font-weight: bold; font-size: 37px;">Libro<span style="color:rgb(32, 101, 190)">Store</span></h3>
     </div>
   </div>
 
@@ -16,20 +16,12 @@
           <li><a routerLink="categories" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Categorías</a></li>
           <li><a routerLink="donaciones-crud" routerLinkActive="active" class="text-decoration-none text-dark fw-bold" >Donaciones</a></li>
           <li><a routerLink="mensajes" routerLinkActive="active" class="text-decoration-none text-dark fw-bold" >Mensajes</a></li>
-          <li><a routerLink="/novedades" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Novedades</a></li>
-          <li>
-            <a (click)="irAUsuarios()" 
-               class="text-decoration-none text-dark fw-bold" 
-               style="cursor: pointer;">
-               Usuarios
-            </a>
-          </li>
+          <li><a routerLink="usuarios" routerLinkActive="active" class="text-decoration-none text-dark fw-bold">Usuarios</a></li>
         </ul>
 
         <div class="user-actions d-flex align-items-center gap-3">
           <span class="cart-icon fs-5" style="cursor: pointer;">🛒</span>
           <span class="text-muted small">|</span>
-          <li><a routerLink="usuarios" routerLinkActive="active">Usuarios</a></li>
           <a routerLink="/mi-cuenta" class="btn btn-sm btn-outline-primary rounded-pill px-3">Mi cuenta</a>
         </div>
 

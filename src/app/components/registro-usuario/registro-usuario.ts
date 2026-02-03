@@ -30,7 +30,6 @@ export class RegistroUsuarioComponent {
     private router: Router
   ) {
     this.form = this.fb.group({
-      // Solo letras (con tildes y ñ) y espacios, mínimo 3 caracteres
       nombre: [
         '',
         [
@@ -42,7 +41,6 @@ export class RegistroUsuarioComponent {
 
       email: ['', [Validators.required, Validators.email]],
 
-      // Teléfono opcional, pero si se llena, solo números de 7 a 15 dígitos
       telefono: [
         '',
         [
@@ -50,7 +48,7 @@ export class RegistroUsuarioComponent {
         ]
       ],
 
-      // Solo letras para ciudad
+      
       ciudad: [
         '',
         [
@@ -59,10 +57,10 @@ export class RegistroUsuarioComponent {
         ]
       ],
 
-      // por defecto lector
+      
       rol: ['lector', Validators.required],
 
-      // Mínimo 6 caracteres
+    
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -101,14 +99,15 @@ export class RegistroUsuarioComponent {
 
     const valores = this.form.value;
 
-    const nuevoUsuario: Omit<Usuario, 'id'> = {
+    const nuevoUsuario: Usuario = {
+      id: '0', 
       nombre: valores.nombre,
       email: valores.email,
-      telefono: valores.telefono,
+      telefono: valores.telefono || '',
       ciudad: valores.ciudad,
-      rol: valores.rol,
+      rol: 'lector',
       password: valores.password,
-      estadoActivo: true,   
+      active: true
     };
 
     this.usuarioService.crear(nuevoUsuario).subscribe(() => {

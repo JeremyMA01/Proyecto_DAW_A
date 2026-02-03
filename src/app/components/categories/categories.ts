@@ -3,34 +3,69 @@ import { Categorie } from '../../models/Categorie';
 import { ServCategorie } from '../../services/categorie/serv-categorie';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReusableTable } from '../reusable_component/reusable-table/reusable-table';
+import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-dialog';
+import { CommonModule } from '@angular/common';
 
 declare const bootstrap: any;
-
 @Component({
   selector: 'app-categories',
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ReusableTable, ReusableDialog],
   templateUrl: './categories.html',
   styleUrl: './categories.css',
 })
 export class Categories {
   categories: Categorie[] = [];
+  selectedCategorie: Categorie | null = null;
+  
+  showDeleteDialog = false;
+  showSuccessDialog = false;
+  showErrorDialog = false;
+  showFormErrorDialog = false;
+  
+  successMessage = '';
+  errorMessage = '';
+  formErrorMessage = '';
+
+  columnas = [
+    { key: 'id', label: 'ID' },
+    { key: 'name', label: 'Nombre' },
+    { key: 'description', label: 'Descripción' },
+    { key: 'createdDate', label: 'Fecha Creación' },
+    { key: 'active', label: 'Estado' }
+  ];
 
   formCategorie!: FormGroup;
   editingId: string | null = null;
-  modalRef: any; 
+  modalRef: any;
 
   constructor(
-    private miServicio: ServCategorie, 
-    private router: Router, 
+    private miServicio: ServCategorie,
+    private router: Router,
     private fb: FormBuilder
   ) {
     this.loadCategories();
 
     this.formCategorie = this.fb.group({
-      name: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      description: ['', Validators.required],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+        Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+      ]],
+      description: ['', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(200)
+      ]],
+      createdDate: [this.getCurrentDate(), Validators.required],
       active: [true]
     });
+  }
+
+  getCurrentDate(): string {
+    const now = new Date();
+    return now.toISOString().split('T')[0];
   }
 
   @ViewChild('categorieModalRef') modalElement!: ElementRef;
@@ -47,86 +82,139 @@ export class Categories {
     );
   }
 
-
   search(busq: HTMLInputElement) {
     let parametro = busq.value.toLowerCase();
     this.miServicio.searchCategories(parametro).subscribe(
       (datos: Categorie[]) => {
-        this.categories = datos; 
+        this.categories = datos;
       }
     );
   }
 
-  // Registrar nueva categoría con modal registro
+  obtenerEstadoNombre(activo: boolean): string {
+    return activo ? 'Activo' : 'Inactivo';
+  }
+
   openNew() {
     this.editingId = null;
-    this.formCategorie.reset();
+    this.formCategorie.reset({
+      name: '',
+      description: '',
+      createdDate: this.getCurrentDate(),
+      active: true
+    });
     this.modalRef.show();
   }
 
-  // En categories.ts
-save() {
-  if(this.formCategorie.invalid) {
-    alert("Formulario inválido");
-    return;
-  }
-  
-  const datos = this.formCategorie.value;
-
-  if(this.editingId) { // Editando
-    let categorieUpdate: Categorie = { ...datos, id: this.editingId };
-    this.miServicio.updateCategorie(categorieUpdate).subscribe(
-      () => {
-        alert("Categoría actualizada");
-        this.modalRef.hide();
-        this.loadCategories();
-      }
-    );
-  } else { // Creando nuevo
-    // Calcular nuevo ID como string basado en las categorías existentes
-    let nextId: string;
+  openEdit(categorie: Categorie) {
+    this.editingId = categorie.id;
+    const formattedDate = categorie.createdDate 
+      ? new Date(categorie.createdDate).toISOString().split('T')[0]
+      : this.getCurrentDate();
     
-    if (this.categories.length > 0) {
-      // Convertir IDs a números, encontrar el máximo, sumar 1 y convertir a string
-      const maxId = Math.max(...this.categories.map(c => parseInt(c.id)));
-      nextId = (maxId + 1).toString();
-    } else {
-      nextId = "1"; // Primera categoría
+    this.formCategorie.patchValue({
+      ...categorie,
+      createdDate: formattedDate
+    });
+    this.modalRef.show();
+  }
+
+  openDeleteDialog(categorie: Categorie) {
+    this.selectedCategorie = categorie;
+    this.showDeleteDialog = true;
+  }
+
+  confirmDelete() {
+    if (this.selectedCategorie) {
+      this.miServicio.deleteCategorie(this.selectedCategorie.id).subscribe(
+        () => {
+          this.successMessage = 'Categoría eliminada exitosamente';
+          this.showSuccessDialog = true;
+          this.loadCategories();
+          this.showDeleteDialog = false;
+          this.selectedCategorie = null;
+        },
+        (error) => {
+          this.errorMessage = 'Error al eliminar categoría: ' + error.message;
+          this.showErrorDialog = true;
+          this.showDeleteDialog = false;
+        }
+      );
     }
-    
-    let categorieNew: Categorie = { 
-      ...datos, 
-      id: nextId  // ID como string
-    };
-    
-    this.miServicio.addCategorie(categorieNew).subscribe(
-      () => {
-        alert("Categoría registrada exitosamente");
-        this.modalRef.hide();
-        this.loadCategories();
+  }
+
+  cancelDelete() {
+    this.showDeleteDialog = false;
+    this.selectedCategorie = null;
+  }
+
+  save() {
+    if (this.formCategorie.invalid) {
+      this.formErrorMessage = 'Formulario inválido. Por favor, complete todos los campos correctamente.';
+      this.showFormErrorDialog = true;
+      return;
+    }
+
+    const datos = this.formCategorie.value;
+
+    if (this.editingId) { 
+      let categorieUpdate: Categorie = { ...datos, id: this.editingId };
+      this.miServicio.updateCategorie(categorieUpdate).subscribe(
+        () => {
+          this.successMessage = 'Categoría actualizada exitosamente';
+          this.showSuccessDialog = true;
+          this.modalRef.hide();
+          this.loadCategories();
+        },
+        (error) => {
+          this.errorMessage = 'Error al actualizar categoría: ' + error.message;
+          this.showErrorDialog = true;
+        }
+      );
+    } else { 
+      let nextId: string;
+
+      if (this.categories.length > 0) {
+        const maxId = Math.max(...this.categories.map(c => parseInt(c.id)));
+        nextId = (maxId + 1).toString();
+      } else {
+        nextId = "1"; 
       }
-    );
+
+      let categorieNew: Categorie = {
+        ...datos,
+        id: nextId 
+      };
+
+      this.miServicio.addCategorie(categorieNew).subscribe(
+        () => {
+          this.successMessage = 'Categoría registrada exitosamente';
+          this.showSuccessDialog = true;
+          this.modalRef.hide();
+          this.loadCategories();
+        },
+        (error) => {
+          this.errorMessage = 'Error al crear categoría: ' + error.message;
+          this.showErrorDialog = true;
+        }
+      );
+    }
+  }
+
+  closeSuccessDialog() {
+    this.showSuccessDialog = false;
+  }
+
+  closeErrorDialog() {
+    this.showErrorDialog = false;
+  }
+
+  closeFormErrorDialog() {
+    this.showFormErrorDialog = false;
+  }
+
+  get f() {
+    return this.formCategorie.controls;
   }
 }
 
-// También cambia en openEdit si es necesario:
-openEdit(categorie: Categorie) {
-  this.editingId = categorie.id; // Ya es string
-  this.formCategorie.patchValue(categorie);
-  this.modalRef.show();
-}
-
-// Y en delete:
-delete(categorie: Categorie) {
-  const confirmacion = confirm(`¿Estás seguro de eliminar la categoría "${categorie.name}"?`);
-  if(confirmacion) {
-    this.miServicio.deleteCategorie(categorie.id).subscribe(  // categorie.id ya es string
-      () => {
-        alert("Categoría eliminada exitosamente");
-        this.loadCategories();
-      }
-    );
-  }
-}
-  
-}

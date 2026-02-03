@@ -1,7 +1,6 @@
-/* Fondo general con estilo tipo Tailwind (oscuro y degradado) */
 :host {
   display: block;
-  margin: -50px; /* Compensa el padding del contenedor padre */
+  margin: -50px; 
 }
 
 .registro-wrapper {
@@ -11,7 +10,6 @@
   padding: 1.5rem;
 }
 
-/* Card flotando con efecto glass + shadow */
 .registro-card {
   max-width: 460px;
   width: 100%;
@@ -25,7 +23,7 @@
   animation: cardFloat 8s ease-in-out infinite;
 }
 
-/* Brillo decorativo en el borde */
+
 .registro-card::before {
   content: "";
   position: absolute;
@@ -57,7 +55,7 @@
   z-index: 1;
 }
 
-/* Título con efecto de gradiente y animación suave */
+
 .registro-title {
   background: linear-gradient(120deg, #4ade80, #22c55e, #2dd4bf, #38bdf8);
   background-size: 200% 200%;
@@ -67,12 +65,12 @@
   animation: gradientText 7s ease infinite, titleFloat 5s ease-in-out infinite;
 }
 
-/* Subtítulo con leve fade-in */
+
 .subtitle {
   animation: fadeInUp 0.8s ease-out;
 }
 
-/* Inputs modernos (modo oscuro) */
+
 .modern-input {
   background-color: rgba(15, 23, 42, 0.92);
   border-radius: 0.8rem;
@@ -100,7 +98,6 @@
   transform: translateY(-1px);
 }
 
-/* Botón principal con animación y microinteracciones */
 .btn-modern {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   border: none;
@@ -150,7 +147,7 @@
     0 0 0 1px rgba(22, 163, 74, 1);
 }
 
-/* Divider moderno */
+
 .divider {
   display: flex;
   align-items: center;
@@ -173,7 +170,6 @@
   letter-spacing: 0.15em;
 }
 
-/* Link de login con efecto underline animado */
 .link-login {
   position: relative;
   color: #38bdf8;
@@ -201,7 +197,6 @@
   width: 100%;
 }
 
-/* Textos pequeños tipo Tailwind */
 .text-xs {
   font-size: 0.75rem;
 }
@@ -213,46 +208,39 @@
 .text-slate-300 { color: #cbd5f5; }
 .text-slate-400 { color: #94a3b8; }
 
-/* Background tipo Tailwind */
 .bg-slate-800 { background-color: #1f2937; }
 .bg-slate-900 { background-color: #020617; }
 
-/* Breakpoints tipo Tailwind básicos para tamaños */
 @media (min-width: 768px) {
   .md\:text-base { font-size: 1rem; }
   .md\:text-3xl { font-size: 1.875rem; }
 }
 
-/* ======== ANIMACIONES ======== */
 
-/* Card flotando suave */
+
 @keyframes cardFloat {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-4px); }
   100% { transform: translateY(0); }
 }
 
-/* Brillo girando alrededor */
 @keyframes rotateGlow {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Gradiente animado sobre texto */
 @keyframes gradientText {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Título flotando sutilmente */
 @keyframes titleFloat {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-2px); }
   100% { transform: translateY(0); }
 }
 
-/* Fade in desde abajo para subtítulo */
 @keyframes fadeInUp {
   0% {
     opacity: 0;

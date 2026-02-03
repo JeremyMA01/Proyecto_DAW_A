@@ -19,7 +19,6 @@ declare const bootstrap: any;
 })
 export class BookList {
 
-  //private router = new Router();
   @Input() datos: any[] = [];
 
   books: Book[] = [];
@@ -34,7 +33,6 @@ export class BookList {
     { key: 'genre', label: 'Genero' },
     { key: 'active', label: 'Estado' },
     {key: 'budget', label: 'Presupuesto'},
-    { key: 'action', label: 'Acciones' },
   ];
 
   formBook!: FormGroup;
@@ -102,7 +100,14 @@ export class BookList {
   }
 
 
+  getId(): string {
+    if (this.books.length === 0) return '1';
 
+    const id = this.books.map(t => Number(t.id) || 0);
+    const stringId = Math.max(...id) + 1;
+
+    return String(stringId);
+  }
 
 
   search(busq: HTMLInputElement) {
@@ -153,6 +158,7 @@ export class BookList {
   }
 
   save() {
+    
     if (this.formBook.invalid){ 
       if(this.formBook.invalid){
         alert("invalido")
@@ -162,6 +168,7 @@ export class BookList {
     }
 
     const datos = this.formBook.value;
+    const nuevoLibro: any = { ...datos };
 
     if (this.editingId) {
       let bookUpdate: Book = { ...datos, id: this.editingId };
@@ -172,7 +179,8 @@ export class BookList {
       });
 
     } else {
-      let nuevoLibro: Book = { ...datos };
+
+      nuevoLibro.id = this.getId();
       this.servBook.addBook(nuevoLibro).subscribe(() => {
         alert("Libro creado");
         this.modalRef.hide();
@@ -180,5 +188,18 @@ export class BookList {
       });
     }
   }
+
+    
+
+
+
+
+
+
+
+
+
+
+
 
 }

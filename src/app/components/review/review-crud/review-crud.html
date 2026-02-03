@@ -1,14 +1,66 @@
-<app-reusable-table
+
+
+  <div class="encabezado">
+    <h2>Gestión de Reseñas</h2> 
+</div>
+
+<div class="encabezado-acciones">
+    <input 
+          type="text" 
+          class="busquedaInput" 
+          placeholder="Buscar reseñas..."
+          #busq
+          (keyup)="search(busq.value)">
+    <button class="btn-new" (click)="reviewModalRef.openNew()">
+        <i class="bi bi-plus-circle me-1"></i> Nueva Reseña
+      </button>
+</div>
+
+ 
+
+  <app-reusable-table
     [datos]="reviews"
     [columnas]="columnas"
-    (searchClick)="search($event)"
-    (newClick)="reviewModalRef.openNew()"
     (editClick)="reviewModalRef.openEdit($event)"
     (eliminarClick)="delete($event)"
->    
-</app-reusable-table>
-<app-reusable-review-form 
-  #reviewModalRef
-  [mostrarCampos]="true"
-  (onSaveReview)="save($event)">
-</app-reusable-review-form>
+    (verClick)="onVerClick($event)">
+  </app-reusable-table>
+
+  <app-reusable-review-form 
+    #reviewModalRef
+    [mostrarCampos]="true"
+    (onSaveReview)="save($event)">
+  </app-reusable-review-form>
+
+
+
+<app-reusable-dialog
+  [visible]="showDeleteDialog"
+  [titulo]="'Eliminar reseña'"
+  [mensaje]="reviewParaEliminar ? '¿Estás seguro de eliminar la reseña de ' + reviewParaEliminar.user + '?' : '¿Eliminar reseña?'"
+  [textoAceptar]="'Eliminar'"
+  [textoCancelar]="'Cancelar'"
+  [tipo]="'danger'"
+  (aceptar)="confirmarEliminar()"
+  (cancelar)="cancelarEliminar()">
+</app-reusable-dialog>
+
+<app-reusable-dialog
+  [visible]="showSuccessDialog"
+  [titulo]="dialogTitle"
+  [mensaje]="dialogMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'primary'"
+  (aceptar)="closeSuccessDialog()">
+</app-reusable-dialog>
+
+<app-reusable-dialog
+  [visible]="showErrorDialog"
+  [titulo]="dialogTitle"
+  [mensaje]="dialogMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'danger'"
+  (aceptar)="closeErrorDialog()">
+</app-reusable-dialog>

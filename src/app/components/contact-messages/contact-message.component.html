@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto (CRUD)</h2>
+    <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto</h2>
 
     @if (alertMessage) {
         <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
@@ -58,7 +58,7 @@
                         <select id="priority" class="form-select" formControlName="priority">
                             <option value="Baja">Baja</option>
                             <option value="Normal">Normal</option>
-                            <option value="Urgente">Inminente</option>
+                            <option value="Urgente">Urgente</option>
                         </select>
                     </div>
                     
@@ -125,7 +125,7 @@
                                 {{ message.priority }}
                             </span>
                             @if (message.isUrgent) {
-                                <span class="badge bg-danger ms-2"> URGENTE</span>
+                                <span class="badge bg-danger ms-2">URGENTE</span>
                             }
                         </td>
                         <td>{{ message.timestamp | date:'short' }}</td>
@@ -142,7 +142,7 @@
                             <button class="btn btn-sm btn-outline-primary me-2" (click)="editMessage(message)">
                                 <i class="bi bi-pencil"></i> Editar
                             </button>
-                            <button class="btn btn-sm btn-outline-danger" (click)="deleteMessage(message.id)">
+                            <button class="btn btn-sm btn-outline-danger" (click)="prepareDelete(message.id)">
                                 <i class="bi bi-trash"></i> Eliminar
                             </button>
                         </td>
@@ -188,4 +188,15 @@
             }
         </div>
     </div>
+    
+    <app-reusable-dialog
+        [visible]="isConfirmationModalVisible"
+        [titulo]="'Confirmar Eliminación'"
+        [mensaje]="'¿Estás seguro de que deseas eliminar este mensaje de forma permanente?'"
+        [textoAceptar]="'Sí, Eliminar'"
+        [textoCancelar]="'No, Cancelar'"
+        [tipo]="'danger'"
+        (aceptar)="confirmDelete()"
+        (cancelar)="cancelDelete()"
+    ></app-reusable-dialog>
 </div>

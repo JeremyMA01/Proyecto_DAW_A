@@ -34,13 +34,11 @@ export class App implements OnInit, OnDestroy {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Suscribirse a cambios de ruta
     this.routerSubscription = this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd)
       )
       .subscribe((event: NavigationEnd) => {
-        // Definir qué rutas NO deben mostrar el header
         const authRoutes = [
           '/login',
           '/registro',
@@ -49,7 +47,6 @@ export class App implements OnInit, OnDestroy {
           '/nueva-contrasena'
         ];
         
-        // Verificar si la ruta actual está en la lista de authRoutes
         const currentUrl = event.urlAfterRedirects || event.url;
         this.isAuthPage = authRoutes.some(route => currentUrl.startsWith(route));
       });
@@ -61,20 +58,16 @@ export class App implements OnInit, OnDestroy {
       const user = JSON.parse(userStr);
       
       if (user.rol === 'administrador') {
-        // SI ES ADMIN: Navega
         this.router.navigate(['/usuarios']);
       } else {
-        // SI NO ES ADMIN: Muestra error
-        alert('⛔ Acceso denegado: Solo los administradores pueden gestionar usuarios.');
+        alert('Acceso denegado: Solo los administradores pueden gestionar usuarios.');
       }
     } else {
-      // SI NO ESTÁ LOGUEADO
       this.router.navigate(['/login']);
     }
   }
 
   ngOnDestroy() {
-    // Limpiar suscripción para evitar memory leaks
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }

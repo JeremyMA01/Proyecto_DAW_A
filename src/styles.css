@@ -1,5 +1,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
-
+*{
+  font-family: "Poppins";
+}
 .main-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -10,7 +12,6 @@
     color: red;
 }
 
-/* --- ESTRUCTURA DE CABECERA (LOGO SUPERIOR) --- */
 .header-top-logo {
     padding: 15px 0;
     border-bottom: 1px solid #e5e7eb;
@@ -24,46 +25,41 @@
     cursor: pointer;
 }
 
-/* Contenedor para la Navegación y Acciones (LÍNEA INFERIOR) */
-/* En tu archivo CSS correspondiente */
+
 .header-bottom-nav {
   display: flex;
-  justify-content: space-between; /* Separa menú y usuario */
+  justify-content: space-between; 
   align-items: center;
-  padding: 10px 20px; /* Un poco de aire */
-  border-bottom: 1px solid #eee; /* Opcional: una línea sutil */
+  padding: 10px 20px; 
+  border-bottom: 1px solid #eee; 
 }
 
-/* --- NAVEGACIÓN (LINKS) --- */
 .main-nav-links {
     display: flex;
     gap: 30px;
-    list-style: none;/* --- ESTILO DE ESTRELLAS INTERACTIVAS --- */
+    list-style: none;
 .rating {
     display: flex;
-    flex-direction: row-reverse; /* TRUCO CLAVE: Invierte el orden visual */
+    flex-direction: row-reverse; 
     justify-content: center;
     gap: 8px;
 }
 
-/* Ocultamos los círculos de radio originales */
 .rating input {
     display: none; 
 }
 
-/* Diseñamos la estrella vacía */
 .rating label {
     cursor: pointer;
     width: 40px;
     height: 40px;
     font-size: 40px;
-    color: #e4e5e9; /* Color gris (desactivado) */
+    color: #e4e5e9; 
     transition: color 0.2s ease-in-out;
     line-height: 1;
     position: relative;
 }
 
-/* Dibujamos la estrella usando carácter Unicode */
 .rating label:before {
     content: "★";
     position: absolute;
@@ -71,21 +67,17 @@
     top: 0;
 }
 
-/* --- LA MAGIA DEL COLOR --- */
-/* Cuando pasas el mouse (Hover) */
+
 .rating label:hover,
 .rating label:hover ~ label {
-    color: #ffc107; /* Dorado al pasar el mouse */
+    color: #ffc107; 
 }
 
-/* Cuando seleccionas una estrella (Checked) */
-/* El operador ~ selecciona todos los hermanos SIGUIENTES en el HTML */
-/* Como usamos row-reverse, visualmente selecciona los ANTERIORES */
+
 .rating input:checked ~ label {
-    color: #ffc107; /* Dorado fijo al seleccionar */
+    color: #ffc107; 
 }
 
-/* Animación extra al hacer click */
 .rating input:checked + label:active {
     transform: scale(0.9);
 }
@@ -102,11 +94,10 @@
     transition: color 0.2s, border-bottom 0.2s;
 }
 .main-nav-links a:hover, .main-nav-links a.active {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
-    border-bottom: 2px solid #3b82f6; /* Usar un azul para el borde de acento */
+    color: #1e3a8a; 
+    border-bottom: 2px solid #3b82f6;
 }
 
-/* --- ACCIONES DE USUARIO (Carrito y Cuenta) --- */
 .user-actions {
     display: flex;
     align-items: center;
@@ -120,14 +111,13 @@
     font-weight: 500;
 }
 .user-actions a:hover {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
+    color: #1e3a8a;
 }
 .cart-icon {
     font-size: 1.5rem;
     cursor: pointer;
 }
 
-/* --- SECCIÓN DE PRODUCTOS (Novedades) --- */
 .movies-section {
     max-width: 1360px;
     margin: 0 auto 40px;
@@ -151,23 +141,21 @@
     transition: color 0.2s;
 }
 .view-all:hover {
-    color: #1e3a8a; /* Se mantiene el color si es el deseado */
+    color: #1e3a8a; 
 }
 
-/* CONTENEDOR DE TARJETAS (MUY IMPORTANTE) */
 .movie-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea */
+    flex-wrap: wrap; 
     justify-content: flex-start; 
-    gap: 30px; /* Espacio entre las tarjetas */
+    gap: 30px;
     padding: 0;
 }
 
-/* --- TARJETA DE PRODUCTO (Card) Mejorada --- */
 .pelicula-card {
     background: #ffffff;
     border-radius: 12px;
-    width: 220px; /* **CORREGIDO**: Un ancho fijo para todas las tarjetas */
+    width: 220px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
     border: 1px solid transparent;
     transition: all 0.3s ease;
@@ -181,11 +169,10 @@
     border: 1px solid #e5e7eb;
 }
 
-/* ENVOLTURA DE IMAGEN (MUY IMPORTANTE) */
 .img-wrapper {
     position: relative;
-    width: 100%; /* **CORREGIDO**: Asegura que la imagen ocupe todo el ancho de su contenedor */
-    height: 300px; /* Altura fija para la imagen */
+    width: 100%; 
+    height: 300px; 
     overflow: hidden;
     margin: 0;
     border-radius: 12px 12px 0 0;
@@ -193,7 +180,7 @@
 .img-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* **CORREGIDO**: Ajusta la imagen para cubrir el espacio sin distorsión */
+    object-fit: cover; 
     border-radius: 12px 12px 0 0;
 }
 
@@ -201,15 +188,7 @@
     padding: 15px 15px 10px;
     flex-grow: 1;
 }
-.card-header h4 {
-    margin: 0 0 4px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1e3a8a;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+
 .rating-price {
     display: flex;
     flex-direction: column;
@@ -217,7 +196,7 @@
     margin-top: 10px;
 }
 .rating {
-    color: #1e3a8a; /* Estrellas del mismo color que el texto principal */
+    color: #1e3a8a; 
     font-size: 1.1rem;
 }
 .stock, .out-of-stock {
@@ -228,10 +207,10 @@
     padding: 2px 0;
 }
 .stock {
-    color: #10b981; /* Verde para "En stock" */
+    color: #10b981; 
 }
 .out-of-stock {
-    color: #ef4444; /* Rojo para "Agotado" */
+    color: #ef4444; 
 }
 .price {
     font-size: 1.4rem;
@@ -246,8 +225,8 @@
 .btn-comprar {
     width: 100%;
     padding: 12px;
-    background-color: #1e3a8a; /* Fondo del botón de compra */
-    color: #ffffff; /* Texto del botón blanco */
+    background-color: #1e3a8a; 
+    color: #ffffff;
     border: none;
     border-radius: 8px;
     font-weight: 700;
@@ -264,34 +243,14 @@
 }
 
 
-/*estilo tabla*/
-/* Fondo y card general */
-.tabla-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 40px 0;
-}
-
-.tabla-card {
-  background: linear-gradient(145deg, #0f172a, #1e293b);
-  padding: 30px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 1400px;
-  color: #e2e8f0;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-/* Título */
 .tabla-title {
   font-size: 28px;
   font-weight: 800;
-  color: #38bdf8;
+  color: #037cd3;
   text-align: center;
   margin-bottom: 25px;
 }
 
-/* TABLA */
 .tabla-modern {
   width: 100%;
   border-collapse: collapse;
@@ -314,17 +273,11 @@
   padding: 14px;
 }
 
-/* Filas hover */
 .row-hover {
   transition: background 0.2s, transform 0.2s;
 }
 
-.row-hover:hover {
-  background: rgba(255,255,255,0.05);
-  transform: scale(1.01);
-}
 
-/* ESTADO ACTIVO / INACTIVO */
 .estado-pill {
   padding: 5px 12px;
   border-radius: 20px;
@@ -342,7 +295,6 @@
   color: #fff;
 }
 
-/* BOTONES DE ACCIÓN */
 .acciones {
   display: flex;
   gap: 8px;
@@ -351,68 +303,116 @@
 
 .btn-icon {
   border: none;
-  padding: 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
+  font-size: 0.8rem;
+  border:none;
+  padding: 5px 9px !important;
+}
+.btn-ghost-info {
+  background-color: #0dcaf0 !important;  
+  color: white !important;
+}
+
+.btn-ghost-info:hover {
+  background-color: #0ba1c7 !important;
+  box-shadow: 0 4px 8px rgba(13, 202, 240, 0.3);
+}
+
+.btn-ghost-warning {
+  background-color: #ffc107 !important;  
+  color: #212529 !important; 
+}
+
+.btn-ghost-warning:hover {
+  background-color: #e0a800 !important;
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+.btn-ghost-danger {
+  background-color: #dc3545 !important;  
+  color: white !important;
+}
+
+.btn-ghost-danger:hover {
+  background-color: #c82333 !important;
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+
+.d-flex.justify-content-center.gap-1 {
+  gap: 8px !important;
+}
+
+.btn-sm i {
   font-size: 1rem;
 }
-
-.btn-icon.view {
-  background: #38bdf8;
-  color: #0f172a;
-}
-.btn-icon.view:hover {
-  background: #7dd3fc;
-}
-
-.btn-icon.edit {
-  background: #facc15;
-  color: #0f172a;
-}
-.btn-icon.edit:hover {
-  background: #fde047;
-}
-
-.btn-icon.delete {
-  background: #ef4444;
-  color: white;
-}
-.btn-icon.delete:hover {
-  background: #f87171;
-}
-
-/* PAGINACIÓN */
-.pagination-modern {
-  display: flex;
+.pagination {
+  margin: 0;
+  gap: 4px;
   justify-content: center;
-  margin-top: 25px;
-  gap: 10px;
 }
 
-.page-btn,
-.page-number {
-  background: #1e3a8a;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
+.page-item {
+  margin: 0;
+}
+
+.page-link {
+  background-color: transparent !important;
+  border: 2px solid #e2e8f0 !important;
+  color: #64748b !important;
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+  min-width: 42px;
+  text-align: center;
+}
+
+.page-link:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #3b82f6 !important;
+  color: #3b82f6 !important;
+  transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+  background-color: #3b82f6 !important;
+  border-color: #3b82f6 !important;
+  color: white !important;
   font-weight: 600;
-  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
-.page-number.active {
-  background: #38bdf8;
-  color: #0f172a;
-  font-weight: 800;
+.page-item.disabled .page-link {
+  background-color: transparent !important;
+  border-color: #e2e8f0 !important;
+  color: #cbd5e1 !important;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.page-btn:hover,
-.page-number:hover {
-  background: #3b82f6;
+.page-item.disabled .page-link:hover {
+  transform: none;
+  background-color: transparent !important;
 }
 
-/* --- WRAPPER GENERAL --- */
+.page-link[aria-label="Previous"]::before {
+  content: "‹";
+  margin-right: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.page-link[aria-label="Next"]::after {
+  content: "›";
+  margin-left: 6px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .listado-wrapper {
   display: flex;
   justify-content: center;
@@ -429,7 +429,6 @@
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* TITULO */
 .title-modern {
   text-align: center;
   color: #38bdf8;
@@ -438,7 +437,27 @@
   margin-bottom: 25px;
 }
 
-/* --- ACCIONES SUPERIORES --- */
+.encabezado {
+    display: flex;
+    padding: 0px 20px;
+}
+
+.encabezado-acciones{
+  display: flex;
+    position: relative;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.busquedaInput {
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 50px;
+    padding: 5px 16px;
+    width: 400px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
 .top-actions {
   display: flex;
   justify-content: space-between;
@@ -446,29 +465,32 @@
 }
 
 .btn-new {
-  background: #38bdf8;
-  color: #0f172a;
-  padding: 10px 14px;
+  background: #0a62dd;
+  font-size: 15px;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  position: absolute;
+  right: 30px;
+  color: white;
 }
+
 .btn-new:hover {
-  background: #7dd3fc;
+  background: #0348a8;
 }
 
 .input-search {
   width: 250px;
   padding: 10px;
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: white;
+  border: 1px solid #cfcfcf;
   border-radius: 8px;
-  color: #e2e8f0;
+  color: #000000;
 }
 
-/* --- MODAL ESTILO LOGIN --- */
 .modal-modern .modal-content {
   background: linear-gradient(145deg, #0f172a, #1e293b);
   color: white;
@@ -521,7 +543,6 @@
   font-size: 0.85rem;
 }
 
-/* Checkbox */
 .modern-check input {
   margin-right: 8px;
 }

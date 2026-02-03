@@ -1,177 +1,189 @@
-<div class="crud-wrapper bg-slate-900 min-h-screen py-4">
+<div class="encabezado">
+    <h2>Gestión de Usuarios</h2> 
+</div>
 
-  <div class="crud-usuarios-container">
+<div class="encabezado-acciones">
+    <input type="text" class="busquedaInput" placeholder="Buscar usuario..." #busq (keyup)="search(busq)">
+    <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Agregar Usuario</button>
+</div>
 
-    <header class="crud-header mb-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
-      <div>
-        <h1 class="crud-title mb-1">
-          👤 Gestión de usuarios
-        </h1>
-        <p class="crud-subtitle mb-0">
-          Administración del club de lectura
-        </p>
-      </div>
-      <div class="badge-admin mt-2 mt-md-0">
-        Panel administrador
-      </div>
-    </header>
+<app-reusable-table
+  [datos]="usuarios"
+  [columnas]="columnasTabla"
+  (editClick)="onEditarClick($event)"
+  (eliminarClick)="onEliminarClick($event)"
+  (toggleActivo)="onToggleActivo($event)">
+</app-reusable-table>
 
-    <div class="row g-3">
-      <div class="col-lg-4">
-        <div class="card form-card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100">
-          <div class="card-body">
 
-            <h2 class="form-title h6 mb-3">
-              {{ editando ? 'Editar usuario' : 'Registrar usuario' }}
-            </h2>
-
-            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-2">
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Nombre completo</label>
-                <input 
-                  type="text" 
-                  class="form-control modern-input" 
-                  formControlName="nombre"
-                  (keypress)="bloquearNumeros($event)"
-                  placeholder="Ej: Ana Torres">
-                <div *ngIf="campoInvalido('nombre')" class="form-text text-danger text-xs">
-                  Nombre inválido (Solo letras, mín 3 caracteres).
-                </div>
-              </div>
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Correo electrónico</label>
-                <input 
-                  type="email" 
-                  class="form-control modern-input" 
-                  formControlName="email"
-                  placeholder="tucorreo@ejemplo.com">
-                <div *ngIf="campoInvalido('email')" class="form-text text-danger text-xs">
-                  Ingresa un correo válido.
-                </div>
-              </div>
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Teléfono</label>
-                <input 
-                  type="text" 
-                  class="form-control modern-input" 
-                  formControlName="telefono"
-                  (keypress)="bloquearLetras($event)"
-                  maxlength="15"
-                  placeholder="0999999999">
-                <div *ngIf="campoInvalido('telefono')" class="form-text text-danger text-xs">
-                  Solo números permitidos (mín 7 dígitos).
-                </div>
-              </div>
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Ciudad</label>
-                <input 
-                  type="text" 
-                  class="form-control modern-input" 
-                  formControlName="ciudad"
-                  (keypress)="bloquearNumeros($event)"
-                  placeholder="Guayaquil, Quito, Cuenca...">
-                <div *ngIf="campoInvalido('ciudad')" class="form-text text-danger text-xs">
-                  La ciudad es obligatoria (Solo letras).
-                </div>
-              </div>
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Rol</label>
-                <select class="form-select modern-input" formControlName="rol">
-                  <option value="lector">Lector</option>
-                  <option value="donante">Donante</option>
-                  <option value="administrador">Administrador</option>
-                </select>
-              </div>
-
-              <div class="mb-2">
-                <label class="form-label text-slate-200 text-sm">Contraseña</label>
-                <input 
-                  type="password" 
-                  class="form-control modern-input" 
-                  formControlName="password"
-                  placeholder="Mínimo 6 caracteres">
-                <div *ngIf="campoInvalido('password')" class="form-text text-danger text-xs">
-                  La contraseña es obligatoria (mínimo 6 caracteres).
-                </div>
-              </div>
-
-              <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" formControlName="estadoActivo" id="estadoActivo">
-                <label class="form-check-label text-sm text-slate-200" for="estadoActivo">
-                  Usuario activo
-                </label>
-              </div>
-
-              <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary btn-modern flex-grow-1 py-1">
-                  {{ editando ? 'Actualizar' : 'Guardar' }}
-                </button>
-                <button type="button" class="btn btn-outline-light btn-sm btn-ghost" (click)="resetFormulario()">
-                  Limpiar
-                </button>
-              </div>
-
-            </form>
-          </div>
-        </div>
+<div class="modal fade" id="usuarioModal" tabindex="-1" #usuarioModalRef>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ editando ? 'Editar Usuario' : 'Nuevo Usuario' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <div class="col-lg-8">
-        <div class="card table-card shadow-xl border-0 rounded-4 bg-slate-800 text-slate-100 h-100">
-          <div class="card-body d-flex flex-column">
-
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
-              <div>
-                <h2 class="h6 mb-1">Listado de usuarios</h2>
-                <p class="mb-0 text-xs text-slate-400">
-                  Haz clic en una fila para editar, o en el ícono de papelera para eliminar.
-                </p>
-              </div>
-
-              <div class="input-group input-group-sm search-group">
-                <span class="input-group-text search-prefix">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input
-                  type="text"
-                  class="form-control modern-input search-input"
-                  [(ngModel)]="terminoBusqueda"
-                  (ngModelChange)="onBuscarCambio()"
-                  placeholder="Buscar por nombre o correo...">
-              </div>
-            </div>
-
-            <div class="table-wrapper flex-grow-1">
-              <app-reusable-table
-                [datos]="usuariosFiltrados"
-                [columnas]="columnasTabla"
-                (editClick)="onEditarClick($event)"
-                (verClick)="onVerClick($event)"
-                (eliminarClick)="onEliminarClick($event)"
-                (toggleActivo)="onToggleActivo($event)">
-              </app-reusable-table>
-
-              <app-reusable-dialog
-                [visible]="dialogVisible"
-                titulo="Eliminar usuario"
-                [mensaje]="usuarioParaEliminar ? '¿Eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
-                textoAceptar="Eliminar"
-                textoCancelar="Cancelar"
-                tipo="danger"
-                (aceptar)="confirmarEliminar()"
-                (cancelar)="cancelarEliminar()">
-              </app-reusable-dialog>
-
+      <form [formGroup]="form" class="space-y-2">
+        <div class="modal-body">
+          
+          
+          <div class="mb-3">
+            <label class="form-label">Nombre completo *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="nombre"
+              (keypress)="bloquearNumeros($event)"
+              placeholder="Ej: Ana Torres"
+              [class.is-invalid]="f['nombre'].invalid && (f['nombre'].dirty || f['nombre'].touched)">
+            <div *ngIf="f['nombre'].invalid && (f['nombre'].dirty || f['nombre'].touched)" class="invalid-feedback">
+              <small *ngIf="f['nombre'].errors?.['required']">El nombre es obligatorio.</small>
+              <small *ngIf="f['nombre'].errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</small>
+              <small *ngIf="f['nombre'].errors?.['pattern']">Solo se permiten letras y espacios.</small>
             </div>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Correo electrónico *</label>
+            <input 
+              type="email" 
+              class="form-control" 
+              formControlName="email"
+              placeholder="tucorreo@ejemplo.com"
+              [class.is-invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)">
+            <div *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)" class="invalid-feedback">
+              <small *ngIf="f['email'].errors?.['required']">El email es obligatorio.</small>
+              <small *ngIf="f['email'].errors?.['email']">Ingresa un correo válido.</small>
+            </div>
+          </div>
+
+          
+          <div class="mb-3">
+            <label class="form-label">Teléfono</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="telefono"
+              (keypress)="bloquearLetras($event)"
+              maxlength="15"
+              placeholder="0999999999"
+              [class.is-invalid]="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)">
+            <div *ngIf="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)" class="invalid-feedback">
+              <small *ngIf="f['telefono'].errors?.['pattern']">Solo números permitidos.</small>
+              <small *ngIf="f['telefono'].errors?.['minlength']">Mínimo 7 dígitos.</small>
+              <small *ngIf="f['telefono'].errors?.['maxlength']">Máximo 15 dígitos.</small>
+            </div>
+          </div>
+
+         
+          <div class="mb-3">
+            <label class="form-label">Ciudad *</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="ciudad"
+              (keypress)="bloquearNumeros($event)"
+              placeholder="Guayaquil, Quito, Cuenca..."
+              [class.is-invalid]="f['ciudad'].invalid && (f['ciudad'].dirty || f['ciudad'].touched)">
+            <div *ngIf="f['ciudad'].invalid && (f['ciudad'].dirty || f['ciudad'].touched)" class="invalid-feedback">
+              <small *ngIf="f['ciudad'].errors?.['required']">La ciudad es obligatoria.</small>
+              <small *ngIf="f['ciudad'].errors?.['pattern']">Solo se permiten letras y espacios.</small>
+            </div>
+          </div>
+
+          
+          <div class="mb-3">
+            <label class="form-label">Rol *</label>
+            <select class="form-select" formControlName="rol"
+                    [class.is-invalid]="f['rol'].invalid && (f['rol'].dirty || f['rol'].touched)">
+              <option value="lector">Lector</option>
+              <option value="donante">Donante</option>
+              <option value="administrador">Administrador</option>
+            </select>
+            <div *ngIf="f['rol'].invalid && (f['rol'].dirty || f['rol'].touched)" class="invalid-feedback">
+              <small>Seleccione un rol.</small>
+            </div>
+          </div>
+
+       
+          <div class="mb-3">
+            <label class="form-label">Contraseña *</label>
+            <input 
+              type="password" 
+              class="form-control" 
+              formControlName="password"
+              placeholder="Mínimo 6 caracteres"
+              [class.is-invalid]="f['password'].invalid && (f['password'].dirty || f['password'].touched)">
+            <div *ngIf="f['password'].invalid && (f['password'].dirty || f['password'].touched)" class="invalid-feedback">
+              <small *ngIf="f['password'].errors?.['required']">La contraseña es obligatoria.</small>
+              <small *ngIf="f['password'].errors?.['minlength']">Mínimo 6 caracteres.</small>
+            </div>
+          </div>
+
+          
+          <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" formControlName="active" id="active">
+            <label class="form-check-label" for="active">
+              Usuario activo
+            </label>
+          </div>
+
         </div>
-      </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" (click)="modalRef.hide()">
+            Cancelar
+          </button>
+          <button class="btn btn-primary" type="button" (click)="onSubmit()"
+                  [disabled]="form.invalid">
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
     </div>
-
   </div>
 </div>
+
+<app-reusable-dialog
+  [visible]="showDeleteDialog"
+  [titulo]="'Eliminar usuario'"
+  [mensaje]="usuarioParaEliminar ? '¿Estás seguro de eliminar al usuario ' + usuarioParaEliminar.nombre + '?' : '¿Eliminar usuario?'"
+  [textoAceptar]="'Eliminar'"
+  [textoCancelar]="'Cancelar'"
+  [tipo]="'danger'"
+  (aceptar)="confirmarEliminar()"
+  (cancelar)="cancelarEliminar()">
+</app-reusable-dialog>
+
+<app-reusable-dialog
+  [visible]="showSuccessDialog"
+  [titulo]="'Éxito'"
+  [mensaje]="successMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'primary'"
+  (aceptar)="closeSuccessDialog()">
+</app-reusable-dialog>
+
+<app-reusable-dialog
+  [visible]="showErrorDialog"
+  [titulo]="'Error'"
+  [mensaje]="errorMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'danger'"
+  (aceptar)="closeErrorDialog()">
+</app-reusable-dialog>
+
+<app-reusable-dialog
+  [visible]="showFormErrorDialog"
+  [titulo]="'Error en el formulario'"
+  [mensaje]="formErrorMessage"
+  [textoAceptar]="'Aceptar'"
+  [textoCancelar]="''"
+  [tipo]="'danger'"
+  (aceptar)="closeFormErrorDialog()">
+</app-reusable-dialog>

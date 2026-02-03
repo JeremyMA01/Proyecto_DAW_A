@@ -12,47 +12,77 @@ export class ServCategorie {
 
   constructor(private http: HttpClient) {}
 
+  getCategories(): Observable<Categorie[]> {
+    return this.http.get<Categorie[]>(this.apiUrl).pipe(
+      map(categories => 
+        categories.map(cat => ({
+          ...cat,
+          createdDate: cat.createdDate || this.getDefaultDate()
+        }))
+      )
+    );
+  }
 
-  // Obtener categorías activas
   getCategoriesActivas(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(this.apiUrl)
-      .pipe(map(
-        (cat) => cat.filter(c => c.active === true)
-      ));
+      .pipe(
+        map(categories => 
+          categories
+            .filter(c => c.active === true)
+            .map(cat => ({
+              ...cat,
+              createdDate: cat.createdDate || this.getDefaultDate()
+            }))
+        )
+      );
   }
 
-  // Buscar categorías por nombre
   searchCategories(nombre: string): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(this.apiUrl)
-      .pipe(map(
-        (cat) => cat.filter(c => c.name.toLowerCase().includes(nombre.toLowerCase()))
-      ));
+      .pipe(
+        map(categories => 
+          categories
+            .filter(c => c.name.toLowerCase().includes(nombre.toLowerCase()))
+            .map(cat => ({
+              ...cat,
+              createdDate: cat.createdDate || this.getDefaultDate()
+            }))
+        )
+      );
   }
 
-  // En serv-categorie.ts
+  getCategorieById(id: string): Observable<Categorie> {
+    return this.http.get<Categorie>(`${this.apiUrl}/${id}`).pipe(
+      map(cat => ({
+        ...cat,
+        createdDate: cat.createdDate || this.getDefaultDate()
+      }))
+    );
+  }
 
-// Obtener todas las categorías
-getCategories(): Observable<Categorie[]> {
-  return this.http.get<Categorie[]>(this.apiUrl);
-}
+  addCategorie(categorie: Categorie): Observable<Categorie> {
+    const categorieWithDate = {
+      ...categorie,
+      createdDate: categorie.createdDate || this.getCurrentDate()
+    };
+    return this.http.post<Categorie>(this.apiUrl, categorieWithDate);
+  }
 
-// Obtener categoría por ID
-getCategorieById(id: string): Observable<Categorie> {  // Cambiar a string
-  return this.http.get<Categorie>(`${this.apiUrl}/${id}`);
-}
+  updateCategorie(categorie: Categorie): Observable<Categorie> {
+    return this.http.put<Categorie>(`${this.apiUrl}/${categorie.id}`, categorie);
+  }
 
-// Registrar nueva categoría
-addCategorie(categorie: Categorie): Observable<Categorie> {
-  return this.http.post<Categorie>(this.apiUrl, categorie);
-}
+  deleteCategorie(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 
-// Editar categoría
-updateCategorie(categorie: Categorie): Observable<Categorie> {
-  return this.http.put<Categorie>(`${this.apiUrl}/${categorie.id}`, categorie);
-}
+  private getDefaultDate(): string {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    return date.toISOString().split('T')[0];
+  }
 
-// Eliminar categoría
-deleteCategorie(id: string): Observable<void> {  // Cambiar a string
-  return this.http.delete<void>(`${this.apiUrl}/${id}`);
-}
+  private getCurrentDate(): string {
+    return new Date().toISOString().split('T')[0];
+  }
 }

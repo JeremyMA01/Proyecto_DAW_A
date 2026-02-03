@@ -43,7 +43,7 @@ export class LoginComponent {
 
     this.usuarioService.login(email, password).subscribe((usuario: Usuario | null) => {
       // Validar si existe y si está activo
-      if (!usuario || usuario.estadoActivo === false) {
+      if (!usuario || usuario.active === false) {
         this.errorMsg = 'Correo o contraseña incorrectos o usuario inactivo.';
         return;
       }
