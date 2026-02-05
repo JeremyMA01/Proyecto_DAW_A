@@ -9,4 +9,6 @@ export class ServHomeJson {
   comprar(book:Book){
     alert("Comprando libro: " + book.title + "");
   }
+
+  
 }

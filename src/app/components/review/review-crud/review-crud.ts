@@ -5,6 +5,7 @@ import { Review } from '../../../models/Review';
 import { ReusableTable } from '../../reusable_component/reusable-table/reusable-table';
 import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
 import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog'; 
+import { ServReviewApi } from '../../../services/review/serv-review-api';
 
 @Component({
   selector: 'app-review-crud',
@@ -37,48 +38,26 @@ export class ReviewCrud {
   reviewParaEliminar: Review | null = null;
 
   constructor(
-    private servReview: ServReviewJson,
+    private servReview:ServReviewApi,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.loadReview();
   }
-
+  
   loadReview(): void {
-    this.servReview.getReview().subscribe((data: Review[]) => {
+    this.servReview.getReviews().subscribe((data: Review[]) => {
       this.reviews = data;
     });
   }
 
   loadReviewBook(id: number): void {
-    this.servReview.getReviewIdBook(id).subscribe((data: Review[]) => {
+    this.servReview.getReviewsBook(id).subscribe((data: Review[]) => {
       this.reviews = data;
     });
   }
-
-  search(parametroRaw: string): void {
-    const parametro = (parametroRaw || '').toLowerCase().trim();
-
-    if (parametro === '') {
-      this.loadReview();
-      return;
-    }
-
-    this.servReview.searchReview(parametro).subscribe((data: Review[]) => {
-      this.reviews = data;
-    });
-  }
-
-
-private getLocalDateString(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
+  
   save(review: Review) {
     const reviewF: any = {
       ...review,
@@ -100,8 +79,6 @@ private getLocalDateString(): string {
         }
       );
     } else {
-      reviewF.id = this.getId();
-
       this.servReview.addReview(reviewF).subscribe(
         () => {
           this.showSuccess('Reseña creada exitosamente');
@@ -114,15 +91,30 @@ private getLocalDateString(): string {
     }
   }
 
-  getId(): string {
-    if (this.reviews.length === 0) return '1';
 
-    const id = this.reviews.map(r => Number(r.id) || 0);
-    const stringId = Math.max(...id) + 1;
+  search(parametroRaw: string): void {
+    const parametro = (parametroRaw || '').toLowerCase().trim();
 
-    return String(stringId);
+    if (parametro === '') {
+      this.loadReview();
+      return;
+    }
+    this.servReview.searchReview(parametro).subscribe(data => this.reviews = data);
+
   }
 
+
+    private getLocalDateString(): string {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+
+  
+  
   delete(review: Review): void {
     this.reviewParaEliminar = review;
     this.showDeleteDialog = true;

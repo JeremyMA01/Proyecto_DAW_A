@@ -15,7 +15,7 @@ export class HomeComponents {
   books:Book[] = [];
   genre :Genre[] = [];
 
-
+  
   constructor(private servBook:ServBookJson, private servHome:ServHomeJson, private router:Router){}
   ngOnInit():void{
 
@@ -60,7 +60,7 @@ export class HomeComponents {
       this.servHome.comprar(book);
     }
 
-     view(id:number|null){
-      this.router.navigate(['/review-view/',id]);
-     }
+    view(id:number):void{
+      this.router.navigate(['/review-view, id']);
+    }
 }

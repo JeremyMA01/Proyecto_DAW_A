@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, numberAttribute, OnInit, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe, UpperCasePipe, DatePipe } from '@angular/common';
@@ -11,6 +11,7 @@ import { ServBookJson } from '../../../services/serv-book-json';
 import { ServHomeJson } from '../../../services/home/serv-home-json';
 
 import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
+import { ServReviewApi } from '../../../services/review/serv-review-api';
 
 @Component({
   selector: 'app-review-view',
@@ -33,7 +34,7 @@ export class ReviewView implements OnInit {
   currentBookId: number = 0;
 
   constructor(
-    private servReview: ServReviewJson,
+    private servReview: ServReviewApi,
     private servBook: ServBookJson,
     private servHome: ServHomeJson,
     private router: ActivatedRoute
@@ -101,7 +102,7 @@ export class ReviewView implements OnInit {
   }
 
   loadReviewByIdBook(id: number): void {
-    this.servReview.getReviewIdBook(id).subscribe((data: Review[]) => {
+    this.servReview.getReviewsBook(id).subscribe((data: Review[]) => {
       this.reviews = data;
       this.calcularEstadistica();
     });
@@ -120,9 +121,10 @@ export class ReviewView implements OnInit {
       return;
     }
 
-    this.servReview.searchReviewBook(parametro, bookId).subscribe((data: Review[]) => {
+    this.servReview.searchUserReview(parametro, bookId).subscribe((data:Review[])  => {
       this.reviews = data;
-    });
+      this.calcularEstadistica();
+    })
   }
 
   save(review: Review) {
@@ -141,8 +143,6 @@ export class ReviewView implements OnInit {
         this.loadReviewByIdBook(this.currentBookId);
       });
     } else {
-      reviewF.id = this.getId();
-
       this.servReview.addReview(reviewF).subscribe(() => {
         alert('Review Creada!');
         this.loadReviewByIdBook(this.currentBookId);
@@ -150,14 +150,6 @@ export class ReviewView implements OnInit {
     }
   }
 
-  getId(): string {
-    if (this.reviews.length === 0) return '1';
-
-    const id = this.reviews.map(r => Number(r.id) || 0);
-    const stringId = Math.max(...id) + 1;
-
-    return String(stringId);
-  }
 
   delete(review: Review) {
     const confirmar = confirm('¿Estás seguro de eliminar la reseña?');
@@ -177,19 +169,15 @@ export class ReviewView implements OnInit {
       this.servReview.getScoreFilter(score).subscribe(
       )
     }
+    this.servReview.getScoreFilter(score).subscribe((data:Review[])=>{
+      this.reviews = data;
+      this.calcularEstadistica();
+    })
   }
 
 
   cargarReseñas(){
-    return this.servReview.getReview().subscribe(
-      (data:Review[])=>{
-        this.reviews = data;
-      }
-    )
-  }
-
-  cargarReseñasId(id:number){
-    return this.servReview.getReviewIdBook(id).subscribe(
+    return this.servReview.getReviews().subscribe(
       (data:Review[])=>{
         this.reviews = data;
       }
