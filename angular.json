@@ -65,12 +65,13 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "configurations": {
+          "configurations": { 
             "production": {
               "buildTarget": "PROYECTO_DAW_A:build:production"
             },
             "development": {
-              "buildTarget": "PROYECTO_DAW_A:build:development"
+              "buildTarget": "PROYECTO_DAW_A:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

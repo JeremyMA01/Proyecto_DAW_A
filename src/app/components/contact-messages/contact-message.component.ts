@@ -4,14 +4,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { FormsModule } from '@angular/forms';
 import { ContactMessage } from '../../models/contact-message.model';
 import { ContactMessageService } from '../../services/contact-message.service';
-
 import { ReusableDialog } from '../reusable_component/reusable-dialog/reusable-dialog';
-
 
 @Component({
   selector: 'app-contact-message',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DatePipe, ReusableDialog], 
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DatePipe, ReusableDialog],
   templateUrl: './contact-message.component.html',
   styleUrls: ['./contact-message.component.css']
 })
@@ -22,14 +20,14 @@ export class ContactMessageComponent implements OnInit {
   messageToEditId: number | null = null;
   searchTerm = '';
   filteredMessages: ContactMessage[] = [];
-  
-  selectedMessage: ContactMessage | null = null; 
-  
+
+  selectedMessage: ContactMessage | null = null;
+
   recipientOptions = ['Pedro Lopez', 'Ana Garcia', 'Carlos Ruiz', 'Elena Soto', 'Usuario Invitado'];
-  
+
   alertMessage: string | null = null;
   alertType: 'success' | 'danger' | 'warning' = 'success';
-  
+
   isConfirmationModalVisible: boolean = false;
   messageToDeleteId: number | null = null;
 
@@ -50,7 +48,7 @@ export class ContactMessageComponent implements OnInit {
       subject: ['', [Validators.required, Validators.maxLength(100)]],
       priority: ['Normal', Validators.required],
       isUrgent: [false],
-      messageContent: ['', Validators.required],
+      content: ['', Validators.required],  // ← Cambiado de messageContent a content
     });
   }
 
@@ -66,7 +64,7 @@ export class ContactMessageComponent implements OnInit {
       }
     });
   }
-  
+
   viewMessage(message: ContactMessage): void {
     this.selectedMessage = message;
   }
@@ -83,9 +81,9 @@ export class ContactMessageComponent implements OnInit {
       const updatedMessage: ContactMessage = {
         ...formValue,
         id: this.messageToEditId,
-        timestamp: new Date() as any 
+        sentAt: new Date()  // ← Cambiado de timestamp a sentAt
       };
-      
+
       this.messageService.updateMessage(updatedMessage).subscribe({
         next: () => {
           this.showAlert('Mensaje actualizado con éxito.', 'success');
@@ -93,13 +91,11 @@ export class ContactMessageComponent implements OnInit {
           this.resetForm();
         },
         error: (error) => {
-           console.error('Error al actualizar el mensaje:', error);
-           this.showAlert('Error al actualizar el mensaje.', 'danger');
+          console.error('Error al actualizar el mensaje:', error);
+          this.showAlert('Error al actualizar el mensaje.', 'danger');
         }
       });
-      
     } else {
-      
       this.messageService.createMessage(formValue).subscribe({
         next: () => {
           this.showAlert('Mensaje enviado con éxito.', 'success');
@@ -123,22 +119,21 @@ export class ContactMessageComponent implements OnInit {
       subject: message.subject,
       priority: message.priority,
       isUrgent: message.isUrgent,
-      messageContent: message.messageContent,
+      content: message.content, 
     });
     document.getElementById('messageFormContainer')?.scrollIntoView({ behavior: 'smooth' });
   }
 
   prepareDelete(id: number | undefined): void {
     if (id === undefined) return;
-    
+
     this.messageToDeleteId = id;
     this.isConfirmationModalVisible = true;
   }
-  
+
   confirmDelete(): void {
     const id = this.messageToDeleteId;
     this.isConfirmationModalVisible = false;
-
     if (id === null || id === undefined) {
       this.showAlert('Error: ID de mensaje no válido para eliminar.', 'danger');
       return;
@@ -155,21 +150,21 @@ export class ContactMessageComponent implements OnInit {
       }
     });
   }
-  
+
   cancelDelete(): void {
-      this.isConfirmationModalVisible = false;
-      this.messageToDeleteId = null;
+    this.isConfirmationModalVisible = false;
+    this.messageToDeleteId = null;
   }
 
   resetForm(): void {
     this.isEditing = false;
     this.messageToEditId = null;
     this.messageForm.reset({
-        priority: 'Normal',
-        isUrgent: false
+      priority: 'Normal',
+      isUrgent: false
     });
   }
-  
+
   applyFilter(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredMessages = this.messages.filter(msg =>
@@ -178,12 +173,12 @@ export class ContactMessageComponent implements OnInit {
       msg.recipientName.toLowerCase().includes(term)
     );
   }
-  
+
   showAlert(message: string, type: 'success' | 'danger' | 'warning'): void {
     this.alertMessage = message;
     this.alertType = type;
     setTimeout(() => {
       this.alertMessage = null;
-    }, 5000); 
+    }, 5000);
   }
 }
