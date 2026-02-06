@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Book } from '../models/Book';
@@ -64,7 +64,30 @@ export class ServBooksApi {
     addBook(book: Book): Observable<Book> {
       return this.http.post<Book>(this.bookUrl, book);
     }
-  }
+
+    desactivateBook (book:Book): Observable<void>{
+      const urlDesactivate = `${this.bookUrl}/deactivate/${book.id}`; 
+      return this.http.put<void>(urlDesactivate,{})
+    }
+
+    searchBooks(title?:string , genre?:string):Observable<any>{
+      let params = new HttpParams; 
+      if(title)
+      {
+        params = params.set('search',title);
+      }
+      if (genre)
+      {
+        params= params.set('genreId', genre); 
+      }
+      return this.http.get(`${this.bookUrl}/search, ${params}`);
+    
+    }
+
+    }
+
+
+  
   
 
 

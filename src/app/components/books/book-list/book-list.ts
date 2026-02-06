@@ -1,7 +1,8 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Book } from '../../../models/Book';
 import { Genre } from '../../../models/Genre';
-import { ServBookJson } from '../../../services/serv-book-json';
+//import { ServBookJson} from '../../../services/serv-book-json';
+import { ServBooksApi} from '../../../services/serv-books-api';
 import { ReusableTable } from "../../reusable_component/reusable-table/reusable-table";
 import { DialogConfirm } from '../../dialog/dialog-confirm/dialog-confirm';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -47,7 +48,7 @@ export class BookList {
   modalRef: any;
 
   constructor(
-    private servBook: ServBookJson,
+    private servBook: ServBooksApi,
     private fb: FormBuilder,
     private router :Router
   ) {

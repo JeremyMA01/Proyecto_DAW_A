@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Book } from '../../../models/Book';
-import { ServBookJson } from '../../../services/serv-book-json';
+//import { ServBookJson } from '../../../services/serv-book-json';
 import { ActivatedRoute } from '@angular/router';
 import { Genre } from '../../../models/Genre';
 import { NgIf } from '@angular/common';
-
+import { ServBooksApi} from '../../../services/serv-books-api';
 
 @Component({
   selector: 'app-book-view',
@@ -17,7 +17,7 @@ export class BookView {
   book!:Book;
   generos : Genre[]=[];
 
-  constructor(private servBook:ServBookJson, private router:ActivatedRoute){
+  constructor(private servBook:ServBooksApi, private router:ActivatedRoute){
 
 
   }
