@@ -61,6 +61,6 @@ export class HomeComponents {
     }
 
     view(id:number):void{
-      this.router.navigate(['/review-view, id']);
+      this.router.navigate(['/review-view', id]);
     }
 }
