@@ -1,7 +1,7 @@
 export type RolUsuario = 'lector' | 'donante' | 'administrador';
 
 export interface Usuario {
-  id: string;
+  id?: number;
   nombre: string;
   email: string;
   telefono?: string;
