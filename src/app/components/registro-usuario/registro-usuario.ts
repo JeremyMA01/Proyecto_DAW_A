@@ -38,17 +38,8 @@ export class RegistroUsuarioComponent {
           Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
         ]
       ],
-
       email: ['', [Validators.required, Validators.email]],
-
-      telefono: [
-        '',
-        [
-          Validators.pattern(/^[0-9]{7,15}$/)
-        ]
-      ],
-
-      
+      telefono: ['', [Validators.pattern(/^[0-9]{7,15}$/)]],
       ciudad: [
         '',
         [
@@ -56,37 +47,24 @@ export class RegistroUsuarioComponent {
           Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/)
         ]
       ],
-
-      
       rol: ['lector', Validators.required],
-
-    
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!control && control.invalid && control.touched;
   }
 
-
-  soloLetras(event: KeyboardEvent) {
-    const pattern = /[A-Za-zÁÉÍÓÚáéíóúÑñ ]/;
-    const inputChar = event.key;
-
-    if (!pattern.test(inputChar)) {
+  soloLetras(event: KeyboardEvent): void {
+    if (!/[A-Za-zÁÉÍÓÚáéíóúÑñ ]/.test(event.key)) {
       event.preventDefault();
     }
   }
 
- 
-  soloNumeros(event: KeyboardEvent) {
-    const pattern = /[0-9]/;
-    const inputChar = event.key;
-
-    if (!pattern.test(inputChar)) {
+  soloNumeros(event: KeyboardEvent): void {
+    if (!/[0-9]/.test(event.key)) {
       event.preventDefault();
     }
   }
@@ -99,8 +77,8 @@ export class RegistroUsuarioComponent {
 
     const valores = this.form.value;
 
+    // ✅ SIN ID (lo crea el backend)
     const nuevoUsuario: Usuario = {
-      id: '0', 
       nombre: valores.nombre,
       email: valores.email,
       telefono: valores.telefono || '',
@@ -110,11 +88,12 @@ export class RegistroUsuarioComponent {
       active: true
     };
 
-    this.usuarioService.crear(nuevoUsuario).subscribe(() => {
-      this.registroExitosoVisible = true;
-      this.form.reset({
-        rol: 'lector',
-      });
+    this.usuarioService.crear(nuevoUsuario).subscribe({
+      next: () => {
+        this.registroExitosoVisible = true;
+        this.form.reset({ rol: 'lector' });
+      },
+      error: (err) => console.error(err)
     });
   }
 

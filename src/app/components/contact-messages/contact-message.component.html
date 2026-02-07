@@ -1,202 +1,202 @@
 <div class="container mt-5">
-    <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto</h2>
+  <h2 class="mb-4 text-primary">Gestión de Mensajes de Contacto</h2>
 
-    @if (alertMessage) {
-        <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
-            {{ alertMessage }}
-            <button type="button" class="btn-close" (click)="alertMessage = null" aria-label="Close"></button>
-        </div>
-    }
-
-    <div class="card shadow mb-5" id="messageFormContainer">
-        <div class="card-header bg-secondary text-white">
-            <h4 class="mb-0">{{ isEditing ? 'Editar Mensaje' : 'Enviar Nuevo Mensaje' }}</h4>
-        </div>
-        <div class="card-body">
-            <form [formGroup]="messageForm" (ngSubmit)="saveMessage()">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="senderName" class="form-label">Tu Nombre</label>
-                        <input id="senderName" type="text" class="form-control" formControlName="senderName" placeholder="Ej: Juan Pérez"
-                               [class.is-invalid]="messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched">
-                        @if (messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched) {
-                            <div class="invalid-feedback d-block">
-                                El nombre del remitente es obligatorio.
-                            </div>
-                        }
-                    </div>
-
-                    <div class="col-md-6">
-                        <label for="recipientName" class="form-label">Destinatario</label>
-                        <select id="recipientName" class="form-select" formControlName="recipientName"
-                               [class.is-invalid]="messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched">
-                            <option value="" disabled>Selecciona un usuario</option>
-                            @for (user of recipientOptions; track user) {
-                                <option [value]="user">{{ user }}</option>
-                            }
-                        </select>
-                        @if (messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched) {
-                            <div class="invalid-feedback d-block">
-                                El destinatario es obligatorio.
-                            </div>
-                        }
-                    </div>
-
-                    <div class="col-md-9">
-                        <label for="subject" class="form-label">Asunto</label>
-                        <input id="subject" type="text" class="form-control" formControlName="subject" placeholder="Asunto del mensaje"
-                               [class.is-invalid]="messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched">
-                        @if (messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched) {
-                            <div class="invalid-feedback d-block">
-                                El asunto es obligatorio y no debe superar 100 caracteres.
-                            </div>
-                        }
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <label for="priority" class="form-label">Prioridad</label>
-                        <select id="priority" class="form-select" formControlName="priority">
-                            <option value="Baja">Baja</option>
-                            <option value="Normal">Normal</option>
-                            <option value="Urgente">Urgente</option>
-                        </select>
-                    </div>
-                    
-                    <div class="col-12">
-                        <div class="form-check">
-                            <input id="isUrgent" type="checkbox" class="form-check-input" formControlName="isUrgent">
-                            <label for="isUrgent" class="form-check-label">Marcar como urgente</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label for="messageContent" class="form-label">Contenido del Mensaje</label>
-                        <textarea id="messageContent" class="form-control" formControlName="messageContent" rows="4"
-                                  [class.is-invalid]="messageForm.get('messageContent')?.invalid && messageForm.get('messageContent')?.touched"></textarea>
-                        @if (messageForm.get('messageContent')?.invalid && messageForm.get('messageContent')?.touched) {
-                            <div class="invalid-feedback d-block">
-                                El contenido del mensaje es obligatorio.
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary me-2" [disabled]="messageForm.invalid">
-                        <i class="bi bi-save"></i> {{ isEditing ? 'Guardar Cambios' : 'Enviar Mensaje' }}
-                    </button>
-                    <button type="button" class="btn btn-secondary" (click)="resetForm()">
-                        <i class="bi bi-x-circle"></i> Cancelar/Nuevo
-                    </button>
-                </div>
-            </form>
-        </div>
+  @if (alertMessage) {
+    <div class="alert alert-{{ alertType }} alert-dismissible fade show" role="alert">
+      {{ alertMessage }}
+      <button type="button" class="btn-close" (click)="alertMessage = null" aria-label="Close"></button>
     </div>
+  }
 
-    <h3 class="mb-3 text-secondary">Bandeja de Mensajes</h3>
-
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Buscar por remitente, destinatario o asunto..." [(ngModel)]="searchTerm" (input)="applyFilter()">
+  <div class="card shadow mb-5" id="messageFormContainer">
+    <div class="card-header bg-secondary text-white">
+      <h4 class="mb-0">{{ isEditing ? 'Editar Mensaje' : 'Enviar Nuevo Mensaje' }}</h4>
     </div>
-
-    <div class="table-responsive">
-        <table class="table table-striped table-hover shadow-sm">
-            <thead class="bg-dark text-white">
-                <tr>
-                    <th>ID</th>
-                    <th>Remitente</th>
-                    <th>Destinatario</th>
-                    <th>Asunto</th>
-                    <th>Prioridad</th>
-                    <th>Fecha</th>
-                    <th class="text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (message of filteredMessages; track message.id) {
-                    <tr>
-                        <td>{{ message.id }}</td>
-                        <td>{{ message.senderName }}</td>
-                        <td>{{ message.recipientName }}</td>
-                        <td>{{ message.subject }}</td>
-                        <td>
-                            <span class="badge" 
-                                [ngClass]="{'bg-danger': message.priority === 'Urgente', 'bg-warning text-dark': message.priority === 'Normal', 'bg-info': message.priority === 'Baja'}">
-                                {{ message.priority }}
-                            </span>
-                            @if (message.isUrgent) {
-                                <span class="badge bg-danger ms-2">URGENTE</span>
-                            }
-                        </td>
-                        <td>{{ message.timestamp | date:'short' }}</td>
-                        <td class="text-center d-flex justify-content-center">
-                            <button 
-                                type="button" 
-                                class="btn btn-sm btn-outline-info me-2" 
-                                (click)="viewMessage(message)"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#messageDetailModal">
-                                <i class="bi bi-eye"></i> Ver Contenido
-                            </button>
-                            
-                            <button class="btn btn-sm btn-outline-primary me-2" (click)="editMessage(message)">
-                                <i class="bi bi-pencil"></i> Editar
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" (click)="prepareDelete(message.id)">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                        </td>
-                    </tr>
-                } @empty {
-                    <tr>
-                        <td colspan="7" class="text-center text-muted">No se encontraron mensajes.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div class="modal fade" id="messageDetailModal" tabindex="-1" aria-labelledby="messageDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            @if (selectedMessage) {
-                <div class="modal-content">
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="messageDetailModalLabel">Detalle del Mensaje: {{ selectedMessage.subject }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row mb-3">
-                            <div class="col-md-6"><strong>De:</strong> {{ selectedMessage.senderName }}</div>
-                            <div class="col-md-6"><strong>Para:</strong> {{ selectedMessage.recipientName }}</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6"><strong>Fecha:</strong> {{ selectedMessage.timestamp | date:'medium' }}</div>
-                            <div class="col-md-6"><strong>Prioridad:</strong> 
-                                <span class="badge" [ngClass]="{'bg-danger': selectedMessage.priority === 'Urgente', 'bg-warning text-dark': selectedMessage.priority === 'Normal', 'bg-info': selectedMessage.priority === 'Baja'}">
-                                    {{ selectedMessage.priority }}
-                                </span>
-                            </div>
-                        </div>
-                        <hr>
-                        <h6 class="text-primary">Contenido Completo:</h6>
-                        <p class="message-content-modal">{{ selectedMessage.messageContent }}</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
+    <div class="card-body">
+      <form [formGroup]="messageForm" (ngSubmit)="saveMessage()">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="senderName" class="form-label">Tu Nombre</label>
+            <input id="senderName" type="text" class="form-control" formControlName="senderName" placeholder="Ej: Juan Pérez"
+                   [class.is-invalid]="messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched">
+            @if (messageForm.get('senderName')?.invalid && messageForm.get('senderName')?.touched) {
+              <div class="invalid-feedback d-block">
+                El nombre del remitente es obligatorio.
+              </div>
             }
+          </div>
+
+          <div class="col-md-6">
+            <label for="recipientName" class="form-label">Destinatario</label>
+            <select id="recipientName" class="form-select" formControlName="recipientName"
+                    [class.is-invalid]="messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched">
+              <option value="" disabled>Selecciona un usuario</option>
+              @for (user of recipientOptions; track user) {
+                <option [value]="user">{{ user }}</option>
+              }
+            </select>
+            @if (messageForm.get('recipientName')?.invalid && messageForm.get('recipientName')?.touched) {
+              <div class="invalid-feedback d-block">
+                El destinatario es obligatorio.
+              </div>
+            }
+          </div>
+
+          <div class="col-md-9">
+            <label for="subject" class="form-label">Asunto</label>
+            <input id="subject" type="text" class="form-control" formControlName="subject" placeholder="Asunto del mensaje"
+                   [class.is-invalid]="messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched">
+            @if (messageForm.get('subject')?.invalid && messageForm.get('subject')?.touched) {
+              <div class="invalid-feedback d-block">
+                El asunto es obligatorio y no debe superar 100 caracteres.
+              </div>
+            }
+          </div>
+
+          <div class="col-md-3">
+            <label for="priority" class="form-label">Prioridad</label>
+            <select id="priority" class="form-select" formControlName="priority">
+              <option value="Baja">Baja</option>
+              <option value="Normal">Normal</option>
+              <option value="Urgente">Urgente</option>
+            </select>
+          </div>
+
+          <div class="col-12">
+            <div class="form-check">
+              <input id="isUrgent" type="checkbox" class="form-check-input" formControlName="isUrgent">
+              <label for="isUrgent" class="form-check-label">Marcar como urgente</label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label for="content" class="form-label">Contenido del Mensaje</label>
+            <textarea id="content" class="form-control" formControlName="content" rows="4"
+                      [class.is-invalid]="messageForm.get('content')?.invalid && messageForm.get('content')?.touched"></textarea>
+            @if (messageForm.get('content')?.invalid && messageForm.get('content')?.touched) {
+              <div class="invalid-feedback d-block">
+                El contenido del mensaje es obligatorio.
+              </div>
+            }
+          </div>
         </div>
+
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="messageForm.invalid">
+            <i class="bi bi-save"></i> {{ isEditing ? 'Guardar Cambios' : 'Enviar Mensaje' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()">
+            <i class="bi bi-x-circle"></i> Cancelar/Nuevo
+          </button>
+        </div>
+      </form>
     </div>
-    
-    <app-reusable-dialog
-        [visible]="isConfirmationModalVisible"
-        [titulo]="'Confirmar Eliminación'"
-        [mensaje]="'¿Estás seguro de que deseas eliminar este mensaje de forma permanente?'"
-        [textoAceptar]="'Sí, Eliminar'"
-        [textoCancelar]="'No, Cancelar'"
-        [tipo]="'danger'"
-        (aceptar)="confirmDelete()"
-        (cancelar)="cancelDelete()"
-    ></app-reusable-dialog>
+  </div>
+
+  <h3 class="mb-3 text-secondary">Bandeja de Mensajes</h3>
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Buscar por remitente, destinatario o asunto..." [(ngModel)]="searchTerm" (input)="applyFilter()">
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover shadow-sm">
+      <thead class="bg-dark text-white">
+        <tr>
+          <th>ID</th>
+          <th>Remitente</th>
+          <th>Destinatario</th>
+          <th>Asunto</th>
+          <th>Prioridad</th>
+          <th>Fecha</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (message of filteredMessages; track message.id) {
+          <tr>
+            <td>{{ message.id }}</td>
+            <td>{{ message.senderName }}</td>
+            <td>{{ message.recipientName }}</td>
+            <td>{{ message.subject }}</td>
+            <td>
+              <span class="badge"
+                    [ngClass]="{'bg-danger': message.priority === 'Urgente', 'bg-warning text-dark': message.priority === 'Normal', 'bg-info': message.priority === 'Baja'}">
+                {{ message.priority }}
+              </span>
+              @if (message.isUrgent) {
+                <span class="badge bg-danger ms-2">URGENTE</span>
+              }
+            </td>
+            <td>{{ message.sentAt | date:'short' }}</td> <!-- ← Cambiado de timestamp a sentAt -->
+            <td class="text-center d-flex justify-content-center">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info me-2"
+                (click)="viewMessage(message)"
+                data-bs-toggle="modal"
+                data-bs-target="#messageDetailModal">
+                <i class="bi bi-eye"></i> Ver Contenido
+              </button>
+
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="editMessage(message)">
+                <i class="bi bi-pencil"></i> Editar
+              </button>
+
+              <button class="btn btn-sm btn-outline-danger" (click)="prepareDelete(message.id)">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="text-center text-muted">No se encontraron mensajes.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal fade" id="messageDetailModal" tabindex="-1" aria-labelledby="messageDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      @if (selectedMessage) {
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="messageDetailModalLabel">Detalle del Mensaje: {{ selectedMessage.subject }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3">
+              <div class="col-md-6"><strong>De:</strong> {{ selectedMessage.senderName }}</div>
+              <div class="col-md-6"><strong>Para:</strong> {{ selectedMessage.recipientName }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6"><strong>Fecha:</strong> {{ selectedMessage.sentAt | date:'medium' }}</div> <!-- ← Cambiado de timestamp a sentAt -->
+              <div class="col-md-6"><strong>Prioridad:</strong>
+                <span class="badge" [ngClass]="{'bg-danger': selectedMessage.priority === 'Urgente', 'bg-warning text-dark': selectedMessage.priority === 'Normal', 'bg-info': selectedMessage.priority === 'Baja'}">
+                  {{ selectedMessage.priority }}
+                </span>
+              </div>
+            </div>
+            <hr>
+            <h6 class="text-primary">Contenido Completo:</h6>
+            <p class="message-content-modal">{{ selectedMessage.content }}</p> <!-- ← Cambiado de messageContent a content -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-reusable-dialog
+    [visible]="isConfirmationModalVisible"
+    [titulo]="'Confirmar Eliminación'"
+    [mensaje]="'¿Estás seguro de que deseas eliminar este mensaje de forma permanente?'"
+    [textoAceptar]="'Sí, Eliminar'"
+    [textoCancelar]="'No, Cancelar'"
+    [tipo]="'danger'"
+    (aceptar)="confirmDelete()"
+    (cancelar)="cancelDelete()"
+  ></app-reusable-dialog>
 </div>

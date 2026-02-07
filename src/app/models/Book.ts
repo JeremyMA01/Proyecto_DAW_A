@@ -1,3 +1,5 @@
+import { Genre } from "./Genre";
+
 export interface Book{
     id:number,
     title:string,
@@ -6,8 +8,10 @@ export interface Book{
     budget:number,
     Estado: String,
     year:number,
-    genre:number,
+    genreId:number,
     active:boolean,
     releaseDate:string,  
+    genre?:Genre,
     categorie:string,
+   
 }

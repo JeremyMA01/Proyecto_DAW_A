@@ -65,22 +65,22 @@ export class ServBooksApi {
       return this.http.post<Book>(this.bookUrl, book);
     }
 
-    desactivateBook (book:Book): Observable<void>{
-      const urlDesactivate = `${this.bookUrl}/deactivate/${book.id}`; 
+    desactivateBook (id:number): Observable<void>{
+      const urlDesactivate = `${this.bookUrl}/deactivate/${id}`; 
       return this.http.put<void>(urlDesactivate,{})
     }
 
     searchBooks(title?:string , genre?:string):Observable<any>{
-      let params = new HttpParams; 
+      let params = new HttpParams(); 
       if(title)
       {
         params = params.set('search',title);
       }
       if (genre)
       {
-        params= params.set('genreId', genre); 
+        params = params.set('genreId', genre); 
       }
-      return this.http.get(`${this.bookUrl}/search, ${params}`);
+      return this.http.get(`${this.bookUrl}/search`, {params});
     
     }
 

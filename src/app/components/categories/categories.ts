@@ -36,7 +36,7 @@ export class Categories {
   ];
 
   formCategorie!: FormGroup;
-  editingId: string | null = null;
+  editingId: number | null = null;
   modalRef: any;
 
   constructor(
@@ -106,6 +106,7 @@ export class Categories {
     this.modalRef.show();
   }
 
+  /*
   openEdit(categorie: Categorie) {
     this.editingId = categorie.id;
     const formattedDate = categorie.createdDate 
@@ -118,6 +119,21 @@ export class Categories {
     });
     this.modalRef.show();
   }
+    */
+   openEdit(categorie: Categorie) {
+  this.editingId = categorie.id; // Ahora categorie.id es number
+  
+  // Formatear la fecha
+  const formattedDate = categorie.createdDate 
+    ? new Date(categorie.createdDate).toISOString().split('T')[0]
+    : this.getCurrentDate();
+  
+  this.formCategorie.patchValue({
+    ...categorie,
+    createdDate: formattedDate
+  });
+  this.modalRef.show();
+}
 
   openDeleteDialog(categorie: Categorie) {
     this.selectedCategorie = categorie;
@@ -148,58 +164,55 @@ export class Categories {
     this.selectedCategorie = null;
   }
 
-  save() {
-    if (this.formCategorie.invalid) {
-      this.formErrorMessage = 'Formulario inválido. Por favor, complete todos los campos correctamente.';
-      this.showFormErrorDialog = true;
-      return;
-    }
-
-    const datos = this.formCategorie.value;
-
-    if (this.editingId) { 
-      let categorieUpdate: Categorie = { ...datos, id: this.editingId };
-      this.miServicio.updateCategorie(categorieUpdate).subscribe(
-        () => {
-          this.successMessage = 'Categoría actualizada exitosamente';
-          this.showSuccessDialog = true;
-          this.modalRef.hide();
-          this.loadCategories();
-        },
-        (error) => {
-          this.errorMessage = 'Error al actualizar categoría: ' + error.message;
-          this.showErrorDialog = true;
-        }
-      );
-    } else { 
-      let nextId: string;
-
-      if (this.categories.length > 0) {
-        const maxId = Math.max(...this.categories.map(c => parseInt(c.id)));
-        nextId = (maxId + 1).toString();
-      } else {
-        nextId = "1"; 
-      }
-
-      let categorieNew: Categorie = {
-        ...datos,
-        id: nextId 
-      };
-
-      this.miServicio.addCategorie(categorieNew).subscribe(
-        () => {
-          this.successMessage = 'Categoría registrada exitosamente';
-          this.showSuccessDialog = true;
-          this.modalRef.hide();
-          this.loadCategories();
-        },
-        (error) => {
-          this.errorMessage = 'Error al crear categoría: ' + error.message;
-          this.showErrorDialog = true;
-        }
-      );
-    }
+save() {
+  if (this.formCategorie.invalid) {
+    this.formErrorMessage = 'Formulario inválido. Por favor, complete todos los campos correctamente.';
+    this.showFormErrorDialog = true;
+    return;
   }
+
+  const datos = this.formCategorie.value;
+
+  if (this.editingId !== null) { // Editando
+    // Convertir ID a number si es string
+    const idNum = typeof this.editingId === 'string' ? parseInt(this.editingId) : this.editingId;
+    
+    let categorieUpdate: Categorie = { 
+      ...datos, 
+      id: idNum  // El ID debe ser número
+    };
+    
+    this.miServicio.updateCategorie(categorieUpdate).subscribe(
+      () => {
+        this.successMessage = 'Categoría actualizada exitosamente';
+        this.showSuccessDialog = true;
+        this.modalRef.hide();
+        this.loadCategories();
+      },
+      (error) => {
+        this.errorMessage = 'Error al actualizar categoría: ' + error.message;
+        this.showErrorDialog = true;
+      }
+    );
+  } else { // Creando nuevo
+    // No enviar ID - la API lo generará automáticamente
+    // También quitamos el id del objeto
+    const { id, ...categorieNew } = datos;
+    
+    this.miServicio.addCategorie(categorieNew).subscribe(
+      (response: Categorie) => {
+        this.successMessage = 'Categoría registrada exitosamente';
+        this.showSuccessDialog = true;
+        this.modalRef.hide();
+        this.loadCategories();
+      },
+      (error) => {
+        this.errorMessage = 'Error al crear categoría: ' + error.message;
+        this.showErrorDialog = true;
+      }
+    );
+  }
+}
 
   closeSuccessDialog() {
     this.showSuccessDialog = false;

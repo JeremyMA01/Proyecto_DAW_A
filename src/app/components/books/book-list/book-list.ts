@@ -25,13 +25,14 @@ export class BookList {
   books: Book[] = [];
   book: Book | null = null;
   generos: Genre[] = [];
+  booksAll :Book[]=[];
 
   columnas = [
     { key: 'id', label: 'ID' },
     { key: 'title', label: 'Titulo' },
     { key: 'author', label: 'Autor' },
     { key: 'year', label: 'Año' },
-    { key: 'genre', label: 'Genero' },
+    { key: 'genreId', label: 'Genero' },
     { key: 'active', label: 'Estado' },
     {key: 'budget', label: 'Presupuesto'},
   ];
@@ -59,7 +60,7 @@ export class BookList {
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ0-9 ]+$/)]],
       author: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-ZÀ-ÿ0-9 ]+$/)]],
       year: [null, Validators.required],
-      genre: [null, Validators.required],
+      genreId: [null, Validators.required],
       active: [true],      
       releaseDate: ['', Validators.required],
       budget:['', [Validators.required, Validators.min(10), Validators.max(100000000), Validators.pattern(/^\d+$/)]],
@@ -76,6 +77,7 @@ export class BookList {
   
   loadBook(): void {
     this.servBook.getBook().subscribe((data: Book[]) => {
+      this.booksAll = data;
       this.books = data;
     });
   }
@@ -113,16 +115,17 @@ export class BookList {
 
   search(busq: HTMLInputElement) {
     let parametro = busq.value.toLowerCase();
-    this.servBook.serchBook(parametro).subscribe((datos: Book[]) => {
+    if (!parametro) {
+    this.books = [...this.booksAll];
+    return;
+  }
+    this.servBook.searchBooks(parametro).subscribe((datos: Book[]) => {
       this.books = datos;
+      
     });
   }
 
-  delete(book: Book) {
-    this.bookToDelete = book;
-    this.dialogVisible = true;
-  }
-
+ 
   onAceptar() {
     if (!this.bookToDelete) return;
 
@@ -181,14 +184,30 @@ export class BookList {
 
     } else {
 
-      nuevoLibro.id = this.getId();
-      this.servBook.addBook(nuevoLibro).subscribe(() => {
+      //nuevoLibro.id = this.getId();
+      /*const payload: any = { ...this.formBook.value };
+       delete payload.id; // por si acaso*/
+       let newBook :Book={...datos}
+       console.log(newBook)
+      this.servBook.addBook(newBook).subscribe(() => {
         alert("Libro creado");
         this.modalRef.hide();
         this.loadBook();
       });
     }
   }
+     delete(book: Book){
+      const confrimado = confirm('Estas seguro de eliminar la pelicula' + book.title + '?'); 
+      if(confrimado){
+        this.servBook.desactivateBook(book.id!).subscribe(()=>{
+          alert("Eliminado Exitosamente"); 
+          this.loadBook();
+        })
+      } 
+     }
+  }
+
+  
 
     
 
@@ -203,4 +222,4 @@ export class BookList {
 
 
 
-}
+
