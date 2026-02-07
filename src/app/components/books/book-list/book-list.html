@@ -82,16 +82,16 @@
 
           <div class="modern-input-group">
             <label class="modern-label">Género</label>
-            <select class="modern-input" formControlName="genre">
-              <option value="">Seleccione...</option>
+            <select class="modern-input" formControlName="genreId">
+              <option [ngValue]="null">Seleccione...</option>
               @for (g of generos; track $index) {
                 <option [value]="g.id">{{ g.name }}</option>
               }
             </select>
 
             <span class="error">
-              @if(formBook.get('genre')?.invalid && (formBook.get("genre")?.dirty || formBook.get("genre")?.touched)){
-                @if(formBook.get("genre")?.errors?.['required']){ Género requerido }
+              @if(formBook.get('genreId')?.invalid && (formBook.get("genreId")?.dirty || formBook.get("genreId")?.touched)){
+                @if(formBook.get("genreId")?.errors?.['required']){ Género requerido }
               }
             </span>
           </div>
