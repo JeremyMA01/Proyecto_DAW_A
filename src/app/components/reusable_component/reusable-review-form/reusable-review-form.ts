@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { Review } from '../../../models/Review';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
 declare var bootstrap: any;
 
 @Component({
@@ -39,6 +38,7 @@ export class ReusableReviewForm implements AfterViewInit {
           Validators.pattern(/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$/),
         ],
       ],
+      id_Book: [''],
       score: ['', Validators.required],
       comment: [
         '',
@@ -50,7 +50,6 @@ export class ReusableReviewForm implements AfterViewInit {
         ],
       ],
       isRecommend: [true],
-      id_book: [''],
       publishedDate: ['']
     });
   }
@@ -58,18 +57,23 @@ export class ReusableReviewForm implements AfterViewInit {
   @ViewChild('reviewModalRef') modalElement!: ElementRef;
 
   ngAfterViewInit() {
-    if (this.modalElement) {
+    try{
+      if (this.modalElement) {
       this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement, {
         focus: false,
       });
+    }  
+    }catch(error){
+      console.warn("Bootstrap no cargó a tiempo, pero seguiremos con la lógica", error);
     }
+    
   }
 
   openNew() {
     this.editingId = null;
-    this.formReview.reset({ isRecommend: true, id_book: '' });
+    this.formReview.reset({ isRecommend: true, id_Book: '' });
 
-    const idBookCtrl = this.formReview.get('id_book');
+    const idBookCtrl = this.formReview.get('id_Book');
 
     if (this.mostrarCampos) {
       idBookCtrl?.setValidators([Validators.required]);
@@ -107,7 +111,13 @@ export class ReusableReviewForm implements AfterViewInit {
     }
 
     const datos = this.formReview.value;
-    const reviewF: Review = { ...datos, id: this.editingId };
+    console.log("Datos: " + JSON.stringify(datos));
+
+    const reviewF: Review = { ...datos,
+       id: this.editingId
+    };
+
+    console.log("ReviewF" + JSON.stringify(reviewF));
 
     this.onSaveReview.emit(reviewF);
     this.close();

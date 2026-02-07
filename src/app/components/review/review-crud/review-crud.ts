@@ -1,11 +1,10 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { ServReviewJson } from '../../../services/review/serv-review-json';
+import { ServReviewApi } from '../../../services/review/serv-review-api';
 import { Router } from '@angular/router';
 import { Review } from '../../../models/Review';
 import { ReusableTable } from '../../reusable_component/reusable-table/reusable-table';
 import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
 import { ReusableDialog } from '../../reusable_component/reusable-dialog/reusable-dialog'; 
-import { ServReviewApi } from '../../../services/review/serv-review-api';
 
 @Component({
   selector: 'app-review-crud',
@@ -20,13 +19,13 @@ export class ReviewCrud {
   @ViewChild('modalReview') modalReview!: ReusableReviewForm;
 
   columnas = [
-    { key: 'id', label: 'ID' },
-    { key: 'id_book', label: 'Libro' },
-    { key: 'user', label: 'Usuario' },
-    { key: 'score', label: 'Score' },
-    { key: 'comment', label: 'Comentario' },
-    { key: 'isRecommend', label: 'Recomendación' },
-    { key: 'publishedDate', label: 'Fecha de Publicación' },
+  { key: 'id', label: 'ID' },           
+  { key: 'id_Book', label: 'Libro' },
+  { key: 'user', label: 'Usuario' },     
+  { key: 'score', label: 'Score' },      
+  { key: 'comment', label: 'Comentario' },
+  { key: 'isRecommend', label: 'Recomendación' },
+  { key: 'publishedDate', label: 'Fecha' },
   ];
 
 
@@ -48,7 +47,8 @@ export class ReviewCrud {
   
   loadReview(): void {
     this.servReview.getReviews().subscribe((data: Review[]) => {
-      this.reviews = data;
+      this.reviews = [...data];
+      console.log("Datos Cargados: " + this.reviews.length);
     });
   }
 
@@ -59,37 +59,29 @@ export class ReviewCrud {
   }
   
   save(review: Review) {
-    const reviewF: any = {
-      ...review,
-      id: review.id,
-      id_book: Number(review.id_book),
-      score: Number(review.score),
-      publishedDate: review.id ? review.publishedDate
-      : this.getLocalDateString(),
-    };
+  const reviewF: any = {
+    id: review.id ? Number(review.id) : 0,
+    id_Book: Number(review.id_Book) || 0,
+    user: review.user || '',
+    score: Number(review.score) || 0,
+    comment: review.comment || '',
+    isRecommend: !!review.isRecommend,
+    publishedDate: new Date().toISOString()
+  };
 
-    if (reviewF.id) {
-      this.servReview.updateReview(reviewF).subscribe(
-        () => {
-          this.showSuccess('Reseña editada exitosamente');
-          this.loadReview();
-        },
-        (error) => {
-          this.showError('Error al editar reseña: ' + error.message);
-        }
-      );
-    } else {
-      this.servReview.addReview(reviewF).subscribe(
-        () => {
-          this.showSuccess('Reseña creada exitosamente');
-          this.loadReview();
-        },
-        (error) => {
-          this.showError('Error al crear reseña: ' + error.message);
-        }
-      );
-    }
+  if(reviewF.Id_Book === 0){
+    console.log("Error: Id_Book no puede ser 0");
   }
+  console.log(JSON.stringify(reviewF));
+  if (reviewF.id === 0) {
+    this.servReview.addReview(reviewF).subscribe(() => {
+      alert("Reseña creada con exitó");
+      this.loadReview();
+    });
+  } else {
+    this.servReview.updateReview(reviewF).subscribe(() => this.loadReview());
+  }
+}
 
 
   search(parametroRaw: string): void {
@@ -100,7 +92,6 @@ export class ReviewCrud {
       return;
     }
     this.servReview.searchReview(parametro).subscribe(data => this.reviews = data);
-
   }
 
 

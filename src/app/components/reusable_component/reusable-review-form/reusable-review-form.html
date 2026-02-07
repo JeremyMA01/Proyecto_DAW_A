@@ -30,10 +30,10 @@
           @if (mostrarCampos) {
           <div class="mb-3">
             <label class="form-label fw-bold">ID del Libro</label>
-            <input type="text" class="form-control" formControlName="id_book"
-              [class.is-invalid]="formReview.get('id_book')?.invalid && formReview.get('id_book')?.touched">
+            <input type="text" class="form-control" formControlName="id_Book"
+              [class.is-invalid]="formReview.get('id_Book')?.invalid && formReview.get('id_Book')?.touched">
             <div class="invalid-feedback d-block">
-              @if(formReview.get('id_book')?.invalid && formReview.get('id_book')?.touched){
+              @if(formReview.get('id_Book')?.invalid && formReview.get('id_Book')?.touched){
                 <div>El ID de libro es obligatorio!</div>
               }
             </div>

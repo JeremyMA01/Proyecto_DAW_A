@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Book } from '../../../models/Book';
-import { ServBookJson } from '../../../services/serv-book-json';
+import { ServBooksApi } from '../../../services/serv-books-api';
 import { Genre } from '../../../models/Genre';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -26,7 +26,7 @@ export class DonacionesCrud {
   modalRef: any;
 
   constructor(
-    private miServicio: ServBookJson,
+    private miServicio: ServBooksApi,
     private router: Router,
     private fb: FormBuilder
   ) {

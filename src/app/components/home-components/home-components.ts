@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Book } from '../../models/Book';
 import { Genre } from '../../models/Genre';
-import { ServBookJson } from '../../services/serv-book-json';
+import { ServBooksApi } from '../../services/serv-books-api';
 import { CurrencyPipe,UpperCasePipe,DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ServHomeJson } from '../../services/home/serv-home-json';
@@ -16,7 +16,7 @@ export class HomeComponents {
   genre :Genre[] = [];
 
   
-  constructor(private servBook:ServBookJson, private servHome:ServHomeJson, private router:Router){}
+  constructor(private servBook:ServBooksApi, private servHome:ServHomeJson, private router:Router){}
   ngOnInit():void{
 
     this.loadBook();

@@ -1,13 +1,11 @@
 import { Component, ElementRef, numberAttribute, OnInit, ViewChild } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrencyPipe, UpperCasePipe, DatePipe } from '@angular/common';
 
 import { Review } from '../../../models/Review';
 import { Book } from '../../../models/Book';
 
-import { ServReviewJson } from '../../../services/review/serv-review-json';
-import { ServBookJson } from '../../../services/serv-book-json';
+import { ServBooksApi } from '../../../services/serv-books-api';
 import { ServHomeJson } from '../../../services/home/serv-home-json';
 
 import { ReusableReviewForm } from '../../reusable_component/reusable-review-form/reusable-review-form';
@@ -35,13 +33,14 @@ export class ReviewView implements OnInit {
 
   constructor(
     private servReview: ServReviewApi,
-    private servBook: ServBookJson,
+    private servBook: ServBooksApi,
     private servHome: ServHomeJson,
-    private router: ActivatedRoute
+    private route: ActivatedRoute,
+    private router:Router
   ) {}
 
   ngOnInit() {
-    this.currentBookId = Number(this.router.snapshot.paramMap.get('id'));
+    this.currentBookId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.currentBookId) {
       this.loadBookId(this.currentBookId);
@@ -103,7 +102,7 @@ export class ReviewView implements OnInit {
 
   loadReviewByIdBook(id: number): void {
     this.servReview.getReviewsBook(id).subscribe((data: Review[]) => {
-      this.reviews = data;
+      this.reviews = [...data];
       this.calcularEstadistica();
     });
   }
@@ -127,47 +126,57 @@ export class ReviewView implements OnInit {
     })
   }
 
-  save(review: Review) {
-    const reviewF: any = {
-      ...review,
-      id: review.id,
-      id_book: Number(this.currentBookId),
-      score: Number(review.score),
-      publishedDate: review.id ? review.publishedDate
-        : new Date().toISOString().substring(0, 10),
-    };
-
-    if (reviewF.id) {
-      this.servReview.updateReview(reviewF).subscribe((data: Review) => {
-        alert('Review Editada!');
-        this.loadReviewByIdBook(this.currentBookId);
-      });
-    } else {
-      this.servReview.addReview(reviewF).subscribe(() => {
-        alert('Review Creada!');
-        this.loadReviewByIdBook(this.currentBookId);
-      });
-    }
+ save(review: Review) {
+  const reviewF: Review = { 
+    id: review.id ? Number(review.id) : 0, 
+    id_Book: Number(this.currentBookId), 
+    user: review.user, 
+    score: Number(review.score),
+    comment: review.comment || '', 
+    isRecommend: !!review.isRecommend, 
+    publishedDate: new Date().toISOString()
+  };
+  
+  if(reviewF.id_Book === 0){
+    console.log("Error: id_Book no puede ser 0");
   }
 
+  if(reviewF.id === 0){
+    this.servReview.addReview(reviewF).subscribe(()=>{
+      alert("¡Reseña publicada con éxito!");
+      
+      this.loadReviewByIdBook(this.currentBookId);
+    })
+  }else{
+    this.servReview.updateReview(reviewF).subscribe(()=> 
+      {
+       alert("¡Reseña Actualiza!")
+        this.loadReviewByIdBook(this.currentBookId);
+      });
+      
+  }
+}
 
   delete(review: Review) {
-    const confirmar = confirm('¿Estás seguro de eliminar la reseña?');
+  const confirmar = confirm('¿Estás seguro de eliminar la reseña?');
 
-    if (confirmar) {
-      this.servReview.deleteReview(review.id!).subscribe(() => {
+  if (confirmar && review.id) {
+    this.servReview.deleteReview(review.id).subscribe({
+      next: () => {
         alert('¡Eliminado exitosamente!');
+        this.reviews = this.reviews.filter(r => r.id !== review.id);
+        this.calcularEstadistica();
         this.loadReviewByIdBook(this.currentBookId);
-      });
-    }
+      },
+      error: (err) => console.error("Error al eliminar de la DB:", err)
+    });
   }
+}
 
   filterScore(score:number){
     if(this.totalOpiniones === 0){
       console.log('No hay opiniones para filtrar');
-    }else{
-      this.servReview.getScoreFilter(score).subscribe(
-      )
+      return;
     }
     this.servReview.getScoreFilter(score).subscribe((data:Review[])=>{
       this.reviews = data;
@@ -175,24 +184,6 @@ export class ReviewView implements OnInit {
     })
   }
 
-
-  cargarReseñas(){
-    return this.servReview.getReviews().subscribe(
-      (data:Review[])=>{
-        this.reviews = data;
-      }
-    )
-  }
-
-  eliminarReseñas(id:number){
-    const confirmar = confirm('¿Estas seguro para eliminar?');
-    this.servReview.deleteReview(id).subscribe(
-
-      ()=>{
-        console.log('Eliminado');
-      }
-    )
-  }
 }
 
 

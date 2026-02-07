@@ -1,9 +1,9 @@
-export interface Review{
-    id?:number,
-    id_book:number,
-    user:string,
-    score:number,
-    comment:string,
-    isRecommend?:boolean,
-    publishedDate:Date | string;
+export interface Review {
+    id?: number;          
+    id_Book: number;     
+    user: string;        
+    score: number;       
+    comment: string;      
+    isRecommend?: boolean;
+    publishedDate: string | Date; 
 }

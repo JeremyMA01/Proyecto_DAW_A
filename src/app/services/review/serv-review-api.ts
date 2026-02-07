@@ -40,7 +40,7 @@ export class ServReviewApi {
   Nota: Ya implementado en el Backend.
   */
   addReview(review: Review): Observable<Review> {
-
+    console.log("Serv API: " + JSON.stringify(review));
     return this.http.post<Review>(this.reviewUrl, review);
   }
   
