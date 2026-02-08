@@ -3,14 +3,13 @@ import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-
-import { BookList } from "./components/books/book-list/book-list";
-import { ReusableTable } from "./components/reusable_component/reusable-table/reusable-table";
-import { HomeComponents } from "./components/home-components/home-components";
-import { DonacionesCrud } from './components/books/Donaciones-crud/donaciones-crud';
-import { ReviewCrud } from './components/review/review-crud/review-crud';
-import { ReviewView } from './components/review/review-view/review-view';
 import { CommonModule } from '@angular/common';
+
+
+import { AuthService } from './services/services/auth.service';
+
+
+import { DonacionesCrud } from './components/books/Donaciones-crud/donaciones-crud';
 
 @Component({
   standalone: true,
@@ -31,14 +30,18 @@ export class App implements OnInit, OnDestroy {
   isAuthPage: boolean = false;
   private routerSubscription: Subscription = new Subscription();
 
-  constructor(private router: Router) {}
+ 
+  constructor(
+    public authService: AuthService, 
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.routerSubscription = this.router.events
       .pipe(
         filter(event => event instanceof NavigationEnd)
       )
-      .subscribe((event: NavigationEnd) => {
+      .subscribe((event: any) => {
         const authRoutes = [
           '/login',
           '/registro',
@@ -51,12 +54,18 @@ export class App implements OnInit, OnDestroy {
         this.isAuthPage = authRoutes.some(route => currentUrl.startsWith(route));
       });
   }
+
+  
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  
   irAUsuarios() {
-    const userStr = localStorage.getItem('currentUser');
+    const user = this.authService.getCurrentUser();
     
-    if (userStr) {
-      const user = JSON.parse(userStr);
-      
+    if (user) {
       if (user.rol === 'administrador') {
         this.router.navigate(['/usuarios']);
       } else {

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { UsuarioService } from '../../../services/usuario.service';
-import { Usuario } from '../../../models/usuario.model';
+// Importamos el AuthService que configuramos con JWT
+import { AuthService } from '../../../services/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private usuarioService: UsuarioService,
+    private authService: AuthService, // Cambiado a AuthService
     private router: Router
   ) {
     this.form = this.fb.group({
@@ -28,12 +28,13 @@ export class LoginComponent {
     });
   }
 
+  // Método para mostrar errores visuales en el HTML
   campoInvalido(campo: string): boolean {
     const control = this.form.get(campo);
     return !!control && control.invalid && control.touched;
   }
 
- onSubmit(): void {
+  onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -41,23 +42,26 @@ export class LoginComponent {
 
     const { email, password } = this.form.value;
 
-    this.usuarioService.login(email, password).subscribe((usuario: Usuario | null) => {
-      // Validar si existe y si está activo
-      if (!usuario || usuario.active === false) {
-        this.errorMsg = 'Correo o contraseña incorrectos o usuario inactivo.';
-        return;
-      }
+    // Llamamos al servicio de autenticación
+    this.authService.login(email, password).subscribe({
+      next: (response) => {
+        // Al usar AuthService.login, el token y el currentUser ya se guardan 
+        // automáticamente gracias al operador 'tap' que pusimos en el servicio.
 
-      this.errorMsg = '';
+        this.errorMsg = '';
+        console.log('¡Identidad confirmada!');
 
-      // --- IMPORTANTE: GUARDAR USUARIO EN SESIÓN ---
-      localStorage.setItem('currentUser', JSON.stringify(usuario));
-
-      // Redirección según rol
-      if (usuario.rol === 'administrador') {
-        this.router.navigate(['/usuarios']);
-      } else {
-        this.router.navigate(['/home-components']);
+        // Redirección inteligente:
+        // El servicio guarda el rol, así que lo leemos para saber a dónde ir.
+        if (response.rol === 'administrador') {
+          this.router.navigate(['/usuarios']);
+        } else {
+          this.router.navigate(['/home-components']);
+        }
+      },
+      error: (err) => {
+        console.error('Error en login:', err);
+        this.errorMsg = 'Correo o contraseña incorrectos o cuenta inactiva.';
       }
     });
   }
