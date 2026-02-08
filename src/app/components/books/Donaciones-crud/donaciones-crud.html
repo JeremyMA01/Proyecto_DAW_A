@@ -6,113 +6,116 @@
     <div class="col-md-6">
         <reusable-search (search)="searchText($event)"></reusable-search>
     </div>
-     <button class="btn-new" (click)="openNew()"><i class="bi bi-plus-circle me-1"></i> Nueva Donación </button>
+     <button class="btn-new" (click)="openNew()">
+         <i class="bi bi-plus-circle me-1"></i> Nueva Donación 
+     </button>
 </div>
 
+<div class="row mb-4 align-items-center">
+    <div class="col-md-6 text-end">
+        <span class="small" style="color:#9bb4d1;">
+            Total de Donaciones: {{ donaciones.length }}
+        </span>
+    </div>
+</div>
 
-        <div class="row mb-4 align-items-center">
-            
-            <div class="col-md-6 text-end">
-                <span class="small" style="color:#9bb4d1;">Total de Libros: {{ books.length }}</span>
-            </div>
-        </div>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle" style="color:#e8f1ff;">
+        <thead style="background:#0d1b31; color:#37c7ff;">
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Año</th>
+                <th>Categoría</th>
+                <th>Donado por</th>
+                <th>Fecha Donación</th>
+                <th>Estado</th>
+                <th>En Inventario</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
 
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle"
-                style="color:#e8f1ff;">
-
-                <thead style="background:#0d1b31; color:#37c7ff;">
-                    <tr>
-                        <th>Título</th>
-                        <th>Fecha</th>
-                        <th>Autor</th>
-                        <th>Género</th>
-                        <th><i class="bi bi-info-circle-fill me-1"></i>Estado</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @for(book of books; track book.id) {
-                    <tr style="background:rgba(255,255,255,0.02);">
-                        <td class="fw-bold text-truncate">{{book.title}}</td>
-                        <td>{{book.releaseDate | date:'dd/MM/yyyy'}}</td>
-                        <td>{{book.author}}</td>
-                        <td>
-                            <span class="badge bg-secondary">{{book.genre}}</span>
-                        </td>
-
-                        <td>
-                            @if (book.Estado === 'Nuevo') {
-                            <span class="badge bg-success">Nuevo</span>
-                            } @else {
-                            <span class="badge bg-warning text-dark">Usado</span>
-                            }
-                        </td>
-
-                        <td class="text-center">
-                            <div class="btn-group">
-
-                                <button class="btn btn-sm"
-                                    style="border-color:#0dcaf0; color:#0dcaf0;"
-                                    title="Ver" (click)="view(book.id)">
-                                    <i class="bi bi-binoculars"></i>
-                                </button>
-
-                                <button class="btn btn-sm"
-                                    style="border-color:#ffc107; color:#ffc107;"
-                                    title="Editar" (click)="openEdit(book)">
-                                    <i class="bi bi-pen"></i>
-                                </button>
-
-                                <button class="btn btn-sm"
-                                    style="border-color:#dc3545; color:#dc3545;"
-                                    title="Eliminar" (click)="delete(book)">
-                                    <i class="bi bi-trash3"></i>
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
+        <tbody>
+            @for(donacion of donaciones; track donacion.id) {
+            <tr style="background:rgba(255,255,255,0.02);">
+                <td class="fw-bold">{{donacion.title}}</td>
+                <td>{{donacion.author}}</td>
+                <td>{{donacion.year}}</td>
+                <td>
+                    <span class="badge bg-info">
+                        {{getCategoryName(donacion.categoryId)}}
+                    </span>
+                </td>
+                <td>{{donacion.donatedBy}}</td>
+                <td>{{donacion.donationDate | date:'dd/MM/yyyy'}}</td>
+                <td>
+                    @if (donacion.estado === 'Nuevo') {
+                    <span class="badge bg-success">Nuevo</span>
+                    } @else {
+                    <span class="badge bg-warning text-dark">Usado</span>
                     }
-
-                    @empty {
-                    <tr>
-                        <td colspan="6" class="text-center py-4" style="color:#9bb4d1;">
-                            <i class="bi bi-box-seam fs-4 d-block mb-2"></i>
-                            No se encontraron donaciones de libros.
-                        </td>
-                    </tr>
+                </td>
+                <td>
+                    @if (donacion.convertedToInventory) {
+                    <span class="badge bg-success">Sí</span>
+                    } @else {
+                    <span class="badge bg-secondary">No</span>
                     }
+                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        @if (!donacion.convertedToInventory) {
+                        <button class="btn btn-sm"
+                            style="border-color:#198754; color:#198754;"
+                            title="Convertir a Inventario" 
+                            (click)="convertToInventory(donacion)">
+                            <i class="bi bi-arrow-right-circle"></i>
+                        </button>
+                        }
 
-                </tbody>
+                        <button class="btn btn-sm"
+                            style="border-color:#ffc107; color:#ffc107;"
+                            title="Editar" 
+                            (click)="openEdit(donacion)">
+                            <i class="bi bi-pen"></i>
+                        </button>
 
-            </table>
-        </div>
+                        <button class="btn btn-sm"
+                            style="border-color:#dc3545; color:#dc3545;"
+                            title="Eliminar" 
+                            (click)="delete(donacion)">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            }
 
+            @empty {
+            <tr>
+                <td colspan="9" class="text-center py-4" style="color:#9bb4d1;">
+                    <i class="bi bi-box-seam fs-4 d-block mb-2"></i>
+                    No se encontraron donaciones de libros.
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
-
-
-
-
-
-<div class="modal fade" id="bookModal" tabindex="-1" #bookModalRef
-    aria-labelledby="bookModalLabel" aria-hidden="true">
-
+<!-- MODAL -->
+<div class="modal fade" id="donacionModal" tabindex="-1" #donacionModalRef>
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="background:#101f36; color:#e8f1ff;">
-
             <div class="modal-header" style="background:#0d1b31; color:#37c7ff;">
                 <h5 class="modal-title">
-                    {{ editingId ? 'Editar Libro' : 'Nueva Donación de Libro' }}
+                    {{ editingId ? 'Editar Donación' : 'Nueva Donación de Libro' }}
                 </h5>
                 <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
 
-            <form [formGroup]="formBook">
+            <form [formGroup]="formDonacion">
                 <div class="modal-body">
-
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Título *</label>
@@ -131,62 +134,76 @@
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Género *</label>
-                            <select class="form-select"
+                            <label class="form-label fw-bold">Año *</label>
+                            <input type="number" class="form-control"
                                 style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
-                                formControlName="genre">
-                                <option value="" disabled>Seleccione un género</option>
-                                <option value="Ficcion">Ficción</option>
-                                <option value="Novela">Novela</option>
-                                <option value="Historia">Historia</option>
-                                <option value="Ciencia">Ciencia</option>
-                            </select>
+                                formControlName="year"
+                                [min]="1000"
+                                [max]="currentYear"> <!-- Cambiado a currentYear -->
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Fecha de Publicación</label>
+                            <label class="form-label fw-bold">Categoría *</label>
+                            <select class="form-select"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="categoryId">
+                                <option value="" disabled>Seleccione una categoría</option>
+                                @for(categoria of categorias; track categoria.id) {
+                                <option [value]="categoria.id">{{categoria.name}}</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Donado por *</label>
+                            <input type="text" class="form-control"
+                                style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
+                                formControlName="donatedBy"
+                                placeholder="Nombre del donante">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Fecha de Donación *</label>
                             <input type="date" class="form-control"
                                 style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
-                                formControlName="releaseDate">
+                                formControlName="donationDate"
+                                [max]="getCurrentDate()"> <!-- Para que no seleccione fecha futura -->
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Estado del Libro</label>
+                        <label class="form-label fw-bold">Estado del Libro *</label>
                         <select class="form-select"
                             style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
-                            formControlName="Estado">
+                            formControlName="estado">
                             <option value="Nuevo">Nuevo</option>
                             <option value="Usado">Usado</option>
+                            <option value="Excelente">Excelente</option>
+                            <option value="Bueno">Bueno</option>
+                            <option value="Regular">Regular</option>
                         </select>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Poster (URL)</label>
-                        <input type="url" class="form-control"
-                            style="background:#0d1b31; color:white; border:1px solid #1ab4ff;"
-                            formControlName="poster">
-                    </div>
-
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                         style="background:#6c757d;"
                         data-bs-dismiss="modal">
-                        Cerrar
+                        Cancelar
                     </button>
 
                     <button class="btn"
                         style="background:#1ab4ff; color:white;"
                         type="button"
                         (click)="save()"
-                        [disabled]="formBook.invalid">
-                        <i class="bi bi-save me-1"></i> Guardar
+                        [disabled]="formDonacion.invalid">
+                        <i class="bi bi-save me-1"></i> 
+                        {{ editingId ? 'Actualizar' : 'Guardar' }}
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
 </div>
