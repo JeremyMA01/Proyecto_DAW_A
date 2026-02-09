@@ -21,8 +21,6 @@ export class DonacionesCrud {
   categorias: Categorie[] = [];
   formDonacion!: FormGroup;
   editingId: number | null = null;
-  
-  // AGREGAR ESTA PROPIEDAD
   currentYear: number;
 
   @ViewChild('donacionModalRef') modalElement!: ElementRef;
@@ -34,7 +32,7 @@ export class DonacionesCrud {
     private router: Router,
     private fb: FormBuilder
   ) {
-    // Inicializar el año actual
+ 
     this.currentYear = new Date().getFullYear();
     
     this.loadDonaciones();
@@ -52,22 +50,20 @@ export class DonacionesCrud {
   }
 
   ngAfterViewInit() {
-  this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
-  
-  // IMPORTANTE: Agregar eventos al modal
-  this.modalElement.nativeElement.addEventListener('hidden.bs.modal', () => {
-    console.log('Modal cerrado');
-    this.editingId = null;
-    this.formDonacion.reset({ 
-      estado: 'Nuevo',
-      donationDate: this.getCurrentDate()
+    this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+    this.modalElement.nativeElement.addEventListener('hidden.bs.modal', () => {
+      console.log('Modal cerrado');
+      this.editingId = null;
+      this.formDonacion.reset({ 
+        estado: 'Nuevo',
+        donationDate: this.getCurrentDate()
+      });
     });
-  });
-  
-  this.modalElement.nativeElement.addEventListener('shown.bs.modal', () => {
-    console.log('Modal abierto');
-  });
-}
+    
+    this.modalElement.nativeElement.addEventListener('shown.bs.modal', () => {
+      console.log('Modal abierto');
+    });
+  }
 
   loadDonaciones(): void {
   console.log('Cargando donaciones...');
@@ -76,9 +72,9 @@ export class DonacionesCrud {
       this.donaciones = data;
       console.log('Donaciones cargadas:', data.length, 'registros');
       
-      // Forzar detección de cambios
+
       setTimeout(() => {
-        this.donaciones = [...data]; // Crear nueva referencia
+        this.donaciones = [...data];
       }, 0);
     },
     (error) => {
@@ -91,7 +87,7 @@ export class DonacionesCrud {
   loadCategorias(): void {
     this.servicioCategorias.getCategories().subscribe(
       (data: Categorie[]) => {
-        // Filtrar solo categorías activas
+  
         this.categorias = data.filter(c => c.active);
       },
       (error) => console.error("Error al cargar categorías:", error)
@@ -120,7 +116,7 @@ export class DonacionesCrud {
   openEdit(donacion: Donacion) {
     this.editingId = donacion.id;
     
-    // Formatear fecha para input
+
     const formattedDate = donacion.donationDate 
       ? new Date(donacion.donationDate).toISOString().split('T')[0]
       : this.getCurrentDate();
@@ -138,164 +134,185 @@ export class DonacionesCrud {
     this.modalRef.show();
   }
 
-// donaciones-crud.ts - en el método save()
-save() {
-  if (this.formDonacion.invalid) {
-    alert("Formulario incompleto. Por favor, complete todos los campos requeridos.");
-    return;
-  }
+  save() {
+    if (this.formDonacion.invalid) {
+      alert("Formulario incompleto. Por favor, complete todos los campos requeridos.");
+      return;
+    }
 
-  const datos = this.formDonacion.value;
-  
-  // Convertir categoryId a número
-  const categoryId = Number(datos.categoryId);
-  
-  if (this.editingId) {
-    // Editar
-    const donacionActualizada: Donacion = { 
-      ...datos,
-      id: this.editingId,
-      year: Number(datos.year),
-      categoryId: categoryId,
-      donationDate: datos.donationDate
-    };
-
-    this.servicioDonaciones.updateDonacion(donacionActualizada).subscribe(
-      (response) => {
-        console.log('Respuesta exitosa:', response);
-        alert("Donación actualizada correctamente");
-        
-        // IMPORTANTE: Cerrar el modal primero
-        if (this.modalRef) {
-          this.modalRef.hide();
-        }
-        
-        // Luego recargar después de un pequeño delay
-        setTimeout(() => {
-          this.loadDonaciones();
-          this.editingId = null;
-          this.formDonacion.reset();
-        }, 100);
-      },
-      (error) => {
-        console.error('Error completo:', error);
-        alert(`Error al actualizar: ${error.error?.message || error.message}`);
-      }
-    );
-
-  } else {
-    // Crear nueva
-    const nuevaDonacion: Donacion = { 
-      ...datos,
-      convertedToInventory: false,
-      year: Number(datos.year),
-      categoryId: categoryId,
-      donationDate: datos.donationDate
-    };
-
-    this.servicioDonaciones.addDonacion(nuevaDonacion).subscribe(
-      (response) => {
-        console.log('Respuesta exitosa:', response);
-        alert("Donación creada correctamente");
-        
-        // IMPORTANTE: Cerrar el modal primero
-        if (this.modalRef) {
-          this.modalRef.hide();
-        }
-        
-        // Luego recargar después de un pequeño delay
-        setTimeout(() => {
-          this.loadDonaciones();
-          this.formDonacion.reset({ 
-            estado: 'Nuevo',
-            donationDate: this.getCurrentDate()
-          });
-        }, 100);
-      },
-      (error) => {
-        console.error('Error completo:', error);
-        alert(`Error al crear: ${error.error?.message || error.message}`);
-      }
-    );
-  }
-}
-
-// Método para obtener mensaje de error amigable
-getErrorMessage(error: any): string {
-  if (error.error?.errors) {
-    // Si hay errores de validación detallados
-    const errors = error.error.errors;
-    let messages = [];
+    const datos = this.formDonacion.value;
     
-    for (const key in errors) {
-      if (errors.hasOwnProperty(key)) {
-        messages.push(`${key}: ${errors[key].join(', ')}`);
+  
+    const categoryId = Number(datos.categoryId);
+    
+    if (this.editingId) {
+
+      const donacionActualizada: Donacion = { 
+        ...datos,
+        id: this.editingId,
+        year: Number(datos.year),
+        categoryId: categoryId,
+        donationDate: datos.donationDate
+      };
+
+      this.servicioDonaciones.updateDonacion(donacionActualizada).subscribe(
+        (response) => {
+          console.log('Respuesta exitosa:', response);
+          alert("Donación actualizada correctamente");
+          
+      
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+          
+        
+          setTimeout(() => {
+            this.loadDonaciones();
+            this.editingId = null;
+            this.formDonacion.reset();
+          }, 100);
+        },
+        (error) => {
+          console.error('Error completo:', error);
+          alert(`Error al actualizar: ${error.error?.message || error.message}`);
+        }
+      );
+
+    } else {
+    
+      const nuevaDonacion: Donacion = { 
+        ...datos,
+        convertedToInventory: false,
+        year: Number(datos.year),
+        categoryId: categoryId,
+        donationDate: datos.donationDate
+      };
+
+      this.servicioDonaciones.addDonacion(nuevaDonacion).subscribe(
+        (response) => {
+          console.log('Respuesta exitosa:', response);
+          alert("Donación creada correctamente");
+          
+
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+          
+        
+          setTimeout(() => {
+            this.loadDonaciones();
+            this.formDonacion.reset({ 
+              estado: 'Nuevo',
+              donationDate: this.getCurrentDate()
+            });
+          }, 100);
+        },
+        (error) => {
+          console.error('Error completo:', error);
+          alert(`Error al crear: ${error.error?.message || error.message}`);
+        }
+      );
+    }
+  }
+
+  getErrorMessage(error: any): string {
+    if (error.error?.errors) {
+
+      const errors = error.error.errors;
+      let messages = [];
+      
+      for (const key in errors) {
+        if (errors.hasOwnProperty(key)) {
+          messages.push(`${key}: ${errors[key].join(', ')}`);
+        }
       }
+      
+      return messages.join('\n');
     }
     
-    return messages.join('\n');
+    return error.error?.message || error.message || 'Error desconocido';
   }
-  
-  return error.error?.message || error.message || 'Error desconocido';
-}
 
-delete(donacion: Donacion) {
-  if (confirm(`¿Seguro deseas eliminar la donación "${donacion.title}"?`)) {
-    this.servicioDonaciones.deleteDonacion(donacion.id).subscribe(
-      () => {
-        alert("Eliminado correctamente");
-        
-        // Actualizar lista localmente sin recargar todo
-        this.donaciones = this.donaciones.filter(d => d.id !== donacion.id);
-        
-        // También recargar para asegurar
-        setTimeout(() => {
-          this.loadDonaciones();
-        }, 100);
-      },
-      (error) => {
-        alert(`Error al eliminar: ${error.error?.message || error.message}`);
-      }
-    );
-  }
-}
-
-convertToInventory(donacion: Donacion) {
-  if (confirm(`¿Convertir "${donacion.title}" a inventario?`)) {
-    this.servicioDonaciones.convertToInventory(donacion.id).subscribe(
-      (response: any) => {
-        alert(`Convertido a inventario. ID del libro: ${response.bookId}`);
-        
-        // Actualizar localmente
-        const index = this.donaciones.findIndex(d => d.id === donacion.id);
-        if (index !== -1) {
-          this.donaciones[index].convertedToInventory = true;
-          this.donaciones = [...this.donaciones]; // Nueva referencia
+  delete(donacion: Donacion) {
+    if (confirm(`¿Seguro deseas desactivar la donación "${donacion.title}"?`)) {
+      this.servicioDonaciones.deleteDonacion(donacion.id).subscribe(
+        () => {
+          alert("Donación desactivada correctamente");
+          
+      
+          const index = this.donaciones.findIndex(d => d.id === donacion.id);
+          if (index !== -1) {
+            this.donaciones[index].active = false;
+            this.donaciones = [...this.donaciones]; 
+          }
+        },
+        (error) => {
+          alert(`Error al desactivar: ${error.error?.message || error.message}`);
         }
-        
-        // También recargar
-        setTimeout(() => {
-          this.loadDonaciones();
-        }, 100);
-      },
-      (error) => {
-        alert(`Error: ${error.error?.message || error.message}`);
-      }
-    );
+      );
+    }
   }
-}
+
+  activate(donacion: Donacion) {
+    if (confirm(`¿Seguro deseas reactivar la donación "${donacion.title}"?`)) {
+      this.servicioDonaciones.activateDonacion(donacion.id).subscribe(
+        () => {
+          alert("Donación reactivada correctamente");
+          
+       
+          const index = this.donaciones.findIndex(d => d.id === donacion.id);
+          if (index !== -1) {
+            this.donaciones[index].active = true;
+            this.donaciones = [...this.donaciones]; 
+          }
+        },
+        (error) => {
+          alert(`Error al reactivar: ${error.error?.message || error.message}`);
+        }
+      );
+    }
+  }
+
+  getActiveStatus(active: boolean): string {
+    return active ? 'Activo' : 'Inactivo';
+  }
+
+  getActiveClass(active: boolean): string {
+    return active ? 'badge bg-success' : 'badge bg-danger';
+  }
+
+  convertToInventory(donacion: Donacion) {
+    if (confirm(`¿Convertir "${donacion.title}" a inventario?`)) {
+      this.servicioDonaciones.convertToInventory(donacion.id).subscribe(
+        (response: any) => {
+          alert(`Convertido a inventario. ID del libro: ${response.bookId}`);
+          
+          const index = this.donaciones.findIndex(d => d.id === donacion.id);
+          if (index !== -1) {
+            this.donaciones[index].convertedToInventory = true;
+            this.donaciones = [...this.donaciones]; 
+          }
+          
+          setTimeout(() => {
+            this.loadDonaciones();
+          }, 100);
+        },
+        (error) => {
+          alert(`Error: ${error.error?.message || error.message}`);
+        }
+      );
+    }
+  }
 
   getCurrentDate(): string {
     return new Date().toISOString().split('T')[0];
   }
 
-  // Helper para obtener nombre de categoría
   getCategoryName(categoryId: number): string {
     const categoria = this.categorias.find(c => c.id === categoryId);
     return categoria ? categoria.name : 'Desconocida';
   }
 
-  // Helper para estado convertido
   getConvertedStatus(converted: boolean): string {
     return converted ? 'Sí' : 'No';
   }
