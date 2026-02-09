@@ -38,7 +38,7 @@ export class ServDonaciones {
     categoryId: Number(donacion.categoryId)
   };
 
-  
+  console.log('Enviando donación:', donacionToSend);
   return this.http.post<Donacion>(this.apiUrl, donacionToSend);
 }
 

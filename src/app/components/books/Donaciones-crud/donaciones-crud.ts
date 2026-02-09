@@ -52,18 +52,41 @@ export class DonacionesCrud {
   }
 
   ngAfterViewInit() {
-    this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
-  }
+  this.modalRef = new bootstrap.Modal(this.modalElement.nativeElement);
+  
+  // IMPORTANTE: Agregar eventos al modal
+  this.modalElement.nativeElement.addEventListener('hidden.bs.modal', () => {
+    console.log('Modal cerrado');
+    this.editingId = null;
+    this.formDonacion.reset({ 
+      estado: 'Nuevo',
+      donationDate: this.getCurrentDate()
+    });
+  });
+  
+  this.modalElement.nativeElement.addEventListener('shown.bs.modal', () => {
+    console.log('Modal abierto');
+  });
+}
 
   loadDonaciones(): void {
-    this.servicioDonaciones.getDonaciones().subscribe(
-      (data: Donacion[]) => { 
-        this.donaciones = data;
-        console.log('Donaciones cargadas:', data);
-      },
-      (error) => console.error("Error al cargar donaciones:", error)
-    );
-  }
+  console.log('Cargando donaciones...');
+  this.servicioDonaciones.getDonaciones().subscribe(
+    (data: Donacion[]) => { 
+      this.donaciones = data;
+      console.log('Donaciones cargadas:', data.length, 'registros');
+      
+      // Forzar detección de cambios
+      setTimeout(() => {
+        this.donaciones = [...data]; // Crear nueva referencia
+      }, 0);
+    },
+    (error) => {
+      console.error("Error al cargar donaciones:", error);
+      alert('Error al cargar donaciones: ' + error.message);
+    }
+  );
+}
 
   loadCategorias(): void {
     this.servicioCategorias.getCategories().subscribe(
@@ -124,51 +147,39 @@ save() {
 
   const datos = this.formDonacion.value;
   
-  // VALIDACIÓN CLIENTE-SIDE
-  const currentYear = new Date().getFullYear();
-  const year = Number(datos.year);
-  
-  if (year > currentYear) {
-    alert(`Error: El año (${year}) no puede ser mayor que el año actual (${currentYear})`);
-    return;
-  }
-  
-  // Validar fecha de donación
-  const donationDate = new Date(datos.donationDate);
-  const today = new Date();
-  if (donationDate > today) {
-    alert('Error: La fecha de donación no puede ser futura');
-    return;
-  }
-  
-  // Asegurar que categoryId sea number
+  // Convertir categoryId a número
   const categoryId = Number(datos.categoryId);
-  if (isNaN(categoryId)) {
-    alert('Error: Categoría inválida');
-    return;
-  }
-
+  
   if (this.editingId) {
     // Editar
     const donacionActualizada: Donacion = { 
       ...datos,
       id: this.editingId,
-      year: year,
+      year: Number(datos.year),
       categoryId: categoryId,
-      donationDate: donationDate.toISOString().split('T')[0]
+      donationDate: datos.donationDate
     };
 
     this.servicioDonaciones.updateDonacion(donacionActualizada).subscribe(
       (response) => {
         console.log('Respuesta exitosa:', response);
         alert("Donación actualizada correctamente");
-        this.modalRef.hide();
-        this.loadDonaciones();
+        
+        // IMPORTANTE: Cerrar el modal primero
+        if (this.modalRef) {
+          this.modalRef.hide();
+        }
+        
+        // Luego recargar después de un pequeño delay
+        setTimeout(() => {
+          this.loadDonaciones();
+          this.editingId = null;
+          this.formDonacion.reset();
+        }, 100);
       },
       (error) => {
         console.error('Error completo:', error);
-        const errorMessage = this.getErrorMessage(error);
-        alert(`Error al actualizar: ${errorMessage}`);
+        alert(`Error al actualizar: ${error.error?.message || error.message}`);
       }
     );
 
@@ -177,22 +188,33 @@ save() {
     const nuevaDonacion: Donacion = { 
       ...datos,
       convertedToInventory: false,
-      year: year,
+      year: Number(datos.year),
       categoryId: categoryId,
-      donationDate: donationDate.toISOString().split('T')[0]
+      donationDate: datos.donationDate
     };
 
     this.servicioDonaciones.addDonacion(nuevaDonacion).subscribe(
       (response) => {
         console.log('Respuesta exitosa:', response);
         alert("Donación creada correctamente");
-        this.modalRef.hide();
-        this.loadDonaciones();
+        
+        // IMPORTANTE: Cerrar el modal primero
+        if (this.modalRef) {
+          this.modalRef.hide();
+        }
+        
+        // Luego recargar después de un pequeño delay
+        setTimeout(() => {
+          this.loadDonaciones();
+          this.formDonacion.reset({ 
+            estado: 'Nuevo',
+            donationDate: this.getCurrentDate()
+          });
+        }, 100);
       },
       (error) => {
         console.error('Error completo:', error);
-        const errorMessage = this.getErrorMessage(error);
-        alert(`Error al crear: ${errorMessage}`);
+        alert(`Error al crear: ${error.error?.message || error.message}`);
       }
     );
   }
@@ -217,33 +239,51 @@ getErrorMessage(error: any): string {
   return error.error?.message || error.message || 'Error desconocido';
 }
 
-  delete(donacion: Donacion) {
-    if (confirm(`¿Seguro deseas eliminar la donación "${donacion.title}"?`)) {
-      this.servicioDonaciones.deleteDonacion(donacion.id).subscribe(
-        () => {
-          alert("Eliminado correctamente");
+delete(donacion: Donacion) {
+  if (confirm(`¿Seguro deseas eliminar la donación "${donacion.title}"?`)) {
+    this.servicioDonaciones.deleteDonacion(donacion.id).subscribe(
+      () => {
+        alert("Eliminado correctamente");
+        
+        // Actualizar lista localmente sin recargar todo
+        this.donaciones = this.donaciones.filter(d => d.id !== donacion.id);
+        
+        // También recargar para asegurar
+        setTimeout(() => {
           this.loadDonaciones();
-        },
-        (error) => {
-          alert(`Error al eliminar: ${error.error?.message || error.message}`);
-        }
-      );
-    }
+        }, 100);
+      },
+      (error) => {
+        alert(`Error al eliminar: ${error.error?.message || error.message}`);
+      }
+    );
   }
+}
 
-  convertToInventory(donacion: Donacion) {
-    if (confirm(`¿Convertir "${donacion.title}" a inventario?`)) {
-      this.servicioDonaciones.convertToInventory(donacion.id).subscribe(
-        (response: any) => {
-          alert(`Convertido a inventario. ID del libro: ${response.bookId}`);
-          this.loadDonaciones();
-        },
-        (error) => {
-          alert(`Error: ${error.error?.message || error.message}`);
+convertToInventory(donacion: Donacion) {
+  if (confirm(`¿Convertir "${donacion.title}" a inventario?`)) {
+    this.servicioDonaciones.convertToInventory(donacion.id).subscribe(
+      (response: any) => {
+        alert(`Convertido a inventario. ID del libro: ${response.bookId}`);
+        
+        // Actualizar localmente
+        const index = this.donaciones.findIndex(d => d.id === donacion.id);
+        if (index !== -1) {
+          this.donaciones[index].convertedToInventory = true;
+          this.donaciones = [...this.donaciones]; // Nueva referencia
         }
-      );
-    }
+        
+        // También recargar
+        setTimeout(() => {
+          this.loadDonaciones();
+        }, 100);
+      },
+      (error) => {
+        alert(`Error: ${error.error?.message || error.message}`);
+      }
+    );
   }
+}
 
   getCurrentDate(): string {
     return new Date().toISOString().split('T')[0];
